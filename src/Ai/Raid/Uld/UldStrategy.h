@@ -8,6 +8,8 @@
 #define PLAYERBOTS_ULDSTRATEGY_H
 
 #include "Strategy.h"
+#include <string>
+#include <vector>
 
 class RaidUlduarStrategy : public Strategy
 {
@@ -15,6 +17,7 @@ public:
     RaidUlduarStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
     virtual std::string const getName() override { return "ulduar"; }
     virtual void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
 };
 
 #endif
