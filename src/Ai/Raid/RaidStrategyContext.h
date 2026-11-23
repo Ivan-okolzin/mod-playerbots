@@ -22,6 +22,7 @@
 #include "OnyStrategy.h"
 #include "RSStrategy.h"
 #include "SSCStrategy.h"
+#include "SWPStrategy.h"
 #include "Strategy.h"
 #include "TKStrategy.h"
 #include "UldStrategy.h"
@@ -43,6 +44,7 @@ public:
         creators["magtheridon"] = &RaidStrategyContext::magtheridon;
         creators["naxx"] = &RaidStrategyContext::naxx;
         creators["ssc"] = &RaidStrategyContext::ssc;
+        creators["sunwell"] = &RaidStrategyContext::sunwell;
         creators["tempestkeep"] = &RaidStrategyContext::tempestkeep;
         creators["hyjal"] = &RaidStrategyContext::hyjal;
         creators["blacktemple"] = &RaidStrategyContext::blacktemple;
@@ -66,6 +68,7 @@ private:
     static Strategy* magtheridon(PlayerbotAI* botAI) { return new RaidMagtheridonStrategy(botAI); }
     static Strategy* naxx(PlayerbotAI* botAI) { return new RaidNaxxStrategy(botAI); }
     static Strategy* ssc(PlayerbotAI* botAI) { return new RaidSscStrategy(botAI); }
+    static Strategy* sunwell(PlayerbotAI* botAI) { return new RaidSwpStrategy(botAI); }
     static Strategy* tempestkeep(PlayerbotAI* botAI) { return new RaidTempestKeepStrategy(botAI); }
     static Strategy* hyjal(PlayerbotAI* botAI) { return new RaidHyjalStrategy(botAI); }
     static Strategy* blacktemple(PlayerbotAI* botAI) { return new RaidBlackTempleStrategy(botAI); }
