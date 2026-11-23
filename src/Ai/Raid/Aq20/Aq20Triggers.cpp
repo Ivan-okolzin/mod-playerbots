@@ -5,36 +5,159 @@
  */
 
 #include "Aq20Triggers.h"
-#include "Aq20Utils.h"
+#include "Aq20Helpers.h"
+#include "EncounterHelpers.h"
+#include "GameObject.h"
+#include "Playerbots.h"
 
-bool Aq20MoveToCrystalTrigger::IsActive()
+using namespace Aq20Helpers;
+using namespace EncounterHelpers;
+
+// Shared
+
+bool Aq20BossShouldBeTankedTrigger::IsActiveInEncounter()
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "ossirian the unscarred"))
-    {
-        if (boss->IsInCombat())
-        {
-            // if buff is active move to crystal
-            if (RaidAq20Utils::IsOssirianBuffActive(boss))
-                return true;
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
 
-            // if buff is not active a debuff will be, buff becomes active once debuff expires
-            // so move to crystal when debuff almost done, or based debuff time left and
-            // distance bot is from crystal (ie: start moving early enough to make it)
-            int32 debuffTimeRemaining = RaidAq20Utils::GetOssirianDebuffTimeRemaining(boss);
-            if (debuffTimeRemaining < 5000)
-                return true;
-            if (debuffTimeRemaining < 30000)
-            {
-                if (GameObject* crystal = RaidAq20Utils::GetNearestCrystal(boss))
-                {
-                    float botDist = bot->GetDistance(crystal);
-                    float timeToReach = botDist / bot->GetSpeed(MOVE_RUN);
-                    // bot should ideally activate crystal a ~5 seconds early (due to time it takes for crystal
-                    // to activate) so aim to get there in time to do so
-                    return debuffTimeRemaining - 5 * IN_MILLISECONDS < timeToReach * IN_MILLISECONDS;
-                }
-            }
-        }
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!IsAttackableNow(boss))
+        return false;
+
+    if (AI_VALUE(Unit*, "current target") != boss)
+        return true;
+
+    return _requireVictim && boss->GetVictim() != bot;
+}
+
+bool Aq20MainTankAuraStacksTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsAssistTankOfIndex(bot, 0, true))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss)
+        return false;
+
+    Unit* mainTank = AI_VALUE(Unit*, "main tank");
+    if (!mainTank || boss->GetVictim() != mainTank)
+        return false;
+
+    return GetAuraStacks(mainTank, _spellId) >= _stacks;
+}
+
+bool Aq20AddsSpawnedTrigger::IsActiveInEncounter()
+{
+    switch (_role)
+    {
+        case Aq20AddRole::MeleeAndTanks:
+            if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
+                return false;
+            break;
+        case Aq20AddRole::Everyone:
+            if (PlayerbotAI::IsHeal(bot))
+                return false;
+            break;
     }
-    return false;
+
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    return add && AI_VALUE(Unit*, "current target") != add;
+}
+
+bool Aq20BotNearCreatureHazardTrigger::IsActiveInEncounter()
+{
+    return IsNearCachedUnit(botAI, _hazardValue, _radius);
+}
+
+bool Aq20BotNearGameObjectHazardTrigger::IsActiveInEncounter()
+{
+    return IsNearCachedGameObject(botAI, _hazardValue, _radius);
+}
+
+// Buru the Gorger
+
+bool BuruBotFixatedTrigger::IsActiveInEncounter()
+{
+    if (!IsFixatedByBuru(bot))
+        return false;
+
+    // Nothing to lead him to once every egg in reach is gone; the raid finishes the phase on his
+    // own health instead.
+    return GetNearestBuruEgg(botAI) != nullptr;
+}
+
+bool BuruEggShouldBeKilledTrigger::IsActiveInEncounter()
+{
+    if (PlayerbotAI::IsHeal(bot))
+        return false;
+
+    // The fixated bot is busy keeping Buru on the egg, and it is standing on the explosion.
+    if (IsFixatedByBuru(bot))
+        return false;
+
+    Unit* egg = GetBuruTargetEgg(botAI);
+    return egg && AI_VALUE(Unit*, "current target") != egg;
+}
+
+bool BuruShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* buru = FindThreatCreature(bot, Id(Aq20Npcs::NPC_BURU));
+    if (!IsAttackableNow(buru) || IsBuruInEggPhase(buru))
+        return false;
+
+    // The transform resets the threat list (BUR:146), so holding the target is not enough.
+    return AI_VALUE(Unit*, "current target") != buru || buru->GetVictim() != bot;
+}
+
+// Ayamiss the Hunter
+
+bool AyamissShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* ayamiss = FindThreatCreature(bot, Id(Aq20Npcs::NPC_AYAMISS));
+    if (!IsAttackableNow(ayamiss) || IsAyamissInAirPhase(ayamiss))
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != ayamiss || ayamiss->GetVictim() != bot;
+}
+
+// Ossirian the Unscarred
+
+bool OssirianTankShouldMoveToCrystalTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* ossirian = FindThreatCreature(bot, Id(Aq20Npcs::NPC_OSSIRIAN));
+    if (!IsAttackableNow(ossirian) || !IsOssirianCrystalDue(ossirian, CRYSTAL_APPROACH_LEAD_MS))
+        return false;
+
+    GameObject* crystal = GetUsableOssirianCrystal(botAI);
+    if (!crystal)
+        return false;
+
+    return bot->GetExactDist(crystal) > CRYSTAL_INTERACT_DISTANCE ||
+        ossirian->GetExactDist(crystal) > CRYSTAL_WEAKNESS_REACH;
+}
+
+bool OssirianCrystalShouldBeUsedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* ossirian = FindThreatCreature(bot, Id(Aq20Npcs::NPC_OSSIRIAN));
+    if (!IsAttackableNow(ossirian) || !IsOssirianCrystalDue(ossirian, CRYSTAL_ACTIVATION_LEAD_MS))
+        return false;
+
+    GameObject* crystal = GetUsableOssirianCrystal(botAI);
+    if (!crystal)
+        return false;
+
+    return bot->GetExactDist(crystal) <= CRYSTAL_INTERACT_DISTANCE &&
+        ossirian->GetExactDist(crystal) <= CRYSTAL_WEAKNESS_REACH;
 }
