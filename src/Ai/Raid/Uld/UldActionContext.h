@@ -11,6 +11,8 @@
 #include "BossAuraActions.h"
 #include "NamedObjectContext.h"
 #include "UldActions.h"
+#include "UldHelpers.h"
+#include <vector>
 
 class RaidUlduarActionContext : public NamedObjectContext<Action>
 {
@@ -84,6 +86,64 @@ public:
         creators["yogg-saron move to exit portal action"] = &RaidUlduarActionContext::yogg_saron_move_to_exit_portal_action;
         creators["yogg-saron lunatic gaze action"] = &RaidUlduarActionContext::yogg_saron_lunatic_gaze_action;
         creators["yogg-saron phase 3 positioning action"] = &RaidUlduarActionContext::yogg_saron_phase_3_positioning_action;
+
+        // XT-002 Deconstructor
+        creators["xt-002 main tank attack boss"] =
+            &RaidUlduarActionContext::xt002_main_tank_attack_boss;
+        creators["xt-002 attack exposed heart"] =
+            &RaidUlduarActionContext::xt002_attack_exposed_heart;
+        creators["xt-002 move away from raid"] = &RaidUlduarActionContext::xt002_move_away_from_raid;
+        creators["xt-002 move away from void zone"] =
+            &RaidUlduarActionContext::xt002_move_away_from_void_zone;
+        creators["xt-002 attack nearest life spark"] =
+            &RaidUlduarActionContext::xt002_attack_nearest_life_spark;
+        creators["xt-002 attack nearest scrapbot"] =
+            &RaidUlduarActionContext::xt002_attack_nearest_scrapbot;
+        creators["xt-002 tank attack nearest pummeller"] =
+            &RaidUlduarActionContext::xt002_tank_attack_nearest_pummeller;
+        creators["xt-002 attack nearest boombot"] =
+            &RaidUlduarActionContext::xt002_attack_nearest_boombot;
+        creators["xt-002 move away from boombot"] =
+            &RaidUlduarActionContext::xt002_move_away_from_boombot;
+        creators["xt-002 spread ranged"] = &RaidUlduarActionContext::xt002_spread_ranged;
+
+        // Ignis the Furnace Master
+        creators["ignis main tank attack boss"] =
+            &RaidUlduarActionContext::ignis_main_tank_attack_boss;
+        creators["ignis tank attack nearest construct"] =
+            &RaidUlduarActionContext::ignis_tank_attack_nearest_construct;
+        creators["ignis drag molten construct to water"] =
+            &RaidUlduarActionContext::ignis_drag_molten_construct_to_water;
+        creators["ignis attack brittle construct"] =
+            &RaidUlduarActionContext::ignis_attack_brittle_construct;
+        creators["ignis move away from scorched ground"] =
+            &RaidUlduarActionContext::ignis_move_away_from_scorched_ground;
+
+        // Auriaya
+        creators["auriaya main tank attack boss"] =
+            &RaidUlduarActionContext::auriaya_main_tank_attack_boss;
+        creators["auriaya tank attack nearest sentry"] =
+            &RaidUlduarActionContext::auriaya_tank_attack_nearest_sentry;
+        creators["auriaya attack sanctum sentry"] =
+            &RaidUlduarActionContext::auriaya_attack_sanctum_sentry;
+        creators["auriaya attack nearest feral defender"] =
+            &RaidUlduarActionContext::auriaya_attack_nearest_feral_defender;
+        creators["auriaya move away from seeping essence"] =
+            &RaidUlduarActionContext::auriaya_move_away_from_seeping_essence;
+
+        // Algalon the Observer
+        creators["algalon main tank attack boss"] =
+            &RaidUlduarActionContext::algalon_main_tank_attack_boss;
+        creators["algalon tank swap"] = &RaidUlduarActionContext::algalon_tank_swap;
+        creators["algalon hide in black hole"] = &RaidUlduarActionContext::algalon_hide_in_black_hole;
+        creators["algalon move away from cosmic smash"] =
+            &RaidUlduarActionContext::algalon_move_away_from_cosmic_smash;
+        creators["algalon attack nearest collapsing star"] =
+            &RaidUlduarActionContext::algalon_attack_nearest_collapsing_star;
+        creators["algalon lead constellation to black hole"] =
+            &RaidUlduarActionContext::algalon_lead_constellation_to_black_hole;
+        creators["algalon attack nearest dark matter"] =
+            &RaidUlduarActionContext::algalon_attack_nearest_dark_matter;
     }
 
 private:
@@ -154,6 +214,162 @@ private:
     static Action* yogg_saron_move_to_exit_portal_action(PlayerbotAI* botAI) { return new YoggSaronMoveToExitPortalAction(botAI); }
     static Action* yogg_saron_lunatic_gaze_action(PlayerbotAI* botAI) { return new YoggSaronLunaticGazeAction(botAI); }
     static Action* yogg_saron_phase_3_positioning_action(PlayerbotAI* botAI) { return new YoggSaronPhase3PositioningAction(botAI); }
+
+    // XT-002 Deconstructor
+    static Action* xt002_main_tank_attack_boss(PlayerbotAI* botAI)
+    {
+        return new UldAttackCreatureAction(botAI, "xt-002 main tank attack boss", Xt002Entries());
+    }
+    static Action* xt002_attack_exposed_heart(PlayerbotAI* botAI)
+    {
+        return new Xt002AttackExposedHeartAction(botAI);
+    }
+    static Action* xt002_move_away_from_raid(PlayerbotAI* botAI)
+    {
+        return new Xt002MoveAwayFromRaidAction(botAI);
+    }
+    static Action* xt002_move_away_from_void_zone(PlayerbotAI* botAI)
+    {
+        return new UldMoveAwayFromHazardAction(
+            botAI, "xt-002 move away from void zone", UldHelpers::XT002_VOID_ZONES_VALUE,
+            UldHelpers::VOID_ZONE_RADIUS);
+    }
+    static Action* xt002_attack_nearest_life_spark(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "xt-002 attack nearest life spark", UldHelpers::XT002_LIFE_SPARKS_VALUE);
+    }
+    static Action* xt002_attack_nearest_scrapbot(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "xt-002 attack nearest scrapbot", UldHelpers::XT002_SCRAPBOTS_VALUE);
+    }
+    static Action* xt002_tank_attack_nearest_pummeller(PlayerbotAI* botAI)
+    {
+        return new UldTankAttackNearestAddAction(
+            botAI, "xt-002 tank attack nearest pummeller", UldHelpers::XT002_PUMMELLERS_VALUE);
+    }
+    static Action* xt002_attack_nearest_boombot(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "xt-002 attack nearest boombot", UldHelpers::XT002_BOOMBOTS_VALUE);
+    }
+    static Action* xt002_move_away_from_boombot(PlayerbotAI* botAI)
+    {
+        return new UldMoveAwayFromHazardAction(
+            botAI, "xt-002 move away from boombot", UldHelpers::XT002_BOOMBOTS_VALUE,
+            UldHelpers::BOOMBOT_BLAST_RADIUS);
+    }
+    static Action* xt002_spread_ranged(PlayerbotAI* botAI)
+    {
+        return new UldSpreadRangedAction(botAI, "xt-002 spread ranged", Xt002Entries());
+    }
+
+    // Ignis the Furnace Master
+    static Action* ignis_main_tank_attack_boss(PlayerbotAI* botAI)
+    {
+        return new UldAttackCreatureAction(botAI, "ignis main tank attack boss", IgnisEntries());
+    }
+    static Action* ignis_tank_attack_nearest_construct(PlayerbotAI* botAI)
+    {
+        return new UldTankAttackNearestAddAction(
+            botAI, "ignis tank attack nearest construct", UldHelpers::IGNIS_CONSTRUCTS_VALUE);
+    }
+    static Action* ignis_drag_molten_construct_to_water(PlayerbotAI* botAI)
+    {
+        return new IgnisDragMoltenConstructToWaterAction(botAI);
+    }
+    static Action* ignis_attack_brittle_construct(PlayerbotAI* botAI)
+    {
+        return new IgnisAttackBrittleConstructAction(botAI);
+    }
+    static Action* ignis_move_away_from_scorched_ground(PlayerbotAI* botAI)
+    {
+        return new UldMoveAwayFromHazardAction(
+            botAI, "ignis move away from scorched ground", UldHelpers::IGNIS_SCORCHED_GROUND_VALUE,
+            UldHelpers::SCORCHED_GROUND_RADIUS);
+    }
+
+    // Auriaya
+    static Action* auriaya_main_tank_attack_boss(PlayerbotAI* botAI)
+    {
+        return new UldAttackCreatureAction(botAI, "auriaya main tank attack boss", AuriayaEntries());
+    }
+    static Action* auriaya_tank_attack_nearest_sentry(PlayerbotAI* botAI)
+    {
+        return new UldTankAttackNearestAddAction(
+            botAI, "auriaya tank attack nearest sentry", UldHelpers::AURIAYA_SENTRIES_VALUE);
+    }
+    static Action* auriaya_attack_sanctum_sentry(PlayerbotAI* botAI)
+    {
+        return new AuriayaAttackSanctumSentryAction(botAI);
+    }
+    static Action* auriaya_attack_nearest_feral_defender(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "auriaya attack nearest feral defender",
+            UldHelpers::AURIAYA_FERAL_DEFENDERS_VALUE);
+    }
+    static Action* auriaya_move_away_from_seeping_essence(PlayerbotAI* botAI)
+    {
+        return new UldMoveAwayFromHazardAction(
+            botAI, "auriaya move away from seeping essence",
+            UldHelpers::AURIAYA_SEEPING_ESSENCES_VALUE, UldHelpers::SEEPING_ESSENCE_RADIUS);
+    }
+
+    // Algalon the Observer
+    static Action* algalon_main_tank_attack_boss(PlayerbotAI* botAI)
+    {
+        return new UldAttackCreatureAction(botAI, "algalon main tank attack boss", AlgalonEntries());
+    }
+    static Action* algalon_tank_swap(PlayerbotAI* botAI) { return new AlgalonTankSwapAction(botAI); }
+    static Action* algalon_hide_in_black_hole(PlayerbotAI* botAI)
+    {
+        return new AlgalonHideInBlackHoleAction(botAI);
+    }
+    static Action* algalon_move_away_from_cosmic_smash(PlayerbotAI* botAI)
+    {
+        return new UldMoveAwayFromHazardAction(
+            botAI, "algalon move away from cosmic smash", UldHelpers::ALGALON_COSMIC_SMASH_VALUE,
+            UldHelpers::COSMIC_SMASH_RADIUS);
+    }
+    static Action* algalon_attack_nearest_collapsing_star(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "algalon attack nearest collapsing star",
+            UldHelpers::ALGALON_COLLAPSING_STARS_VALUE);
+    }
+    static Action* algalon_lead_constellation_to_black_hole(PlayerbotAI* botAI)
+    {
+        return new AlgalonLeadConstellationToBlackHoleAction(botAI);
+    }
+    static Action* algalon_attack_nearest_dark_matter(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "algalon attack nearest dark matter", UldHelpers::ALGALON_DARK_MATTER_VALUE);
+    }
+
+    // Both creature templates of each boss: the 25-man raid spawns difficulty_entry_1 instead.
+    static std::vector<uint32> Xt002Entries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_XT002),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_XT002_25) };
+    }
+    static std::vector<uint32> IgnisEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_IGNIS),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_IGNIS_25) };
+    }
+    static std::vector<uint32> AuriayaEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_AURIAYA),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_AURIAYA_25) };
+    }
+    static std::vector<uint32> AlgalonEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_ALGALON),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_ALGALON_25) };
+    }
 };
 
 #endif

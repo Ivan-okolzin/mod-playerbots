@@ -22,11 +22,16 @@
 #include "ScriptedCreature.h"
 #include "ServerFacade.h"
 #include "TankAssistStrategy.h"
+#include "EncounterHelpers.h"
 #include "UldBossHelper.h"
+#include "UldHelpers.h"
 #include "UldScripts.h"
 #include "Unit.h"
 #include "Vehicle.h"
 #include <cmath>
+
+using namespace EncounterHelpers;
+using namespace UldHelpers;
 
 const std::string ADD_STRATEGY_CHAR = "+";
 const std::string REMOVE_STRATEGY_CHAR = "-";
@@ -3032,4 +3037,177 @@ bool YoggSaronPhase3PositioningAction::Execute(Event /*event*/)
     }
 
     return false;
+}
+
+// Shared
+
+bool UldAttackCreatureAction::Execute(Event /*event*/)
+{
+    Unit* target = FindThreatCreature(bot, _entries);
+    if (!target)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != target && Attack(target);
+}
+
+bool UldTankAttackNearestAddAction::Execute(Event /*event*/)
+{
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    if (!add)
+        return false;
+
+    if (AI_VALUE(Unit*, "current target") != add)
+        return Attack(add);
+
+    return add->GetVictim() != bot && CastTankTaunt(botAI, add);
+}
+
+bool UldAttackNearestAddAction::Execute(Event /*event*/)
+{
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    if (!add)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != add && Attack(add);
+}
+
+bool UldSpreadRangedAction::Execute(Event /*event*/)
+{
+    if (!FindThreatCreature(bot, _bossEntries))
+        return false;
+
+    Player* nearestPlayer = GetNearestPlayerInRadius(bot, SPREAD_DISTANCE);
+    return nearestPlayer && FleePosition(nearestPlayer->GetPosition(), SPREAD_DISTANCE);
+}
+
+bool UldMoveAwayFromHazardAction::Execute(Event /*event*/)
+{
+    Position safePos;
+    if (!FindPositionAwayFromCachedUnits(botAI, _hazardValue, _radius, safePos))
+        return false;
+
+    bot->CastStop();
+    return MoveTo(
+        ULD_MAP_ID, safePos.GetPositionX(), safePos.GetPositionY(), bot->GetPositionZ(), false,
+        false, false, false, MovementPriority::MOVEMENT_FORCED, true, false);
+}
+
+// XT-002 Deconstructor
+
+bool Xt002AttackExposedHeartAction::Execute(Event /*event*/)
+{
+    Unit* heart = GetExposedHeart(botAI);
+    if (!heart)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != heart && Attack(heart);
+}
+
+bool Xt002MoveAwayFromRaidAction::Execute(Event /*event*/)
+{
+    Player* nearestPlayer = GetNearestPlayerInRadius(bot, GRAVITY_BOMB_SPREAD_DISTANCE);
+    if (!nearestPlayer)
+        return false;
+
+    bot->CastStop();
+    constexpr uint32 minInterval = 0;
+    return FleePosition(nearestPlayer->GetPosition(), GRAVITY_BOMB_SPREAD_DISTANCE, minInterval);
+}
+
+// Ignis the Furnace Master
+
+bool IgnisDragMoltenConstructToWaterAction::Execute(Event /*event*/)
+{
+    Unit* construct = GetHeldMoltenConstruct(botAI);
+    if (!construct)
+        return false;
+
+    Unit* water = GetNearestWaterTrigger(botAI);
+    if (!water)
+        return false;
+
+    // The construct follows the tank, so the tank walks into the pool itself and the construct
+    // comes along inside the 18 yards the script asks for (BIG:162).
+    constexpr float stopDistance = 0.0f;
+    float stepX;
+    float stepY;
+    if (!GetPathStepTowardUnit(bot, water, stopDistance, PATH_STEP_DISTANCE, stepX, stepY))
+        return false;
+
+    return MoveTo(
+        ULD_MAP_ID, stepX, stepY, bot->GetPositionZ(), false, false, false, false,
+        MovementPriority::MOVEMENT_COMBAT, true, false);
+}
+
+bool IgnisAttackBrittleConstructAction::Execute(Event /*event*/)
+{
+    Unit* construct = GetBrittleConstruct(botAI);
+    if (!construct)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != construct && Attack(construct);
+}
+
+// Auriaya
+
+bool AuriayaAttackSanctumSentryAction::Execute(Event /*event*/)
+{
+    Unit* sentry = GetNearestAttackableCachedUnit(botAI, AURIAYA_SENTRIES_VALUE);
+    if (!sentry)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != sentry && Attack(sentry);
+}
+
+// Algalon the Observer
+
+bool AlgalonTankSwapAction::Execute(Event /*event*/)
+{
+    Unit* algalon = FindThreatCreature(
+        bot, { Id(UldNpcs::NPC_ALGALON), Id(UldNpcs::NPC_ALGALON_25) });
+    if (!algalon)
+        return false;
+
+    if (AI_VALUE(Unit*, "current target") != algalon && !Attack(algalon))
+        return false;
+
+    return CastTankTaunt(botAI, algalon);
+}
+
+bool AlgalonHideInBlackHoleAction::Execute(Event /*event*/)
+{
+    Unit* blackHole = GetNearestBlackHole(botAI);
+    if (!blackHole)
+        return false;
+
+    constexpr float stopDistance = 0.0f;
+    float stepX;
+    float stepY;
+    if (!GetPathStepTowardUnit(bot, blackHole, stopDistance, PATH_STEP_DISTANCE, stepX, stepY))
+        return false;
+
+    bot->CastStop();
+    return MoveTo(
+        ULD_MAP_ID, stepX, stepY, bot->GetPositionZ(), false, false, false, false,
+        MovementPriority::MOVEMENT_FORCED, true, false);
+}
+
+bool AlgalonLeadConstellationToBlackHoleAction::Execute(Event /*event*/)
+{
+    if (!GetChasingConstellation(botAI))
+        return false;
+
+    Unit* blackHole = GetNearestBlackHole(botAI);
+    if (!blackHole)
+        return false;
+
+    constexpr float stopDistance = 0.0f;
+    float stepX;
+    float stepY;
+    if (!GetPathStepTowardUnit(bot, blackHole, stopDistance, PATH_STEP_DISTANCE, stepX, stepY))
+        return false;
+
+    return MoveTo(
+        ULD_MAP_ID, stepX, stepY, bot->GetPositionZ(), false, false, false, false,
+        MovementPriority::MOVEMENT_COMBAT, true, false);
 }

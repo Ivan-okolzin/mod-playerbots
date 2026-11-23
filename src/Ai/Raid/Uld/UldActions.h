@@ -14,8 +14,11 @@
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
 #include "UldBossHelper.h"
+#include "UldHelpers.h"
 #include "UldTriggers.h"
 #include "Vehicle.h"
+#include <string>
+#include <vector>
 
 //
 //  Flame Leviathan
@@ -502,6 +505,156 @@ class YoggSaronPhase3PositioningAction : public MovementAction
 public:
     YoggSaronPhase3PositioningAction(PlayerbotAI* botAI) : MovementAction(botAI, "yogg-saron phase 3 positioning action") {}
 
+    bool Execute(Event event) override;
+};
+
+// Shared
+
+// Hold threat on a boss, or switch to the one this bot is meant to be hitting: the same job, told
+// apart by its trigger.
+class UldAttackCreatureAction : public AttackAction
+{
+public:
+    UldAttackCreatureAction(
+        PlayerbotAI* botAI, std::string const& name, std::vector<uint32> const& entries)
+        : AttackAction(botAI, name), _entries(entries) {}
+    bool Execute(Event event) override;
+
+private:
+    std::vector<uint32> const _entries;
+};
+
+// Takes an add and keeps it. The adds of this raid pick their own target rather than wait for
+// threat: an Iron Construct copies Ignis's victim (BIG:126) and the Sanctum Sentries drag Auriaya
+// into the fight from wherever they are (BAU:242-249), so a tank has to taunt them off.
+class UldTankAttackNearestAddAction : public AttackAction
+{
+public:
+    UldTankAttackNearestAddAction(
+        PlayerbotAI* botAI, std::string const& name, char const* addsValue)
+        : AttackAction(botAI, name), _addsValue(addsValue) {}
+    bool Execute(Event event) override;
+
+private:
+    char const* const _addsValue;
+};
+
+class UldAttackNearestAddAction : public AttackAction
+{
+public:
+    UldAttackNearestAddAction(PlayerbotAI* botAI, std::string const& name, char const* addsValue)
+        : AttackAction(botAI, name), _addsValue(addsValue) {}
+    bool Execute(Event event) override;
+
+private:
+    char const* const _addsValue;
+};
+
+class UldSpreadRangedAction : public MovementAction
+{
+public:
+    UldSpreadRangedAction(
+        PlayerbotAI* botAI, std::string const& name, std::vector<uint32> const& bossEntries)
+        : MovementAction(botAI, name), _bossEntries(bossEntries) {}
+    bool Execute(Event event) override;
+
+private:
+    std::vector<uint32> const _bossEntries;
+};
+
+class UldMoveAwayFromHazardAction : public MovementAction
+{
+public:
+    UldMoveAwayFromHazardAction(
+        PlayerbotAI* botAI, std::string const& name, char const* hazardValue, float radius)
+        : MovementAction(botAI, name), _hazardValue(hazardValue), _radius(radius) {}
+    bool Execute(Event event) override;
+
+private:
+    char const* const _hazardValue;
+    float const _radius;
+};
+
+// XT-002 Deconstructor
+
+// Damage dealt to the exposed heart is passed on to XT-002 (BXT:1003-1012), and for those 30
+// seconds it is the only thing in the room that can be hit.
+class Xt002AttackExposedHeartAction : public AttackAction
+{
+public:
+    Xt002AttackExposedHeartAction(PlayerbotAI* botAI)
+        : AttackAction(botAI, "xt-002 attack exposed heart") {}
+    bool Execute(Event event) override;
+};
+
+// Walks the Gravity Bomb out of the raid, so that neither its damage nor the Void Zone it leaves
+// behind lands where the raid is standing.
+class Xt002MoveAwayFromRaidAction : public MovementAction
+{
+public:
+    Xt002MoveAwayFromRaidAction(PlayerbotAI* botAI)
+        : MovementAction(botAI, "xt-002 move away from raid") {}
+    bool Execute(Event event) override;
+};
+
+// Ignis the Furnace Master
+
+// Walks the Molten construct this tank is holding into the water, which is the only thing that
+// turns it Brittle (BIG:161-166).
+class IgnisDragMoltenConstructToWaterAction : public MovementAction
+{
+public:
+    IgnisDragMoltenConstructToWaterAction(PlayerbotAI* botAI)
+        : MovementAction(botAI, "ignis drag molten construct to water") {}
+    bool Execute(Event event) override;
+};
+
+class IgnisAttackBrittleConstructAction : public AttackAction
+{
+public:
+    IgnisAttackBrittleConstructAction(PlayerbotAI* botAI)
+        : AttackAction(botAI, "ignis attack brittle construct") {}
+    bool Execute(Event event) override;
+};
+
+// Auriaya
+
+// Puts the raid's damage on one cat at a time: the Sentries buff each other while they live
+// (BAU:255), so the longer they are up the harder they all hit.
+class AuriayaAttackSanctumSentryAction : public AttackAction
+{
+public:
+    AuriayaAttackSanctumSentryAction(PlayerbotAI* botAI)
+        : AttackAction(botAI, "auriaya attack sanctum sentry") {}
+    bool Execute(Event event) override;
+};
+
+// Algalon the Observer
+
+// The second tank takes Algalon over before Phase Punch banishes the first one (BAL:1246).
+class AlgalonTankSwapAction : public AttackAction
+{
+public:
+    AlgalonTankSwapAction(PlayerbotAI* botAI) : AttackAction(botAI, "algalon tank swap") {}
+    bool Execute(Event event) override;
+};
+
+// Walks into the nearest Black Hole, which is the only cover Big Bang leaves.
+class AlgalonHideInBlackHoleAction : public MovementAction
+{
+public:
+    AlgalonHideInBlackHoleAction(PlayerbotAI* botAI)
+        : MovementAction(botAI, "algalon hide in black hole") {}
+    bool Execute(Event event) override;
+};
+
+// Walks the Living Constellation that is chasing this bot into a Black Hole, which despawns both
+// of them (BAL:1063-1078).
+class AlgalonLeadConstellationToBlackHoleAction : public MovementAction
+{
+public:
+    AlgalonLeadConstellationToBlackHoleAction(PlayerbotAI* botAI)
+        : MovementAction(botAI, "algalon lead constellation to black hole") {}
     bool Execute(Event event) override;
 };
 

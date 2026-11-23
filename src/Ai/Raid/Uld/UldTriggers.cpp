@@ -17,7 +17,12 @@
 #include "Trigger.h"
 #include "UldBossHelper.h"
 #include "UldScripts.h"
+#include "EncounterHelpers.h"
+#include "UldHelpers.h"
 #include "Vehicle.h"
+
+using namespace EncounterHelpers;
+using namespace UldHelpers;
 
 const std::vector<uint32> availableVehicles = {NPC_VEHICLE_CHOPPER, NPC_SALVAGED_DEMOLISHER,
                                                NPC_SALVAGED_DEMOLISHER_TURRET, NPC_SALVAGED_SIEGE_ENGINE,
@@ -2144,4 +2149,178 @@ bool YoggSaronPhase3PositioningTrigger::IsActive()
     }
 
     return false;
+}
+
+// Shared
+
+bool UldBossShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntries);
+    return IsAttackableNow(boss) && AI_VALUE(Unit*, "current target") != boss;
+}
+
+bool UldRangedShouldSpreadTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsRanged(bot))
+        return false;
+
+    // Nothing to spread out of while the boss is not on this bot's threat list, and the player the
+    // boss is hitting is the one place the raid cannot spread to anyway.
+    Unit* boss = FindThreatCreature(bot, _bossEntries);
+    if (!boss || boss->GetVictim() == bot)
+        return false;
+
+    return GetNearestPlayerInRadius(bot, SPREAD_DISTANCE) != nullptr;
+}
+
+bool UldAddsSpawnedTrigger::IsActiveInEncounter()
+{
+    switch (_role)
+    {
+        case UldAddRole::MeleeAndTanks:
+            if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
+                return false;
+            break;
+        case UldAddRole::Tanks:
+            if (!PlayerbotAI::IsTank(bot))
+                return false;
+            break;
+        case UldAddRole::RangedDps:
+            if (!PlayerbotAI::IsRangedDps(bot))
+                return false;
+            break;
+        case UldAddRole::Everyone:
+            if (PlayerbotAI::IsHeal(bot))
+                return false;
+            break;
+    }
+
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    return add && AI_VALUE(Unit*, "current target") != add;
+}
+
+bool UldBotNearHazardTrigger::IsActiveInEncounter()
+{
+    return IsNearCachedUnit(botAI, _hazardValue, _radius);
+}
+
+// XT-002 Deconstructor
+
+bool Xt002HeartExposedTrigger::IsActiveInEncounter()
+{
+    if (PlayerbotAI::IsHeal(bot))
+        return false;
+
+    Unit* heart = GetExposedHeart(botAI);
+    return heart && AI_VALUE(Unit*, "current target") != heart;
+}
+
+bool Xt002BotHasGravityBombTrigger::IsActiveInEncounter()
+{
+    if (!HasGravityBomb(bot))
+        return false;
+
+    // Only worth walking out while there is somebody to walk away from.
+    return GetNearestPlayerInRadius(bot, GRAVITY_BOMB_SPREAD_DISTANCE) != nullptr;
+}
+
+bool Xt002BotNearBoombotTrigger::IsActiveInEncounter()
+{
+    // The ranged are already outside the blast and have a Boombot to shoot.
+    if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
+        return false;
+
+    return IsNearCachedUnit(botAI, XT002_BOOMBOTS_VALUE, BOOMBOT_BLAST_RADIUS);
+}
+
+// Ignis the Furnace Master
+
+bool IgnisConstructShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    // The main tank keeps Ignis where the raid put him; the constructs are the other tanks' job.
+    if (!PlayerbotAI::IsTank(bot) || PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* construct = GetNearestActiveConstruct(botAI);
+    if (!construct)
+        return false;
+
+    // Molten wipes the construct's threat as it lands (BIG:140), so holding the target is not
+    // enough to say the job is done.
+    return AI_VALUE(Unit*, "current target") != construct || construct->GetVictim() != bot;
+}
+
+bool IgnisMoltenConstructShouldBeDousedTrigger::IsActiveInEncounter()
+{
+    Unit* construct = GetHeldMoltenConstruct(botAI);
+    if (!construct)
+        return false;
+
+    Unit* water = GetNearestWaterTrigger(botAI);
+    return water && construct->GetExactDist2d(water) > WATER_DOUSE_DISTANCE;
+}
+
+bool IgnisBrittleConstructShouldBeKilledTrigger::IsActiveInEncounter()
+{
+    if (PlayerbotAI::IsHeal(bot))
+        return false;
+
+    Unit* construct = GetBrittleConstruct(botAI);
+    return construct && AI_VALUE(Unit*, "current target") != construct;
+}
+
+// Auriaya
+
+bool AuriayaSentryShouldBeKilledTrigger::IsActiveInEncounter()
+{
+    // The tanks hold the cats rather than pick their own; this is the raid's kill order.
+    if (PlayerbotAI::IsHeal(bot) || PlayerbotAI::IsTank(bot))
+        return false;
+
+    Unit* sentry = GetNearestAttackableCachedUnit(botAI, AURIAYA_SENTRIES_VALUE);
+    return sentry && AI_VALUE(Unit*, "current target") != sentry;
+}
+
+// Algalon the Observer
+
+bool AlgalonMainTankPhasePunchStacksTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsAssistTankOfIndex(bot, 0, true))
+        return false;
+
+    Unit* algalon = FindThreatCreature(
+        bot, { Id(UldNpcs::NPC_ALGALON), Id(UldNpcs::NPC_ALGALON_25) });
+    if (!algalon)
+        return false;
+
+    Unit* mainTank = AI_VALUE(Unit*, "main tank");
+    if (!mainTank || algalon->GetVictim() != mainTank)
+        return false;
+
+    return GetAuraStacks(mainTank, Id(UldSpells::SPELL_PHASE_PUNCH)) >= PHASE_PUNCH_SWAP_STACKS;
+}
+
+bool AlgalonBigBangIncomingTrigger::IsActiveInEncounter()
+{
+    Unit* algalon = FindThreatCreature(
+        bot, { Id(UldNpcs::NPC_ALGALON), Id(UldNpcs::NPC_ALGALON_25) });
+    if (!IsBigBangIncoming(algalon))
+        return false;
+
+    // From 20% health onwards there is no Black Hole left to hide in (BAL:613), and the cast has
+    // to be healed through instead.
+    Unit* blackHole = GetNearestBlackHole(botAI);
+    return blackHole && bot->GetExactDist2d(blackHole) > BLACK_HOLE_SHELTER_RADIUS;
+}
+
+bool AlgalonConstellationChasingBotTrigger::IsActiveInEncounter()
+{
+    if (!GetChasingConstellation(botAI))
+        return false;
+
+    Unit* blackHole = GetNearestBlackHole(botAI);
+    return blackHole && bot->GetExactDist2d(blackHole) > BLACK_HOLE_SHELTER_RADIUS;
 }

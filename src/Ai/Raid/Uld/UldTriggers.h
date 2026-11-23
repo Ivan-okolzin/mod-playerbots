@@ -7,10 +7,14 @@
 #ifndef PLAYERBOTS_ULDTRIGGERS_H
 #define PLAYERBOTS_ULDTRIGGERS_H
 
+#include "EncounterHelpers.h"
 #include "EventMap.h"
 #include "GenericTriggers.h"
 #include "Trigger.h"
 #include "UldBossHelper.h"
+#include "UldHelpers.h"
+#include <string>
+#include <vector>
 
 //
 // Flame Levi
@@ -469,6 +473,227 @@ class YoggSaronPhase3PositioningTrigger : public YoggSaronTrigger
 public:
     YoggSaronPhase3PositioningTrigger(PlayerbotAI* botAI) : YoggSaronTrigger(botAI, "yogg-saron phase 3 positioning trigger") {}
     bool IsActive() override;
+};
+
+// Shared
+
+class UldEncounterTrigger : public Trigger
+{
+public:
+    UldEncounterTrigger(PlayerbotAI* botAI, std::string const name, int32 checkInterval = 1)
+        : Trigger(botAI, name, checkInterval) {}
+
+    bool IsActive() final
+    {
+        return EncounterHelpers::IsEncounterInProgress(bot, UldHelpers::ULD_MAP_ID) &&
+            IsActiveInEncounter();
+    }
+
+protected:
+    virtual bool IsActiveInEncounter() = 0;
+};
+
+// XT-002, Ignis, Auriaya and Algalon all want the same of their main tank: threat on a boss that
+// stays where the raid put it. Each of them also spends part of the fight untargetable, which is
+// what keeps this object out of those phases.
+class UldBossShouldBeTankedTrigger : public UldEncounterTrigger
+{
+public:
+    UldBossShouldBeTankedTrigger(
+        PlayerbotAI* botAI, std::string const& name, std::vector<uint32> const& bossEntries)
+        : UldEncounterTrigger(botAI, name), _bossEntries(bossEntries) {}
+
+protected:
+    bool IsActiveInEncounter() override;
+
+private:
+    std::vector<uint32> const _bossEntries;
+};
+
+// XT-002 throws Searing Light and Gravity Bomb at one random player and hurts the ground around
+// it (BXT:372, :376), so the ranged stand apart from each other.
+class UldRangedShouldSpreadTrigger : public UldEncounterTrigger
+{
+public:
+    UldRangedShouldSpreadTrigger(
+        PlayerbotAI* botAI, std::string const& name, std::vector<uint32> const& bossEntries)
+        : UldEncounterTrigger(botAI, name), _bossEntries(bossEntries) {}
+
+protected:
+    bool IsActiveInEncounter() override;
+
+private:
+    std::vector<uint32> const _bossEntries;
+};
+
+enum class UldAddRole : uint8
+{
+    Everyone,
+    MeleeAndTanks,
+    Tanks,
+    RangedDps,
+};
+
+// XT-002's robots, Auriaya's cats and Algalon's stars: adds the raid deals with on sight,
+// differing only in who goes for them.
+class UldAddsSpawnedTrigger : public UldEncounterTrigger
+{
+public:
+    UldAddsSpawnedTrigger(
+        PlayerbotAI* botAI, std::string const& name, char const* addsValue, UldAddRole role)
+        : UldEncounterTrigger(botAI, name), _addsValue(addsValue), _role(role) {}
+
+protected:
+    bool IsActiveInEncounter() override;
+
+private:
+    char const* const _addsValue;
+    UldAddRole const _role;
+};
+
+// Void Zones, Scorched Ground, Seeping Feral Essence and the Cosmic Smash marks are all creatures
+// standing on ground nobody wants to be on.
+class UldBotNearHazardTrigger : public UldEncounterTrigger
+{
+public:
+    UldBotNearHazardTrigger(
+        PlayerbotAI* botAI, std::string const& name, char const* hazardValue, float radius)
+        : UldEncounterTrigger(botAI, name), _hazardValue(hazardValue), _radius(radius) {}
+
+protected:
+    bool IsActiveInEncounter() override;
+
+private:
+    char const* const _hazardValue;
+    float const _radius;
+};
+
+// XT-002 Deconstructor
+
+// For 30 seconds at 75%, 50% and 25% health the heart is the only thing in the room that can be
+// hit at all: XT-002 submerges and goes untargetable with it (BXT:388-399).
+class Xt002HeartExposedTrigger : public UldEncounterTrigger
+{
+public:
+    Xt002HeartExposedTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "xt-002 heart exposed") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Gravity Bomb hurts everything around its carrier and leaves a Void Zone where the carrier stood
+// when it falls off (BXT:773-791), so the carrier takes both away from the raid.
+class Xt002BotHasGravityBombTrigger : public UldEncounterTrigger
+{
+public:
+    Xt002BotHasGravityBombTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "xt-002 bot has gravity bomb") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// A Boombot explodes at half health for 15000 to 18000 damage (BXT:611, :638-645), which is why
+// the melee keep away from it and only the ranged shoot it.
+class Xt002BotNearBoombotTrigger : public UldEncounterTrigger
+{
+public:
+    Xt002BotNearBoombotTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "xt-002 bot near boombot") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Ignis the Furnace Master
+
+// Every activated construct is a stack of Strength of the Creator on Ignis until it dies
+// (BIG:125, :150), and it picks its target from Ignis's victim rather than from threat (BIG:126).
+class IgnisConstructShouldBeTankedTrigger : public UldEncounterTrigger
+{
+public:
+    IgnisConstructShouldBeTankedTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "ignis iron construct should be tanked") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// A construct that has stood by Ignis long enough turns Molten and resets its threat (BIG:133-141).
+// Molten is also the only state the water can do anything with, so the tank holding it walks it in.
+class IgnisMoltenConstructShouldBeDousedTrigger : public UldEncounterTrigger
+{
+public:
+    IgnisMoltenConstructShouldBeDousedTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "ignis molten construct should be doused") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Brittle shatters on the next hit of 5000 damage and takes the construct with it (BIG:491-503),
+// so a Brittle construct is a free kill for whoever is closest.
+class IgnisBrittleConstructShouldBeKilledTrigger : public UldEncounterTrigger
+{
+public:
+    IgnisBrittleConstructShouldBeKilledTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "ignis brittle construct should be killed") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Auriaya
+
+// The four Sanctum Sentries buff each other while they live (BAU:255) and pounce anyone 8 to 25
+// yards out (BAU:270-280), so the raid takes them off the board before it works on Auriaya.
+class AuriayaSentryShouldBeKilledTrigger : public UldEncounterTrigger
+{
+public:
+    AuriayaSentryShouldBeKilledTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "auriaya sanctum sentry should be killed") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Algalon the Observer
+
+// Phase Punch stacks on whoever Algalon is hitting and banishes it at five (BAL:716, :1246), so
+// the second tank takes him over before that.
+class AlgalonMainTankPhasePunchStacksTrigger : public UldEncounterTrigger
+{
+public:
+    AlgalonMainTankPhasePunchStacksTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "algalon main tank has phase punch stacks") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// Big Bang kills everything it reaches and only a Black Hole is out of its reach, so the whole
+// raid spends the eight seconds of the cast getting into one.
+class AlgalonBigBangIncomingTrigger : public UldEncounterTrigger
+{
+public:
+    AlgalonBigBangIncomingTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "algalon big bang incoming") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+// A Living Constellation cannot be removed by damage, only by being walked into a Black Hole
+// (BAL:1063-1078). The bot it has picked is the one it follows there.
+class AlgalonConstellationChasingBotTrigger : public UldEncounterTrigger
+{
+public:
+    AlgalonConstellationChasingBotTrigger(PlayerbotAI* botAI)
+        : UldEncounterTrigger(botAI, "algalon constellation chasing bot") {}
+
+protected:
+    bool IsActiveInEncounter() override;
 };
 
 #endif

@@ -5,6 +5,8 @@
  */
 
 #include "UldStrategy.h"
+#include "Playerbots.h"
+#include "UldMultipliers.h"
 
 void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
@@ -60,6 +62,71 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "ignis fire resistance trigger",
         { NextAction("ignis fire resistance action", ACTION_RAID) }));
+
+    triggers.push_back(new TriggerNode(
+        "ignis should be tanked",
+        { NextAction("ignis main tank attack boss", ACTION_RAID + 1) }));
+
+    triggers.push_back(new TriggerNode(
+        "ignis iron construct should be tanked",
+        { NextAction("ignis tank attack nearest construct", ACTION_RAID + 2) }));
+
+    // Only the water turns a construct into something the raid can kill in one hit.
+    triggers.push_back(new TriggerNode(
+        "ignis molten construct should be doused",
+        { NextAction("ignis drag molten construct to water", ACTION_RAID + 4) }));
+
+    triggers.push_back(new TriggerNode(
+        "ignis brittle construct should be killed",
+        { NextAction("ignis attack brittle construct", ACTION_RAID + 3) }));
+
+    triggers.push_back(new TriggerNode(
+        "ignis bot in scorched ground",
+        { NextAction("ignis move away from scorched ground", ACTION_EMERGENCY + 7) }));
+
+    //
+    // XT-002 Deconstructor
+    //
+    triggers.push_back(new TriggerNode(
+        "xt-002 should be tanked",
+        { NextAction("xt-002 main tank attack boss", ACTION_RAID + 1) }));
+
+    // While the heart is out, XT-002 himself cannot be touched at all.
+    triggers.push_back(new TriggerNode(
+        "xt-002 heart exposed",
+        { NextAction("xt-002 attack exposed heart", ACTION_RAID + 4) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 bot has gravity bomb",
+        { NextAction("xt-002 move away from raid", ACTION_EMERGENCY + 6) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 bot in void zone",
+        { NextAction("xt-002 move away from void zone", ACTION_EMERGENCY + 7) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 bot near boombot",
+        { NextAction("xt-002 move away from boombot", ACTION_EMERGENCY + 7) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 life spark spawned",
+        { NextAction("xt-002 attack nearest life spark", ACTION_RAID + 3) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 scrapbot spawned",
+        { NextAction("xt-002 attack nearest scrapbot", ACTION_RAID + 3) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 pummeller spawned",
+        { NextAction("xt-002 tank attack nearest pummeller", ACTION_RAID + 2) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 boombot spawned",
+        { NextAction("xt-002 attack nearest boombot", ACTION_RAID + 2) }));
+
+    triggers.push_back(new TriggerNode(
+        "xt-002 ranged should spread",
+        { NextAction("xt-002 spread ranged", ACTION_MOVE + 2) }));
 
     //
     // Iron Assembly
@@ -117,6 +184,27 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "auriaya fall from floor trigger",
         { NextAction("auriaya fall from floor action", ACTION_RAID) }));
+
+    triggers.push_back(new TriggerNode(
+        "auriaya should be tanked",
+        { NextAction("auriaya main tank attack boss", ACTION_RAID + 1) }));
+
+    triggers.push_back(new TriggerNode(
+        "auriaya sentries spawned",
+        { NextAction("auriaya tank attack nearest sentry", ACTION_RAID + 2) }));
+
+    // The cats buff each other while they live, so they go down first and one at a time.
+    triggers.push_back(new TriggerNode(
+        "auriaya sanctum sentry should be killed",
+        { NextAction("auriaya attack sanctum sentry", ACTION_RAID + 3) }));
+
+    triggers.push_back(new TriggerNode(
+        "auriaya feral defender spawned",
+        { NextAction("auriaya attack nearest feral defender", ACTION_RAID + 2) }));
+
+    triggers.push_back(new TriggerNode(
+        "auriaya bot in seeping essence",
+        { NextAction("auriaya move away from seeping essence", ACTION_EMERGENCY + 7) }));
 
     //
     // Hodir
@@ -319,4 +407,44 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode(
         "yogg-saron phase 3 positioning trigger",
         { NextAction("yogg-saron phase 3 positioning action", ACTION_RAID) }));
+
+    //
+    // Algalon the Observer
+    //
+    triggers.push_back(new TriggerNode(
+        "algalon should be tanked",
+        { NextAction("algalon main tank attack boss", ACTION_RAID + 1) }));
+
+    triggers.push_back(new TriggerNode(
+        "algalon main tank has phase punch stacks",
+        { NextAction("algalon tank swap", ACTION_RAID + 3) }));
+
+    // A Black Hole is the only cover Big Bang leaves, and the cast is eight seconds long.
+    triggers.push_back(new TriggerNode(
+        "algalon big bang incoming",
+        { NextAction("algalon hide in black hole", ACTION_EMERGENCY + 7) }));
+
+    triggers.push_back(new TriggerNode(
+        "algalon bot near cosmic smash",
+        { NextAction("algalon move away from cosmic smash", ACTION_EMERGENCY + 7) }));
+
+    triggers.push_back(new TriggerNode(
+        "algalon collapsing star should be killed",
+        { NextAction("algalon attack nearest collapsing star", ACTION_RAID + 2) }));
+
+    // Nothing but a Black Hole removes a Constellation, and it follows the bot it picked.
+    triggers.push_back(new TriggerNode(
+        "algalon constellation chasing bot",
+        { NextAction("algalon lead constellation to black hole", ACTION_RAID + 4) }));
+
+    triggers.push_back(new TriggerNode(
+        "algalon dark matter spawned",
+        { NextAction("algalon attack nearest dark matter", ACTION_RAID + 2) }));
+}
+
+void RaidUlduarStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
+{
+    multipliers.push_back(new Xt002BoombotMeleeTargetMultiplier(botAI));
+    multipliers.push_back(new IgnisConstructTargetMultiplier(botAI));
+    multipliers.push_back(new AuriayaSentryTargetMultiplier(botAI));
 }

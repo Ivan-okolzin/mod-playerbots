@@ -9,7 +9,9 @@
 
 #include "BossAuraTriggers.h"
 #include "NamedObjectContext.h"
+#include "UldHelpers.h"
 #include "UldTriggers.h"
+#include <vector>
 
 class RaidUlduarTriggerContext : public NamedObjectContext<Trigger>
 {
@@ -69,7 +71,8 @@ public:
         creators["vezax mark of the faceless trigger"] = &RaidUlduarTriggerContext::vezax_mark_of_the_faceless_trigger;
         creators["vezax shadow resistance trigger"] = &RaidUlduarTriggerContext::vezax_shadow_resistance_trigger;
         creators["sara shadow resistance trigger"] = &RaidUlduarTriggerContext::sara_shadow_resistance_trigger;
-        creators["yogg-saron shadow resistance triggerr"] = &RaidUlduarTriggerContext::yogg_saron_shadow_resistance_trigger;
+        creators["yogg-saron shadow resistance trigger"] =
+            &RaidUlduarTriggerContext::yogg_saron_shadow_resistance_trigger;
         creators["yogg-saron ominous cloud cheat trigger"] = &RaidUlduarTriggerContext::yogg_saron_ominous_cloud_cheat_trigger;
         creators["yogg-saron guardian positioning trigger"] = &RaidUlduarTriggerContext::yogg_saron_guardian_positioning_trigger;
         creators["yogg-saron sanity trigger"] = &RaidUlduarTriggerContext::yogg_saron_sanity_trigger;
@@ -85,6 +88,55 @@ public:
         creators["yogg-saron move to exit portal trigger"] = &RaidUlduarTriggerContext::yogg_saron_move_to_exit_portal_trigger;
         creators["yogg-saron lunatic gaze trigger"] = &RaidUlduarTriggerContext::yogg_saron_lunatic_gaze_trigger;
         creators["yogg-saron phase 3 positioning trigger"] = &RaidUlduarTriggerContext::yogg_saron_phase_3_positioning_trigger;
+
+        // XT-002 Deconstructor
+        creators["xt-002 should be tanked"] = &RaidUlduarTriggerContext::xt002_should_be_tanked;
+        creators["xt-002 heart exposed"] = &RaidUlduarTriggerContext::xt002_heart_exposed;
+        creators["xt-002 bot has gravity bomb"] =
+            &RaidUlduarTriggerContext::xt002_bot_has_gravity_bomb;
+        creators["xt-002 bot in void zone"] = &RaidUlduarTriggerContext::xt002_bot_in_void_zone;
+        creators["xt-002 life spark spawned"] = &RaidUlduarTriggerContext::xt002_life_spark_spawned;
+        creators["xt-002 scrapbot spawned"] = &RaidUlduarTriggerContext::xt002_scrapbot_spawned;
+        creators["xt-002 pummeller spawned"] = &RaidUlduarTriggerContext::xt002_pummeller_spawned;
+        creators["xt-002 boombot spawned"] = &RaidUlduarTriggerContext::xt002_boombot_spawned;
+        creators["xt-002 bot near boombot"] = &RaidUlduarTriggerContext::xt002_bot_near_boombot;
+        creators["xt-002 ranged should spread"] =
+            &RaidUlduarTriggerContext::xt002_ranged_should_spread;
+
+        // Ignis the Furnace Master
+        creators["ignis should be tanked"] = &RaidUlduarTriggerContext::ignis_should_be_tanked;
+        creators["ignis iron construct should be tanked"] =
+            &RaidUlduarTriggerContext::ignis_construct_should_be_tanked;
+        creators["ignis molten construct should be doused"] =
+            &RaidUlduarTriggerContext::ignis_molten_construct_should_be_doused;
+        creators["ignis brittle construct should be killed"] =
+            &RaidUlduarTriggerContext::ignis_brittle_construct_should_be_killed;
+        creators["ignis bot in scorched ground"] =
+            &RaidUlduarTriggerContext::ignis_bot_in_scorched_ground;
+
+        // Auriaya
+        creators["auriaya should be tanked"] = &RaidUlduarTriggerContext::auriaya_should_be_tanked;
+        creators["auriaya sentries spawned"] = &RaidUlduarTriggerContext::auriaya_sentries_spawned;
+        creators["auriaya sanctum sentry should be killed"] =
+            &RaidUlduarTriggerContext::auriaya_sentry_should_be_killed;
+        creators["auriaya feral defender spawned"] =
+            &RaidUlduarTriggerContext::auriaya_feral_defender_spawned;
+        creators["auriaya bot in seeping essence"] =
+            &RaidUlduarTriggerContext::auriaya_bot_in_seeping_essence;
+
+        // Algalon the Observer
+        creators["algalon should be tanked"] = &RaidUlduarTriggerContext::algalon_should_be_tanked;
+        creators["algalon main tank has phase punch stacks"] =
+            &RaidUlduarTriggerContext::algalon_main_tank_has_phase_punch_stacks;
+        creators["algalon big bang incoming"] = &RaidUlduarTriggerContext::algalon_big_bang_incoming;
+        creators["algalon bot near cosmic smash"] =
+            &RaidUlduarTriggerContext::algalon_bot_near_cosmic_smash;
+        creators["algalon collapsing star should be killed"] =
+            &RaidUlduarTriggerContext::algalon_collapsing_star_should_be_killed;
+        creators["algalon constellation chasing bot"] =
+            &RaidUlduarTriggerContext::algalon_constellation_chasing_bot;
+        creators["algalon dark matter spawned"] =
+            &RaidUlduarTriggerContext::algalon_dark_matter_spawned;
     }
 
 private:
@@ -157,6 +209,177 @@ private:
     static Trigger* yogg_saron_move_to_exit_portal_trigger(PlayerbotAI* botAI) { return new YoggSaronMoveToExitPortalTrigger(botAI); }
     static Trigger* yogg_saron_lunatic_gaze_trigger(PlayerbotAI* botAI) { return new YoggSaronLunaticGazeTrigger(botAI); }
     static Trigger* yogg_saron_phase_3_positioning_trigger(PlayerbotAI* botAI) { return new YoggSaronPhase3PositioningTrigger(botAI); }
+
+    // XT-002 Deconstructor
+    static Trigger* xt002_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new UldBossShouldBeTankedTrigger(botAI, "xt-002 should be tanked", Xt002Entries());
+    }
+    static Trigger* xt002_heart_exposed(PlayerbotAI* botAI)
+    {
+        return new Xt002HeartExposedTrigger(botAI);
+    }
+    static Trigger* xt002_bot_has_gravity_bomb(PlayerbotAI* botAI)
+    {
+        return new Xt002BotHasGravityBombTrigger(botAI);
+    }
+    static Trigger* xt002_bot_in_void_zone(PlayerbotAI* botAI)
+    {
+        return new UldBotNearHazardTrigger(
+            botAI, "xt-002 bot in void zone", UldHelpers::XT002_VOID_ZONES_VALUE,
+            UldHelpers::VOID_ZONE_RADIUS);
+    }
+    // The spark hits whoever Searing Light was on (BXT:748-755) and shocks anyone casting next to
+    // it (BXT:671), so the melee take it off rather than the casters.
+    static Trigger* xt002_life_spark_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "xt-002 life spark spawned", UldHelpers::XT002_LIFE_SPARKS_VALUE,
+            UldAddRole::MeleeAndTanks);
+    }
+    // A Scrapbot that reaches XT-002 repairs him (BXT:508-513), so it is shot on the way in.
+    static Trigger* xt002_scrapbot_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "xt-002 scrapbot spawned", UldHelpers::XT002_SCRAPBOTS_VALUE,
+            UldAddRole::RangedDps);
+    }
+    static Trigger* xt002_pummeller_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "xt-002 pummeller spawned", UldHelpers::XT002_PUMMELLERS_VALUE,
+            UldAddRole::Tanks);
+    }
+    static Trigger* xt002_boombot_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "xt-002 boombot spawned", UldHelpers::XT002_BOOMBOTS_VALUE,
+            UldAddRole::RangedDps);
+    }
+    static Trigger* xt002_bot_near_boombot(PlayerbotAI* botAI)
+    {
+        return new Xt002BotNearBoombotTrigger(botAI);
+    }
+    static Trigger* xt002_ranged_should_spread(PlayerbotAI* botAI)
+    {
+        return new UldRangedShouldSpreadTrigger(
+            botAI, "xt-002 ranged should spread", Xt002Entries());
+    }
+
+    // Ignis the Furnace Master
+    static Trigger* ignis_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new UldBossShouldBeTankedTrigger(botAI, "ignis should be tanked", IgnisEntries());
+    }
+    static Trigger* ignis_construct_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new IgnisConstructShouldBeTankedTrigger(botAI);
+    }
+    static Trigger* ignis_molten_construct_should_be_doused(PlayerbotAI* botAI)
+    {
+        return new IgnisMoltenConstructShouldBeDousedTrigger(botAI);
+    }
+    static Trigger* ignis_brittle_construct_should_be_killed(PlayerbotAI* botAI)
+    {
+        return new IgnisBrittleConstructShouldBeKilledTrigger(botAI);
+    }
+    static Trigger* ignis_bot_in_scorched_ground(PlayerbotAI* botAI)
+    {
+        return new UldBotNearHazardTrigger(
+            botAI, "ignis bot in scorched ground", UldHelpers::IGNIS_SCORCHED_GROUND_VALUE,
+            UldHelpers::SCORCHED_GROUND_RADIUS);
+    }
+
+    // Auriaya
+    static Trigger* auriaya_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new UldBossShouldBeTankedTrigger(botAI, "auriaya should be tanked", AuriayaEntries());
+    }
+    static Trigger* auriaya_sentries_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "auriaya sentries spawned", UldHelpers::AURIAYA_SENTRIES_VALUE,
+            UldAddRole::Tanks);
+    }
+    static Trigger* auriaya_sentry_should_be_killed(PlayerbotAI* botAI)
+    {
+        return new AuriayaSentryShouldBeKilledTrigger(botAI);
+    }
+    // The Defender picks a new player out of thin air every few seconds (BAU:323, :428), so there
+    // is no holding it: the melee kill it and the ranged stay on Auriaya.
+    static Trigger* auriaya_feral_defender_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "auriaya feral defender spawned", UldHelpers::AURIAYA_FERAL_DEFENDERS_VALUE,
+            UldAddRole::MeleeAndTanks);
+    }
+    static Trigger* auriaya_bot_in_seeping_essence(PlayerbotAI* botAI)
+    {
+        return new UldBotNearHazardTrigger(
+            botAI, "auriaya bot in seeping essence", UldHelpers::AURIAYA_SEEPING_ESSENCES_VALUE,
+            UldHelpers::SEEPING_ESSENCE_RADIUS);
+    }
+
+    // Algalon the Observer
+    static Trigger* algalon_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new UldBossShouldBeTankedTrigger(botAI, "algalon should be tanked", AlgalonEntries());
+    }
+    static Trigger* algalon_main_tank_has_phase_punch_stacks(PlayerbotAI* botAI)
+    {
+        return new AlgalonMainTankPhasePunchStacksTrigger(botAI);
+    }
+    static Trigger* algalon_big_bang_incoming(PlayerbotAI* botAI)
+    {
+        return new AlgalonBigBangIncomingTrigger(botAI);
+    }
+    static Trigger* algalon_bot_near_cosmic_smash(PlayerbotAI* botAI)
+    {
+        return new UldBotNearHazardTrigger(
+            botAI, "algalon bot near cosmic smash", UldHelpers::ALGALON_COSMIC_SMASH_VALUE,
+            UldHelpers::COSMIC_SMASH_RADIUS);
+    }
+    // A Collapsing Star turns into the Black Hole the raid needs when it dies (BAL:1004-1010), and
+    // it wanders the room out of melee reach (BAL:995).
+    static Trigger* algalon_collapsing_star_should_be_killed(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "algalon collapsing star should be killed",
+            UldHelpers::ALGALON_COLLAPSING_STARS_VALUE, UldAddRole::RangedDps);
+    }
+    static Trigger* algalon_constellation_chasing_bot(PlayerbotAI* botAI)
+    {
+        return new AlgalonConstellationChasingBotTrigger(botAI);
+    }
+    // Phase two leaves nothing but Algalon and these, and they chase a random player (BAL:591).
+    static Trigger* algalon_dark_matter_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "algalon dark matter spawned", UldHelpers::ALGALON_DARK_MATTER_VALUE,
+            UldAddRole::Everyone);
+    }
+
+    // Both creature templates of each boss: the 25-man raid spawns difficulty_entry_1 instead.
+    static std::vector<uint32> Xt002Entries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_XT002),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_XT002_25) };
+    }
+    static std::vector<uint32> IgnisEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_IGNIS),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_IGNIS_25) };
+    }
+    static std::vector<uint32> AuriayaEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_AURIAYA),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_AURIAYA_25) };
+    }
+    static std::vector<uint32> AlgalonEntries()
+    {
+        return { UldHelpers::Id(UldHelpers::UldNpcs::NPC_ALGALON),
+                 UldHelpers::Id(UldHelpers::UldNpcs::NPC_ALGALON_25) };
+    }
 };
 
 #endif
