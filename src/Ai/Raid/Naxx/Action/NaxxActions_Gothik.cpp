@@ -4,4 +4,10 @@
  * or (at your option) any later version.
  */
 
-// Reserved for Gothik-specific actions.
+#include "NaxxActions.h"
+#include "NaxxHelpers.h"
+
+Unit* GothikAttackNearestAddAction::FindAdd()
+{
+    return NaxxHelpers::GetNearestReachableGothikAdd(botAI, _addsValue);
+}

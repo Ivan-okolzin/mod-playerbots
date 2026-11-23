@@ -41,9 +41,28 @@ public:
         creators["anub'rekhan"] = &RaidNaxxTriggerContext::anubrekhan;
         creators["faerlina"] = &RaidNaxxTriggerContext::faerlina;
         creators["maexxna"] = &RaidNaxxTriggerContext::maexxna;
-        //creators["patchwerk tank"] = &RaidNaxxTriggerContext::patchwerk_tank;
-        //creators["patchwerk non-tank"] = &RaidNaxxTriggerContext::patchwerk_non_tank;
-        //creators["patchwerk ranged"] = &RaidNaxxTriggerContext::patchwerk_ranged;
+
+        creators["noth the plaguebringer should be tanked"] = &RaidNaxxTriggerContext::noth_should_be_tanked;
+        creators["noth the plaguebringer lost threat"] = &RaidNaxxTriggerContext::noth_lost_threat;
+        creators["noth the plaguebringer skeletons should be tanked"] =
+            &RaidNaxxTriggerContext::noth_skeletons_should_be_tanked;
+        creators["noth the plaguebringer balcony phase"] = &RaidNaxxTriggerContext::noth_balcony_phase;
+
+        creators["gothik the harvester should be tanked"] = &RaidNaxxTriggerContext::gothik_should_be_tanked;
+        creators["gothik the harvester lost threat"] = &RaidNaxxTriggerContext::gothik_lost_threat;
+        creators["gothik the harvester unrelenting adds should be tanked"] =
+            &RaidNaxxTriggerContext::gothik_living_adds_should_be_tanked;
+        creators["gothik the harvester unrelenting adds spawned"] =
+            &RaidNaxxTriggerContext::gothik_living_adds_spawned;
+        creators["gothik the harvester spectral adds should be tanked"] =
+            &RaidNaxxTriggerContext::gothik_dead_adds_should_be_tanked;
+        creators["gothik the harvester spectral adds spawned"] = &RaidNaxxTriggerContext::gothik_dead_adds_spawned;
+
+        creators["patchwerk should be tanked"] = &RaidNaxxTriggerContext::patchwerk_should_be_tanked;
+        creators["patchwerk lost threat"] = &RaidNaxxTriggerContext::patchwerk_lost_threat;
+        creators["patchwerk should be soaked"] = &RaidNaxxTriggerContext::patchwerk_should_be_soaked;
+        creators["patchwerk non-melee in hateful strike range"] =
+            &RaidNaxxTriggerContext::patchwerk_non_melee_in_hateful_strike_range;
 
         creators["gluth"] = &RaidNaxxTriggerContext::gluth;
         creators["gluth main tank mortal wound"] = &RaidNaxxTriggerContext::gluth_main_tank_mortal_wound;
@@ -75,9 +94,90 @@ private:
     static Trigger* anubrekhan(PlayerbotAI* botAI) { return new AnubrekhanTrigger(botAI); }
     static Trigger* faerlina(PlayerbotAI* botAI) { return new FaerlinaTrigger(botAI); }
     static Trigger* maexxna(PlayerbotAI* botAI) { return new MaexxnaTrigger(botAI); }
-    //static Trigger* patchwerk_tank(PlayerbotAI* botAI) { return new PatchwerkTankTrigger(botAI); }
-    //static Trigger* patchwerk_non_tank(PlayerbotAI* botAI) { return new PatchwerkNonTankTrigger(botAI); }
-    //static Trigger* patchwerk_ranged(PlayerbotAI* botAI) { return new PatchwerkRangedTrigger(botAI); }
+
+    static Trigger* noth_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new NaxxBossShouldBeTankedTrigger(
+            botAI, "noth the plaguebringer should be tanked", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH));
+    }
+    static Trigger* noth_lost_threat(PlayerbotAI* botAI)
+    {
+        return new NaxxBossLostThreatTrigger(
+            botAI, "noth the plaguebringer lost threat", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH));
+    }
+    // The waves go to the assist tanks in both phases; the main tank keeps Noth himself.
+    static Trigger* noth_skeletons_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new NaxxAddsSpawnedTrigger(
+            botAI, "noth the plaguebringer skeletons should be tanked", NaxxHelpers::NOTH_SKELETONS_VALUE,
+            NaxxHelpers::NaxxRole::AssistTanks, NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH));
+    }
+    static Trigger* noth_balcony_phase(PlayerbotAI* botAI)
+    {
+        return new NothBalconyAddsTrigger(
+            botAI, "noth the plaguebringer balcony phase", NaxxHelpers::NaxxRole::Dps);
+    }
+
+    static Trigger* gothik_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new NaxxBossShouldBeTankedTrigger(
+            botAI, "gothik the harvester should be tanked", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_GOTHIK));
+    }
+    static Trigger* gothik_lost_threat(PlayerbotAI* botAI)
+    {
+        return new NaxxBossLostThreatTrigger(
+            botAI, "gothik the harvester lost threat", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_GOTHIK));
+    }
+    // Every tank is an add tank in this fight: there is no boss to hold for its first four and a
+    // half minutes, and each half of the room fights its own waves.
+    static Trigger* gothik_living_adds_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new GothikAddsSpawnedTrigger(
+            botAI, "gothik the harvester unrelenting adds should be tanked",
+            NaxxHelpers::GOTHIK_LIVING_ADDS_VALUE, NaxxHelpers::NaxxRole::Tanks);
+    }
+    static Trigger* gothik_living_adds_spawned(PlayerbotAI* botAI)
+    {
+        return new GothikAddsSpawnedTrigger(
+            botAI, "gothik the harvester unrelenting adds spawned", NaxxHelpers::GOTHIK_LIVING_ADDS_VALUE,
+            NaxxHelpers::NaxxRole::Dps);
+    }
+    static Trigger* gothik_dead_adds_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new GothikAddsSpawnedTrigger(
+            botAI, "gothik the harvester spectral adds should be tanked", NaxxHelpers::GOTHIK_DEAD_ADDS_VALUE,
+            NaxxHelpers::NaxxRole::Tanks);
+    }
+    static Trigger* gothik_dead_adds_spawned(PlayerbotAI* botAI)
+    {
+        return new GothikAddsSpawnedTrigger(
+            botAI, "gothik the harvester spectral adds spawned", NaxxHelpers::GOTHIK_DEAD_ADDS_VALUE,
+            NaxxHelpers::NaxxRole::Dps);
+    }
+
+    static Trigger* patchwerk_should_be_tanked(PlayerbotAI* botAI)
+    {
+        return new NaxxBossShouldBeTankedTrigger(
+            botAI, "patchwerk should be tanked", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_PATCHWERK));
+    }
+    static Trigger* patchwerk_lost_threat(PlayerbotAI* botAI)
+    {
+        return new NaxxBossLostThreatTrigger(
+            botAI, "patchwerk lost threat", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_PATCHWERK));
+    }
+    // Hateful Strike leaves out whoever Patchwerk is already swinging at (BPA:135), so the assist
+    // tanks take it, and they can only do that from inside his melee range.
+    static Trigger* patchwerk_should_be_soaked(PlayerbotAI* botAI)
+    {
+        return new NaxxBossShouldBeTankedTrigger(
+            botAI, "patchwerk should be soaked", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_PATCHWERK),
+            NaxxHelpers::NaxxRole::AssistTanks);
+    }
+    static Trigger* patchwerk_non_melee_in_hateful_strike_range(PlayerbotAI* botAI)
+    {
+        return new PatchwerkNonMeleeInStrikeRangeTrigger(botAI);
+    }
+
     static Trigger* gluth(PlayerbotAI* botAI) { return new GluthTrigger(botAI); }
     static Trigger* gluth_main_tank_mortal_wound(PlayerbotAI* botAI) { return new GluthMainTankMortalWoundTrigger(botAI); }
     static Trigger* loatheb(PlayerbotAI* botAI) { return new LoathebTrigger(botAI); }

@@ -5,7 +5,10 @@
  */
 
 #include "NaxxStrategy.h"
+#include "EncounterHelpers.h"
+#include "NaxxHelpers.h"
 #include "NaxxMultipliers.h"
+#include "Playerbots.h"
 
 void RaidNaxxStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
@@ -63,18 +66,69 @@ void RaidNaxxStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         })
     );
 
+    // Noth the Plaguebringer
+    triggers.push_back(new TriggerNode("noth the plaguebringer should be tanked",
+        { NextAction("noth the plaguebringer attack boss", ACTION_RAID + 1) }
+    ));
+
+    // Noth blinks away from his tank and drops his threat list every 30s in the 25 man version.
+    triggers.push_back(new TriggerNode("noth the plaguebringer lost threat",
+        { NextAction("taunt spell", ACTION_RAID + 3) }
+    ));
+
+    triggers.push_back(new TriggerNode("noth the plaguebringer skeletons should be tanked",
+        { NextAction("noth the plaguebringer attack nearest skeleton", ACTION_RAID + 2) }
+    ));
+
+    // While he is on the balcony the waves are the whole fight.
+    triggers.push_back(new TriggerNode("noth the plaguebringer balcony phase",
+        { NextAction("noth the plaguebringer attack nearest skeleton", ACTION_RAID + 1) }
+    ));
+
+    // Gothik the Harvester
+    triggers.push_back(new TriggerNode("gothik the harvester should be tanked",
+        { NextAction("gothik the harvester attack boss", ACTION_RAID + 1) }
+    ));
+
+    // He drops his whole threat list every time he teleports between the two halves of the room.
+    triggers.push_back(new TriggerNode("gothik the harvester lost threat",
+        { NextAction("taunt spell", ACTION_RAID + 3) }
+    ));
+
+    triggers.push_back(new TriggerNode("gothik the harvester unrelenting adds should be tanked",
+        { NextAction("gothik the harvester attack nearest unrelenting add", ACTION_RAID + 2) }
+    ));
+
+    triggers.push_back(new TriggerNode("gothik the harvester unrelenting adds spawned",
+        { NextAction("gothik the harvester attack nearest unrelenting add", ACTION_RAID + 1) }
+    ));
+
+    triggers.push_back(new TriggerNode("gothik the harvester spectral adds should be tanked",
+        { NextAction("gothik the harvester attack nearest spectral add", ACTION_RAID + 2) }
+    ));
+
+    triggers.push_back(new TriggerNode("gothik the harvester spectral adds spawned",
+        { NextAction("gothik the harvester attack nearest spectral add", ACTION_RAID + 1) }
+    ));
+
     // Patchwerk
-    //triggers.push_back(new TriggerNode("patchwerk tank",
-    //    { NextAction("tank face", ACTION_RAID + 2) }
-    //));
+    triggers.push_back(new TriggerNode("patchwerk should be tanked",
+        { NextAction("patchwerk attack boss", ACTION_RAID + 1) }
+    ));
 
-    //triggers.push_back(new TriggerNode("patchwerk ranged",
-    //    { NextAction("patchwerk ranged position", ACTION_RAID + 2) }
-    //));
+    // Every Hateful Strike hands 500 threat to whoever it hits, which is how the boss changes hands.
+    triggers.push_back(new TriggerNode("patchwerk lost threat",
+        { NextAction("taunt spell", ACTION_RAID + 3) }
+    ));
 
-    //triggers.push_back(new TriggerNode("patchwerk non-tank",
-    //    { NextAction("rear flank", ACTION_RAID + 1) }
-    //));
+    // The assist tanks have to be inside melee range to be the ones the strike picks.
+    triggers.push_back(new TriggerNode("patchwerk should be soaked",
+        { NextAction("patchwerk attack boss", ACTION_RAID + 1) }
+    ));
+
+    triggers.push_back(new TriggerNode("patchwerk non-melee in hateful strike range",
+        { NextAction("patchwerk back off from boss", ACTION_RAID + 2) }
+    ));
 
     // Thaddius
     triggers.push_back(new TriggerNode("thaddius phase pet",
@@ -156,6 +210,28 @@ void RaidNaxxStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
     multipliers.push_back(new KelthuzadGenericMultiplier(botAI));
     multipliers.push_back(new AnubrekhanGenericMultiplier(botAI));
     multipliers.push_back(new FourHorsemenGenericMultiplier(botAI));
-    // multipliers.push_back(new GothikGenericMultiplier(botAI));
+    multipliers.push_back(new NaxxDoNotAttackUnengageableBossMultiplier(
+        botAI, "noth the plaguebringer do not attack from the balcony",
+        NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH)));
+    multipliers.push_back(new NaxxDoNotAttackUnengageableBossMultiplier(
+        botAI, "gothik the harvester do not attack unreachable boss",
+        NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_GOTHIK)));
     multipliers.push_back(new GluthGenericMultiplier(botAI));
+}
+
+// Target selection is what puts a bot on a boss in the first place, so the two bosses that spend
+// part of their fight out of reach are taken out of it for as long as they are.
+void RaidNaxxStrategy::AppendTargetExclusions(GuidSet& exclusions, TargetValueExclusionType /*type*/)
+{
+    Player* bot = botAI->GetBot();
+    if (!EncounterHelpers::IsEncounterInProgress(bot, NAXX_MAP_ID))
+        return;
+
+    for (uint32 const entry : { NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH),
+                                NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_GOTHIK) })
+    {
+        Unit* boss = NaxxHelpers::FindThreatCreature(bot, entry);
+        if (boss && !NaxxHelpers::IsBossEngageable(botAI, boss))
+            exclusions.insert(boss->GetGUID());
+    }
 }

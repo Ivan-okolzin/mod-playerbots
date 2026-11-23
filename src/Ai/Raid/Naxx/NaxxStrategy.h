@@ -8,6 +8,8 @@
 #define PLAYERBOTS_NAXXSTRATEGY_H
 
 #include "Strategy.h"
+#include <string>
+#include <vector>
 
 class RaidNaxxStrategy : public Strategy
 {
@@ -16,6 +18,8 @@ public:
     virtual std::string const getName() override { return "naxx"; }
     virtual void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     virtual void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
+    void AppendTargetExclusions(GuidSet& exclusions, TargetValueExclusionType type) override;
+    bool HasTargetExclusions() const override { return true; }
 };
 
 #endif

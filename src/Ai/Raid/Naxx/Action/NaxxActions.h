@@ -11,8 +11,10 @@
 #include "AttackAction.h"
 #include "MovementActions.h"
 #include "NaxxBossHelper.h"
+#include "NaxxHelpers.h"
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
+#include <string>
 
 class GrobbulusGoBehindAction : public MovementAction
 {
@@ -291,11 +293,53 @@ private:
     LoathebBossHelper helper;
 };
 
-//class PatchwerkRangedPositionAction : public MovementAction
-//{
-//public:
-//    PatchwerkRangedPositionAction(PlayerbotAI* botAI) : MovementAction(botAI, "patchwerk ranged position") {}
-//    bool Execute(Event event) override;
-//};
+// Noth, Gothik and Patchwerk
+
+// Hold the boss, nothing else. Used by Patchwerk's assist tanks too: standing in his melee range
+// with threat on him is exactly what makes them the ones Hateful Strike hits.
+class NaxxAttackBossAction : public AttackAction
+{
+public:
+    NaxxAttackBossAction(PlayerbotAI* botAI, std::string const& name, uint32 bossEntry)
+        : AttackAction(botAI, name), _bossEntry(bossEntry) {}
+    bool Execute(Event event) override;
+
+private:
+    uint32 const _bossEntry;
+};
+
+class NaxxAttackNearestAddAction : public AttackAction
+{
+public:
+    NaxxAttackNearestAddAction(PlayerbotAI* botAI, std::string const& name, char const* addsValue)
+        : AttackAction(botAI, name), _addsValue(addsValue) {}
+    bool Execute(Event event) override;
+
+protected:
+    virtual Unit* FindAdd();
+
+    char const* const _addsValue;
+};
+
+// Gothik's half of the room is all a bot can fight in until the gate opens.
+class GothikAttackNearestAddAction : public NaxxAttackNearestAddAction
+{
+public:
+    GothikAttackNearestAddAction(PlayerbotAI* botAI, std::string const& name, char const* addsValue)
+        : NaxxAttackNearestAddAction(botAI, name, addsValue) {}
+
+protected:
+    Unit* FindAdd() override;
+};
+
+// Healers and ranged leave Hateful Strike's reach: it hits the healthiest of the top threat
+// players inside it, and a healer that outthreats the assist tanks is picked over them.
+class PatchwerkBackOffFromBossAction : public MovementAction
+{
+public:
+    PatchwerkBackOffFromBossAction(PlayerbotAI* botAI)
+        : MovementAction(botAI, "patchwerk back off from boss") {}
+    bool Execute(Event event) override;
+};
 
 #endif
