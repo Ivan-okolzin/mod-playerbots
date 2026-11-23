@@ -15,12 +15,14 @@
 #include "TKValueContext.h"
 #include "UBValueContext.h"
 #include "ZAValueContext.h"
+#include "ZGValueContext.h"
 #include "ValueContext.h"
 
 void AiObjectContext::BuildSharedValueContexts(
     SharedNamedObjectContextList<UntypedValue>& valueContexts)
 {
     valueContexts.Add(new ValueContext());
+    valueContexts.Add(new RaidZulGurubValueContext());
     valueContexts.Add(new RaidGruulsLairValueContext());
     valueContexts.Add(new RaidHyjalValueContext());
     valueContexts.Add(new RaidMagtheridonValueContext());

@@ -45,3 +45,27 @@ float HakkarKeepPoisonousBloodMultiplier::GetValueInEncounter(Action* action)
     Unit* target = action->GetTarget();
     return target && target->HasAura(static_cast<uint32>(ZulGurubSpells::SPELL_POISONOUS_BLOOD)) ? 0.0f : 1.0f;
 }
+
+float MandokirWatchHoldMultiplier::GetValueInEncounter(Action* action)
+{
+    if (!EncounterHelpers::IsDpsHoldCandidate(bot, action))
+        return 1.0f;
+
+    if (!FindThreatCreature(bot, Id(ZulGurubNpcs::NPC_MANDOKIR)))
+        return 1.0f;
+
+    // A dps hold leaves a non-tank's heals alone, so a watched healer keeps healing and takes the
+    // charge: the gaze lasts long enough to lose the tank if it stops.
+    return bot->HasAura(Id(ZulGurubSpells::SPELL_WATCH)) ? 0.0f : 1.0f;
+}
+
+float ZulGurubDoNotAttackUnassailableBossMultiplier::GetValueInEncounter(Action* action)
+{
+    if (!EncounterHelpers::IsDpsHoldCandidate(bot, action))
+        return 1.0f;
+
+    // Read off the action's own target: both bosses drop their threat list as they go out of
+    // reach, so neither can be found on one.
+    Unit* target = action->GetTarget();
+    return target && target->GetEntry() == _bossEntry && IsUnassailable(target) ? 0.0f : 1.0f;
+}
