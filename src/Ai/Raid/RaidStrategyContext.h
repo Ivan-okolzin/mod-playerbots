@@ -10,6 +10,7 @@
 #include "Aq20Strategy.h"
 #include "BTStrategy.h"
 #include "BWLStrategy.h"
+#include "CrusaderStrategy.h"
 #include "EoEStrategy.h"
 #include "GruulStrategy.h"
 #include "HyjalStrategy.h"
@@ -54,6 +55,7 @@ public:
         creators["onyxia"] = &RaidStrategyContext::onyxia;
         creators["icc"] = &RaidStrategyContext::icc;
         creators["rs"] = &RaidStrategyContext::rs;
+        creators["trialofthecrusader"] = &RaidStrategyContext::trialofthecrusader;
     }
 
 private:
@@ -77,6 +79,10 @@ private:
     static Strategy* ulduar(PlayerbotAI* botAI) { return new RaidUlduarStrategy(botAI); }
     static Strategy* icc(PlayerbotAI* botAI) { return new RaidIccStrategy(botAI); }
     static Strategy* rs(PlayerbotAI* botAI) { return new RaidRsStrategy(botAI); }
+    static Strategy* trialofthecrusader(PlayerbotAI* botAI)
+    {
+        return new RaidCrusaderStrategy(botAI);
+    }
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include "BTActionContext.h"
 #include "BWLActionContext.h"
 #include "ChatActionContext.h"
+#include "CrusaderActionContext.h"
 #include "EoEActionContext.h"
 #include "GruulActionContext.h"
 #include "HyjalActionContext.h"
@@ -43,6 +44,7 @@ void AiObjectContext::BuildSharedActionContexts(
     actionContexts.Add(new RaidGruulsLairActionContext());
     actionContexts.Add(new RaidMagtheridonActionContext());
     actionContexts.Add(new RaidSscActionContext());
+    actionContexts.Add(new RaidCrusaderActionContext());
     actionContexts.Add(new RaidTempestKeepActionContext());
     actionContexts.Add(new RaidHyjalActionContext());
     actionContexts.Add(new RaidBlackTempleActionContext());

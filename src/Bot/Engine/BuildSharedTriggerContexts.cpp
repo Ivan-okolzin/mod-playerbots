@@ -9,6 +9,7 @@
 #include "BTTriggerContext.h"
 #include "BWLTriggerContext.h"
 #include "ChatTriggerContext.h"
+#include "CrusaderTriggerContext.h"
 #include "EoETriggerContext.h"
 #include "GruulTriggerContext.h"
 #include "HyjalTriggerContext.h"
@@ -44,6 +45,7 @@ void AiObjectContext::BuildSharedTriggerContexts(
     triggerContexts.Add(new RaidMagtheridonTriggerContext());
     triggerContexts.Add(new RaidNaxxTriggerContext());
     triggerContexts.Add(new RaidSscTriggerContext());
+    triggerContexts.Add(new RaidCrusaderTriggerContext());
     triggerContexts.Add(new RaidTempestKeepTriggerContext());
     triggerContexts.Add(new RaidHyjalTriggerContext());
     triggerContexts.Add(new RaidBlackTempleTriggerContext());
