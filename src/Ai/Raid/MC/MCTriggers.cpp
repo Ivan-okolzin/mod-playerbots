@@ -5,11 +5,77 @@
  */
 
 #include "MCTriggers.h"
+#include "EncounterHelpers.h"
 #include "MCHelpers.h"
 #include "SharedDefines.h"
 #include "SpellAuras.h"
 
+using namespace EncounterHelpers;
 using namespace MoltenCoreHelpers;
+
+// Shared
+
+bool McBossShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    // Ragnaros spends 90 seconds of every phase under the lava and untargetable (BR:396), which
+    // is what keeps this object out of that phase.
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    return IsAttackableNow(boss) && AI_VALUE(Unit*, "current target") != boss;
+}
+
+bool McBossLostThreatTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    if (!IsAttackableNow(boss))
+        return false;
+
+    // Only takes the boss off somebody else. A boss with no victim at all has not been pulled
+    // yet, and taunting it then would be a pull of its own.
+    Unit* victim = boss->GetVictim();
+    return victim && victim != bot;
+}
+
+bool McAddsSpawnedTrigger::IsActiveInEncounter()
+{
+    switch (_role)
+    {
+        case McAddRole::Everyone:
+            if (PlayerbotAI::IsHeal(bot))
+                return false;
+            break;
+        case McAddRole::AssistTanks:
+            if (!PlayerbotAI::IsAssistTank(bot))
+                return false;
+            break;
+    }
+
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    return add && AI_VALUE(Unit*, "current target") != add;
+}
+
+bool McBotInHazardTrigger::IsActiveInEncounter()
+{
+    return IsInHazard(botAI, _hazardValue, _radius);
+}
+
+bool McBossAuraHazardTrigger::IsActiveInEncounter()
+{
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    if (!boss || !boss->HasAura(_spellId))
+        return false;
+
+    // Only fire while the bot is still inside the burn. The move-away action no-ops beyond it, so
+    // an unconditional trigger makes every already-safe bot attempt a failing move each tick.
+    return bot->GetDistance2d(boss) < _distance;
+}
+
+// Baron Geddon
 
 bool McLivingBombDebuffTrigger::IsActive()
 {
@@ -17,12 +83,7 @@ bool McLivingBombDebuffTrigger::IsActive()
     return bot->HasAura(SPELL_LIVING_BOMB);
 }
 
-bool McBaronGeddonInfernoTrigger::IsActive()
-{
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "baron geddon"))
-        return boss->HasAura(SPELL_INFERNO);
-    return false;
-}
+// Shazzrah
 
 bool McShazzrahRangedTrigger::IsActive()
 {
@@ -36,12 +97,7 @@ bool McShazzrahRangedTrigger::IsActive()
     return boss && bot->GetDistance2d(boss) < ARCANE_EXPLOSION_DISTANCE;
 }
 
-bool McInLavaTrigger::IsActive()
-{
-    LiquidData const& liquid = bot->GetLiquidData();
-    return (liquid.Flags & MAP_LIQUID_TYPE_MAGMA) &&
-           (liquid.Status & (LIQUID_MAP_WATER_WALK | LIQUID_MAP_IN_WATER | LIQUID_MAP_UNDER_WATER));
-}
+// Golemagg the Incinerator
 
 bool McGolemaggMagmaSplashTrigger::IsActive()
 {
@@ -87,10 +143,7 @@ bool McGolemaggIsHealerTrigger::IsActive()
     return PlayerbotAI::IsHeal(bot) && AI_VALUE2(Unit*, "find target", "golemagg the incinerator");
 }
 
-bool McCoreHoundMarkTrigger::IsActive()
-{
-    return PlayerbotAI::IsMainTank(bot) && AI_VALUE2(Unit*, "find target", "core hound");
-}
+// Majordomo Executus
 
 bool McMajordomoDamageShieldTrigger::IsActive()
 {
@@ -99,4 +152,18 @@ bool McMajordomoDamageShieldTrigger::IsActive()
 
     Unit* victim = bot->GetVictim();
     return IsMajordomoAdd(victim) && victim->HasAura(SPELL_DAMAGE_SHIELD);
+}
+
+// Trash and anywhere in the instance
+
+bool McCoreHoundMarkTrigger::IsActive()
+{
+    return PlayerbotAI::IsMainTank(bot) && AI_VALUE2(Unit*, "find target", "core hound");
+}
+
+bool McInLavaTrigger::IsActive()
+{
+    LiquidData const& liquid = bot->GetLiquidData();
+    return (liquid.Flags & MAP_LIQUID_TYPE_MAGMA) &&
+           (liquid.Status & (LIQUID_MAP_WATER_WALK | LIQUID_MAP_IN_WATER | LIQUID_MAP_UNDER_WATER));
 }
