@@ -5,48 +5,135 @@
  */
 
 #include "Aq20Actions.h"
-#include "Aq20Utils.h"
+#include "Aq20Helpers.h"
+#include "EncounterHelpers.h"
+#include "GameObject.h"
+#include "Playerbots.h"
+#include "WorldPacket.h"
+#include "WorldSession.h"
 
-bool Aq20UseCrystalAction::Execute(Event /*event*/)
+using namespace Aq20Helpers;
+using namespace EncounterHelpers;
+
+// Shared
+
+bool Aq20TankBossAction::Execute(Event /*event*/)
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "ossirian the unscarred"))
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss)
+        return false;
+
+    if (AI_VALUE(Unit*, "current target") != boss)
+        return Attack(boss);
+
+    return _taunt && boss->GetVictim() != bot && CastTankTaunt(botAI, boss);
+}
+
+bool Aq20AttackNearestAddAction::Execute(Event /*event*/)
+{
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    if (!add)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != add && Attack(add);
+}
+
+bool Aq20MoveAwayFromCreatureHazardAction::Execute(Event /*event*/)
+{
+    Position safePos;
+    if (!FindPositionAwayFromCachedUnits(botAI, _hazardValue, _radius, safePos))
+        return false;
+
+    bot->CastStop();
+    return MoveTo(
+        AQ20_MAP_ID, safePos.GetPositionX(), safePos.GetPositionY(), bot->GetPositionZ(), false,
+        false, false, false, MovementPriority::MOVEMENT_FORCED, true, false);
+}
+
+bool Aq20MoveAwayFromGameObjectHazardAction::Execute(Event /*event*/)
+{
+    Position safePos;
+    if (!FindPositionAwayFromCachedGameObjects(botAI, _hazardValue, _radius, safePos))
+        return false;
+
+    bot->CastStop();
+    return MoveTo(
+        AQ20_MAP_ID, safePos.GetPositionX(), safePos.GetPositionY(), bot->GetPositionZ(), false,
+        false, false, false, MovementPriority::MOVEMENT_FORCED, true, false);
+}
+
+// Buru the Gorger
+
+bool BuruLureBossToEggAction::Execute(Event /*event*/)
+{
+    Unit* egg = GetNearestBuruEgg(botAI);
+    if (!egg)
+        return false;
+
+    // Buru has to be standing in the explosion, so the bot goes all the way onto the egg.
+    constexpr float stopDistance = 0.0f;
+    float stepX;
+    float stepY;
+    if (!GetPathStepTowardUnit(bot, egg, stopDistance, PATH_STEP_DISTANCE, stepX, stepY))
+        return false;
+
+    return MoveTo(
+        AQ20_MAP_ID, stepX, stepY, bot->GetPositionZ(), false, false, false, false,
+        MovementPriority::MOVEMENT_COMBAT, true, false);
+}
+
+bool BuruAttackTargetEggAction::Execute(Event /*event*/)
+{
+    Unit* egg = GetBuruTargetEgg(botAI);
+    if (!egg)
+        return false;
+
+    if (AI_VALUE(Unit*, "current target") != egg)
+        return Attack(egg);
+
+    return MarkTargetWithSkull(bot, egg);
+}
+
+// Ossirian the Unscarred
+
+bool OssirianTankMoveToCrystalAction::Execute(Event /*event*/)
+{
+    GameObject* crystal = GetUsableOssirianCrystal(botAI);
+    if (!crystal)
+        return false;
+
+    float stepX;
+    float stepY;
+    if (!GetPathStepTowardPoint(
+            bot, crystal->GetPosition(), CRYSTAL_INTERACT_DISTANCE, PATH_STEP_DISTANCE, stepX,
+            stepY))
     {
-        if (GameObject* crystal = RaidAq20Utils::GetNearestCrystal(boss))
-        {
-            float botDist = bot->GetDistance(crystal);
-            if (botDist > INTERACTION_DISTANCE)
-                return MoveTo(bot->GetMapId(),
-                    crystal->GetPositionX() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionY() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionZ());
-
-            // if we're already in range just wait here until it's time to activate crystal
-            SetNextMovementDelay(500);
-
-            // don't activate crystal if boss too far or its already been activated
-            if (boss->GetDistance(crystal) > 25.0f ||
-                crystal->HasGameObjectFlag(GO_FLAG_IN_USE))
-                return false;
-
-            // don't activate crystal if boss doesn't have buff yet AND isn't going to have it soon
-            // (though ideally bot should activate it ~5 seconds early due to time it takes for
-            // crystal to activate and remove buff)
-            if (!RaidAq20Utils::IsOssirianBuffActive(boss) &&
-                RaidAq20Utils::GetOssirianDebuffTimeRemaining(boss) > 5000)
-                return false;
-
-            // this makes crystal do its animation (then disappear after)
-            WorldPacket data1(CMSG_GAMEOBJ_USE);
-            data1 << crystal->GetGUID();
-            bot->GetSession()->HandleGameObjectUseOpcode(data1);
-
-            // this makes crystal actually remove the buff and put on debuff (took a while to figure that out)
-            WorldPacket data2(CMSG_GAMEOBJ_USE);
-            data2 << crystal->GetGUID();
-            bot->GetSession()->HandleGameobjectReportUse(data2);
-
-            return true;
-        }
+        return false;
     }
-    return false;
+
+    return MoveTo(
+        AQ20_MAP_ID, stepX, stepY, bot->GetPositionZ(), false, false, false, false,
+        MovementPriority::MOVEMENT_COMBAT, true, false);
+}
+
+bool OssirianUseCrystalAction::Execute(Event /*event*/)
+{
+    GameObject* crystal = GetUsableOssirianCrystal(botAI);
+    if (!crystal || !bot->GetSession())
+        return false;
+
+    if (bot->GetExactDist(crystal) > CRYSTAL_INTERACT_DISTANCE)
+        return false;
+
+    // Two packets, because the crystal's gossip hook only rolls the weakness when the core marks
+    // the click as a report use (OSS:330). The plain use is what plays the crystal's animation.
+    WorldPacket use(CMSG_GAMEOBJ_USE);
+    use << crystal->GetGUID();
+    bot->GetSession()->HandleGameObjectUseOpcode(use);
+
+    WorldPacket reportUse(CMSG_GAMEOBJ_REPORT_USE);
+    reportUse << crystal->GetGUID();
+    bot->GetSession()->HandleGameobjectReportUse(reportUse);
+
+    return true;
 }
