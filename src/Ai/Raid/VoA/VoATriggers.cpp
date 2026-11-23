@@ -5,10 +5,64 @@
  */
 
 #include "VoATriggers.h"
+#include "EncounterHelpers.h"
 #include "EventMap.h"
 #include "Object.h"
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
+#include "VoAHelpers.h"
+
+using namespace EncounterHelpers;
+using namespace VoAHelpers;
+
+// Shared
+
+bool VoABossShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    return IsAttackableNow(boss) && AI_VALUE(Unit*, "current target") != boss;
+}
+
+bool VoARangedShouldSpreadTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsRanged(bot))
+        return false;
+
+    // Nothing to spread out of while the boss is not on this bot's threat list, and the player the
+    // boss is hitting is the one place the raid cannot spread to anyway.
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss || boss->GetVictim() == bot)
+        return false;
+
+    return GetNearestPlayerInRadius(bot, SPREAD_DISTANCE) != nullptr;
+}
+
+bool VoAAddsSpawnedTrigger::IsActiveInEncounter()
+{
+    switch (_role)
+    {
+        case VoAAddRole::Tanks:
+            // The main tank stays on the boss; the rest of the tanks take the adds.
+            if (!PlayerbotAI::IsTank(bot) || PlayerbotAI::IsMainTank(bot))
+                return false;
+            break;
+        case VoAAddRole::RangedDps:
+            if (!PlayerbotAI::IsRangedDps(bot))
+                return false;
+            break;
+    }
+
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    return add && AI_VALUE(Unit*, "current target") != add;
+}
+
+bool VoABotNearAddTrigger::IsActiveInEncounter()
+{
+    return IsNearCachedUnit(botAI, _addsValue, _radius);
+}
 
 bool EmalonMarkBossTrigger::IsActive()
 {
@@ -34,22 +88,7 @@ bool EmalonMarkBossTrigger::IsActive()
         return false;
     }
 
-    // Check if there is any overcharged minion
-    Unit* overchargedMinion = nullptr;
-    GuidVector npcs = AI_VALUE(GuidVector, "nearest hostile npcs");
-    for (auto& npc : npcs)
-    {
-        Unit* unit = botAI->GetUnit(npc);
-        if (!unit)
-            continue;
-
-        uint32 entry = unit->GetEntry();
-        if (entry == NPC_TEMPEST_MINION && unit->HasAura(AURA_OVERCHARGE))
-        {
-            overchargedMinion = unit;
-            break;
-        }
-    }
+    Unit* overchargedMinion = GetOverchargedMinion(botAI);
     if (overchargedMinion)
     {
         return false;
@@ -95,22 +134,7 @@ bool EmalonOverchargeTrigger::IsActive()
         return false;
     }
 
-    // Check if there is any overcharged minion
-    Unit* overchargedMinion = nullptr;
-    GuidVector npcs = AI_VALUE(GuidVector, "nearest hostile npcs");
-    for (auto& npc : npcs)
-    {
-        Unit* unit = botAI->GetUnit(npc);
-        if (!unit)
-            continue;
-
-        uint32 entry = unit->GetEntry();
-        if (entry == NPC_TEMPEST_MINION && unit->HasAura(AURA_OVERCHARGE))
-        {
-            overchargedMinion = unit;
-            break;
-        }
-    }
+    Unit* overchargedMinion = GetOverchargedMinion(botAI);
     if (!overchargedMinion)
     {
         return false;
@@ -139,4 +163,42 @@ bool EmalonFallFromFloorTrigger::IsActive()
 
     // Check if bot is on the floor
     return bot->GetPositionZ() < 80.0f;
+}
+
+// Emalon the Storm Watcher
+
+bool EmalonOverchargedMinionTrigger::IsActiveInEncounter()
+{
+    // The healers keep healing and the main tank keeps Emalon where he is: ten seconds of one
+    // minion is not worth dropping either.
+    if (PlayerbotAI::IsHeal(bot) || PlayerbotAI::IsMainTank(bot))
+        return false;
+
+    Unit* minion = GetOverchargedMinion(botAI);
+    return minion && AI_VALUE(Unit*, "current target") != minion;
+}
+
+// Koralon the Flame Watcher
+
+bool KoralonBurningBreathTrigger::IsActiveInEncounter()
+{
+    // The main tank holds him facing away from the raid and takes the breath himself; the melee
+    // behind him are the ones with somewhere to go.
+    if (PlayerbotAI::IsMainTank(bot) || !PlayerbotAI::IsMelee(bot))
+        return false;
+
+    Unit* koralon = FindThreatCreature(bot, Id(VoANpcs::NPC_KORALON));
+    return IsBreathingFire(koralon) && IsInFrontOfBreath(bot, koralon);
+}
+
+// Toravon the Ice Watcher
+
+bool ToravonBotPursuedByOrbTrigger::IsActiveInEncounter()
+{
+    return GetPursuingFrozenOrb(botAI) != nullptr;
+}
+
+bool ToravonBotInFreezingGroundTrigger::IsActiveInEncounter()
+{
+    return IsInHazard(botAI, TORAVON_FREEZING_GROUND_VALUE, FREEZING_GROUND_RADIUS);
 }

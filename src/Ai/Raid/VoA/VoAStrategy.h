@@ -8,6 +8,8 @@
 #define PLAYERBOTS_VOASTRATEGY_H
 
 #include "Strategy.h"
+#include <string>
+#include <vector>
 
 class RaidVoAStrategy : public Strategy
 {
@@ -15,6 +17,7 @@ public:
     RaidVoAStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
     virtual std::string const getName() override { return "voa"; }
     virtual void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+    void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
 };
 
 #endif
