@@ -8,8 +8,10 @@
 #define PLAYERBOTS_RAIDSTRATEGYCONTEXT_H
 
 #include "Aq20Strategy.h"
+#include "Aq40Strategy.h"
 #include "BTStrategy.h"
 #include "BWLStrategy.h"
+#include "CrusaderStrategy.h"
 #include "EoEStrategy.h"
 #include "GruulStrategy.h"
 #include "HyjalStrategy.h"
@@ -22,6 +24,7 @@
 #include "OnyStrategy.h"
 #include "RSStrategy.h"
 #include "SSCStrategy.h"
+#include "SWPStrategy.h"
 #include "Strategy.h"
 #include "TKStrategy.h"
 #include "UldStrategy.h"
@@ -35,6 +38,7 @@ public:
     RaidStrategyContext() : NamedObjectContext<Strategy>(false, true)
     {
         creators["aq20"] = &RaidStrategyContext::aq20;
+        creators["aq40"] = &RaidStrategyContext::aq40;
         creators["moltencore"] = &RaidStrategyContext::moltencore;
         creators["bwl"] = &RaidStrategyContext::bwl;
         creators["zulgurub"] = &RaidStrategyContext::zulgurub;
@@ -43,6 +47,7 @@ public:
         creators["magtheridon"] = &RaidStrategyContext::magtheridon;
         creators["naxx"] = &RaidStrategyContext::naxx;
         creators["ssc"] = &RaidStrategyContext::ssc;
+        creators["sunwell"] = &RaidStrategyContext::sunwell;
         creators["tempestkeep"] = &RaidStrategyContext::tempestkeep;
         creators["hyjal"] = &RaidStrategyContext::hyjal;
         creators["blacktemple"] = &RaidStrategyContext::blacktemple;
@@ -54,10 +59,12 @@ public:
         creators["onyxia"] = &RaidStrategyContext::onyxia;
         creators["icc"] = &RaidStrategyContext::icc;
         creators["rs"] = &RaidStrategyContext::rs;
+        creators["trialofthecrusader"] = &RaidStrategyContext::trialofthecrusader;
     }
 
 private:
     static Strategy* aq20(PlayerbotAI* botAI) { return new RaidAq20Strategy(botAI); }
+    static Strategy* aq40(PlayerbotAI* botAI) { return new RaidAq40Strategy(botAI); }
     static Strategy* moltencore(PlayerbotAI* botAI) { return new RaidMcStrategy(botAI); }
     static Strategy* bwl(PlayerbotAI* botAI) { return new RaidBwlStrategy(botAI); }
     static Strategy* zulgurub(PlayerbotAI* botAI) { return new RaidZulGurubStrategy(botAI); }
@@ -66,6 +73,7 @@ private:
     static Strategy* magtheridon(PlayerbotAI* botAI) { return new RaidMagtheridonStrategy(botAI); }
     static Strategy* naxx(PlayerbotAI* botAI) { return new RaidNaxxStrategy(botAI); }
     static Strategy* ssc(PlayerbotAI* botAI) { return new RaidSscStrategy(botAI); }
+    static Strategy* sunwell(PlayerbotAI* botAI) { return new RaidSwpStrategy(botAI); }
     static Strategy* tempestkeep(PlayerbotAI* botAI) { return new RaidTempestKeepStrategy(botAI); }
     static Strategy* hyjal(PlayerbotAI* botAI) { return new RaidHyjalStrategy(botAI); }
     static Strategy* blacktemple(PlayerbotAI* botAI) { return new RaidBlackTempleStrategy(botAI); }
@@ -77,6 +85,10 @@ private:
     static Strategy* ulduar(PlayerbotAI* botAI) { return new RaidUlduarStrategy(botAI); }
     static Strategy* icc(PlayerbotAI* botAI) { return new RaidIccStrategy(botAI); }
     static Strategy* rs(PlayerbotAI* botAI) { return new RaidRsStrategy(botAI); }
+    static Strategy* trialofthecrusader(PlayerbotAI* botAI)
+    {
+        return new RaidCrusaderStrategy(botAI);
+    }
 };
 
 #endif

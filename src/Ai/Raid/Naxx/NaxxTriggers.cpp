@@ -5,10 +5,13 @@
  */
 
 #include "NaxxTriggers.h"
+#include "NaxxHelpers.h"
 #include "NaxxSpellIds.h"
 #include "Playerbots.h"
 #include "Timer.h"
 #include "Trigger.h"
+
+using namespace NaxxHelpers;
 
 bool MutatingInjectionMeleeTrigger::IsActive()
 {
@@ -195,36 +198,6 @@ bool MaexxnaTrigger::IsActive()
     return !PlayerbotAI::IsTank(bot);
 }
 
-//bool PatchwerkTankTrigger::IsActive()
-//{
-//    Unit* boss = AI_VALUE2(Unit*, "find target", "patchwerk");
-//    if (!boss)
-//    {
-//        return false;
-//    }
-//    return !PlayerbotAI::IsTank(bot) && !PlayerbotAI::IsRanged(bot);
-//}
-//
-//bool PatchwerkRangedTrigger::IsActive()
-//{
-//    Unit* boss = AI_VALUE2(Unit*, "find target", "patchwerk");
-//    if (!boss)
-//    {
-//        return false;
-//    }
-//    return !PlayerbotAI::IsTank(bot) && PlayerbotAI::IsRanged(bot);
-//}
-//
-//bool PatchwerkNonTankTrigger::IsActive()
-//{
-//    Unit* boss = AI_VALUE2(Unit*, "find target", "patchwerk");
-//    if (!boss)
-//    {
-//        return false;
-//    }
-//    return !PlayerbotAI::IsTank(bot);
-//}
-
 bool LoathebTrigger::IsActive() { return helper.UpdateBossAI(); }
 
 bool ThaddiusPhasePetTrigger::IsActive()
@@ -249,4 +222,72 @@ bool ThaddiusPhaseThaddiusTrigger::IsActive()
         return false;
 
     return helper.IsPhaseThaddius();
+}
+
+// Noth, Gothik and Patchwerk
+
+bool NaxxBossShouldBeTankedTrigger::IsActiveInEncounter()
+{
+    if (!HasRole(bot, _role))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss || !IsBossEngageable(botAI, boss))
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != boss;
+}
+
+bool NaxxBossLostThreatTrigger::IsActiveInEncounter()
+{
+    if (!PlayerbotAI::IsTank(bot))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss || !IsBossEngageable(botAI, boss))
+        return false;
+
+    // Taunting what the bot is not holding would be a target switch, which belongs to the tanking
+    // trigger: this one only takes a boss back.
+    if (AI_VALUE(Unit*, "current target") != boss)
+        return false;
+
+    return IsBossOnNonTank(boss);
+}
+
+bool NaxxAddsSpawnedTrigger::IsActiveInEncounter()
+{
+    if (!HasRole(bot, _role))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, _bossEntry);
+    if (!boss || !IsAddPhase(boss))
+        return false;
+
+    Unit* add = FindAdd();
+    return add && AI_VALUE(Unit*, "current target") != add;
+}
+
+Unit* NaxxAddsSpawnedTrigger::FindAdd()
+{
+    Unit* add = GetNearestCachedUnit(botAI, _addsValue);
+    return add && !IsUnassailable(add) ? add : nullptr;
+}
+
+Unit* GothikAddsSpawnedTrigger::FindAdd() { return GetNearestReachableGothikAdd(botAI, _addsValue); }
+
+bool PatchwerkNonMeleeInStrikeRangeTrigger::IsActiveInEncounter()
+{
+    // Melee damage dealers have to be in there to do their job, and the tanks are what the strike
+    // is meant to hit.
+    if (PlayerbotAI::IsTank(bot) || PlayerbotAI::IsMelee(bot))
+        return false;
+
+    Unit* boss = FindThreatCreature(bot, Id(NaxxNpcs::NPC_PATCHWERK));
+    if (!boss)
+        return false;
+
+    // Plain centre-to-centre distance: Hateful Strike's own range check already has both combat
+    // reaches folded into PATCHWERK_STAND_CLEAR_RANGE.
+    return bot->GetExactDist(boss) < PATCHWERK_STAND_CLEAR_RANGE;
 }

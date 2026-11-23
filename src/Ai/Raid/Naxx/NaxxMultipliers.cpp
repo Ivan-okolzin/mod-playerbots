@@ -9,12 +9,14 @@
 #include "DKActions.h"
 #include "DruidActions.h"
 #include "DruidBearActions.h"
+#include "EncounterHelpers.h"
 #include "FollowActions.h"
 #include "GenericSpellActions.h"
 #include "HunterActions.h"
 #include "MageActions.h"
 #include "MovementActions.h"
 #include "NaxxActions.h"
+#include "NaxxHelpers.h"
 #include "NaxxSpellIds.h"
 #include "PaladinActions.h"
 #include "PetsAction.h"
@@ -251,30 +253,20 @@ float FourHorsemenGenericMultiplier::GetValue(Action* action)
     return 1.0f;
 }
 
-// float GothikGenericMultiplier::GetValue(Action* action)
-// {
-//     Unit* boss = AI_VALUE2(Unit*, "find target", "gothik the harvester");
-//     if (!boss)
-//     {
-//         return 1.0f;
-//     }
-//     BossAI* boss_ai = dynamic_cast<BossAI*>(boss->GetAI());
-//     EventMap* eventMap = boss_botAI->GetEvents();
-//     uint32 curr_phase = eventMap->GetPhaseMask();
-//     if (curr_phase == 1 && (dynamic_cast<FollowAction*>(action)))
-//     {
-//         return 0.0f;
-//     }
-//     if (curr_phase == 1 && (dynamic_cast<AttackAction*>(action)))
-//     {
-//         Unit* target = action->GetTarget();
-//         if (target == boss)
-//         {
-//             return 0.0f;
-//         }
-//     }
-//     return 1.0f;
-// }
+float NaxxDoNotAttackUnengageableBossMultiplier::GetValue(Action* action)
+{
+    if (!EncounterHelpers::IsDpsHoldCandidate(bot, action))
+        return 1.0f;
+
+    // Read the boss off the action's own target: both of these are found on the threat list the
+    // whole time, so testing the target is what tells a bot that is holding one from a bot that is
+    // not.
+    Unit* target = action->GetTarget();
+    if (!target || target->GetEntry() != _bossEntry)
+        return 1.0f;
+
+    return NaxxHelpers::IsBossEngageable(botAI, target) ? 1.0f : 0.0f;
+}
 
 float GluthGenericMultiplier::GetValue(Action* action)
 {

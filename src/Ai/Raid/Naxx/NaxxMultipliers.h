@@ -9,6 +9,8 @@
 
 #include "Multiplier.h"
 #include "NaxxBossHelper.h"
+#include "NaxxHelpers.h"
+#include <string>
 
 class GrobbulusMultiplier : public Multiplier
 {
@@ -101,14 +103,24 @@ public:
     float GetValue(Action* action) override;
 };
 
-// class GothikGenericMultiplier : public Multiplier
-// {
-// public:
-//     GothikGenericMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "gothik generic") {}
+// Noth on his balcony is flagged out of reach (BNO:113) and Gothik takes no damage at all while he
+// waves adds in (BGO:360), on top of standing behind a shut gate for half the raid (BGO:348). An
+// attack on either one cannot land, and holding one as a target is how a bot stands idle while the
+// adds eat its healers.
+class NaxxDoNotAttackUnengageableBossMultiplier : public Multiplier
+{
+public:
+    NaxxDoNotAttackUnengageableBossMultiplier(
+        PlayerbotAI* botAI, std::string const name, uint32 bossEntry)
+        : Multiplier(botAI, name), _bossEntry(bossEntry)
+    {
+    }
 
-// public:
-//     float GetValue(Action* action) override;
-// };
+    float GetValue(Action* action) override;
+
+private:
+    uint32 const _bossEntry;
+};
 
 class GluthGenericMultiplier : public Multiplier
 {

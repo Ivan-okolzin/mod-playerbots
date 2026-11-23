@@ -5,26 +5,36 @@
  */
 
 #include "AiObjectContext.h"
+#include "Aq40ValueContext.h"
 #include "GDValueContext.h"
 #include "GruulValueContext.h"
 #include "HyjalValueContext.h"
 #include "MagValueContext.h"
 #include "MechValueContext.h"
 #include "MgTValueContext.h"
+#include "NaxxValueContext.h"
 #include "SSCValueContext.h"
+#include "CrusaderValueContext.h"
+#include "SWPValueContext.h"
 #include "TKValueContext.h"
 #include "UBValueContext.h"
 #include "ZAValueContext.h"
+#include "ZGValueContext.h"
 #include "ValueContext.h"
 
 void AiObjectContext::BuildSharedValueContexts(
     SharedNamedObjectContextList<UntypedValue>& valueContexts)
 {
     valueContexts.Add(new ValueContext());
+    valueContexts.Add(new RaidAq40ValueContext());
+    valueContexts.Add(new RaidZulGurubValueContext());
     valueContexts.Add(new RaidGruulsLairValueContext());
     valueContexts.Add(new RaidHyjalValueContext());
     valueContexts.Add(new RaidMagtheridonValueContext());
     valueContexts.Add(new RaidSscValueContext());
+    valueContexts.Add(new RaidSwpValueContext());
+    valueContexts.Add(new RaidCrusaderValueContext());
+    valueContexts.Add(new RaidNaxxValueContext());
     valueContexts.Add(new RaidTempestKeepValueContext());
     valueContexts.Add(new RaidZulAmanValueContext());
     valueContexts.Add(new TbcDungeonMechValueContext());

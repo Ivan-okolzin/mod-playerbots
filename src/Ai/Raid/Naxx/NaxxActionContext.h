@@ -48,7 +48,18 @@ public:
         creators["gluth position"] = &RaidNaxxActionContext::gluth_position;
         creators["gluth slowdown"] = &RaidNaxxActionContext::gluth_slowdown;
 
-        //creators["patchwerk ranged position"] = &RaidNaxxActionContext::patchwerk_ranged_position;
+        creators["noth the plaguebringer attack boss"] = &RaidNaxxActionContext::noth_attack_boss;
+        creators["noth the plaguebringer attack nearest skeleton"] =
+            &RaidNaxxActionContext::noth_attack_nearest_skeleton;
+
+        creators["gothik the harvester attack boss"] = &RaidNaxxActionContext::gothik_attack_boss;
+        creators["gothik the harvester attack nearest unrelenting add"] =
+            &RaidNaxxActionContext::gothik_attack_nearest_living_add;
+        creators["gothik the harvester attack nearest spectral add"] =
+            &RaidNaxxActionContext::gothik_attack_nearest_dead_add;
+
+        creators["patchwerk attack boss"] = &RaidNaxxActionContext::patchwerk_attack_boss;
+        creators["patchwerk back off from boss"] = &RaidNaxxActionContext::patchwerk_back_off_from_boss;
 
         creators["loatheb position"] = &RaidNaxxActionContext::loatheb_position;
         creators["loatheb choose target"] = &RaidNaxxActionContext::loatheb_choose_target;
@@ -85,7 +96,40 @@ private:
     static Action* gluth_choose_target(PlayerbotAI* botAI) { return new GluthChooseTargetAction(botAI); }
     static Action* gluth_position(PlayerbotAI* botAI) { return new GluthPositionAction(botAI); }
     static Action* gluth_slowdown(PlayerbotAI* botAI) { return new GluthSlowdownAction(botAI); }
-    //static Action* patchwerk_ranged_position(PlayerbotAI* botAI) { return new PatchwerkRangedPositionAction(botAI); }
+    static Action* noth_attack_boss(PlayerbotAI* botAI)
+    {
+        return new NaxxAttackBossAction(
+            botAI, "noth the plaguebringer attack boss", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_NOTH));
+    }
+    static Action* noth_attack_nearest_skeleton(PlayerbotAI* botAI)
+    {
+        return new NaxxAttackNearestAddAction(
+            botAI, "noth the plaguebringer attack nearest skeleton", NaxxHelpers::NOTH_SKELETONS_VALUE);
+    }
+    static Action* gothik_attack_boss(PlayerbotAI* botAI)
+    {
+        return new NaxxAttackBossAction(
+            botAI, "gothik the harvester attack boss", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_GOTHIK));
+    }
+    static Action* gothik_attack_nearest_living_add(PlayerbotAI* botAI)
+    {
+        return new GothikAttackNearestAddAction(
+            botAI, "gothik the harvester attack nearest unrelenting add", NaxxHelpers::GOTHIK_LIVING_ADDS_VALUE);
+    }
+    static Action* gothik_attack_nearest_dead_add(PlayerbotAI* botAI)
+    {
+        return new GothikAttackNearestAddAction(
+            botAI, "gothik the harvester attack nearest spectral add", NaxxHelpers::GOTHIK_DEAD_ADDS_VALUE);
+    }
+    static Action* patchwerk_attack_boss(PlayerbotAI* botAI)
+    {
+        return new NaxxAttackBossAction(
+            botAI, "patchwerk attack boss", NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_PATCHWERK));
+    }
+    static Action* patchwerk_back_off_from_boss(PlayerbotAI* botAI)
+    {
+        return new PatchwerkBackOffFromBossAction(botAI);
+    }
     static Action* loatheb_position(PlayerbotAI* botAI) { return new LoathebPositionAction(botAI); }
     static Action* loatheb_choose_target(PlayerbotAI* botAI) { return new LoathebChooseTargetAction(botAI); }
 };
