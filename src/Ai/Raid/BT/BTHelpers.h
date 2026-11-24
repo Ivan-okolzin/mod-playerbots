@@ -95,6 +95,7 @@ enum class BlackTempleNpcs : uint32
 
     // Shade of Akama
     NPC_ASHTONGUE_CHANNELER   = 23421,
+    NPC_ASHTONGUE_SORCERER    = 23215,
 
     // Teron Gorefiend
     NPC_SHADOWY_CONSTRUCT     = 23111,
@@ -142,6 +143,8 @@ extern std::unordered_map<uint32, time_t> supremusPhaseTimer;
 bool HasSupremusVolcanoNearby(PlayerbotAI* botAI, Player* bot);
 
 // Shade of Akama
+Unit* GetActiveShade(Player* bot);
+Unit* GetShadeDpsTarget(Player* bot);
 extern const Position AKAMA_CHANNELER_POSITION;
 extern std::unordered_set<ObjectGuid> hasReachedAkamaChannelerPosition;
 

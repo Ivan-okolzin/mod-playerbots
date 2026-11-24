@@ -6,6 +6,7 @@
 
 #include "BTHelpers.h"
 #include "EncounterHelpers.h"
+#include "InstanceScript.h"
 #include "Playerbots.h"
 
 using namespace EncounterHelpers;
@@ -37,6 +38,36 @@ bool HasSupremusVolcanoNearby(PlayerbotAI*, Player* bot)
 }
 
 // Shade of Akama
+Unit* GetActiveShade(Player* bot)
+{
+    constexpr uint32 shadeEncounter = 2;
+    InstanceScript* instance = bot->GetInstanceScript();
+    if (bot->GetMapId() != BLACK_TEMPLE_MAP_ID || !instance || instance->GetBossState(shadeEncounter) != IN_PROGRESS)
+        return nullptr;
+
+    return instance->GetCreature(shadeEncounter);
+}
+
+Unit* GetShadeDpsTarget(Player* bot)
+{
+    if (!PlayerbotAI::IsDps(bot))
+        return nullptr;
+
+    Unit* shade = GetActiveShade(bot);
+    if (!shade)
+        return nullptr;
+
+    if (!shade->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE))
+        return bot->IsValidAttackTarget(shade) ? shade : nullptr;
+
+    if (PlayerbotAI::IsMelee(bot))
+        return nullptr;
+
+    Creature* sorcerer = bot->FindNearestCreature(static_cast<uint32>(BlackTempleNpcs::NPC_ASHTONGUE_SORCERER),
+                                                  100.0f, true);
+    return sorcerer && bot->IsValidAttackTarget(sorcerer) ? sorcerer : nullptr;
+}
+
 const Position AKAMA_CHANNELER_POSITION = { 467.851f, 401.622f, 118.538f };
 
 std::unordered_set<ObjectGuid> hasReachedAkamaChannelerPosition;

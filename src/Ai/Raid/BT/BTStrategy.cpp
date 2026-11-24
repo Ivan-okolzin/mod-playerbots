@@ -46,6 +46,8 @@ void RaidBlackTempleStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         { NextAction("supremus manage phase timer", ACTION_EMERGENCY + 10) }));
 
     // Shade of Akama
+    triggers.push_back(new TriggerNode("shade of akama focus target",
+        { NextAction("shade of akama focus target", ACTION_RAID + 1) }));
     triggers.push_back(new TriggerNode("shade of akama killing channelers starts phase 2",
         { NextAction("shade of akama melee dps prioritize channelers", ACTION_RAID + 1) }));
 

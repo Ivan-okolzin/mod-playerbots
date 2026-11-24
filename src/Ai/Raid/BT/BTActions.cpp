@@ -488,8 +488,18 @@ bool SupremusManagePhaseTimerAction::Execute(Event /*event*/)
 
 // Shade of Akama
 
+bool ShadeOfAkamaFocusTargetAction::Execute(Event /*event*/)
+{
+    Unit* target = GetShadeDpsTarget(bot);
+    return target && AI_VALUE(Unit*, "current target") != target && Attack(target);
+}
+
 bool ShadeOfAkamaMeleeDpsPrioritizeChannelersAction::Execute(Event /*event*/)
 {
+    Unit* shade = GetActiveShade(bot);
+    if (!shade || !shade->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE))
+        return false;
+
     if (!hasReachedAkamaChannelerPosition.count(bot->GetGUID()))
     {
         Position const& position = AKAMA_CHANNELER_POSITION;

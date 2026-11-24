@@ -105,6 +105,13 @@ public:
 
 // Shade of Akama
 
+class ShadeOfAkamaFocusTargetTrigger : public Trigger
+{
+public:
+    ShadeOfAkamaFocusTargetTrigger(PlayerbotAI* botAI) : Trigger(botAI, "shade of akama focus target") {}
+    bool IsActive() override;
+};
+
 class ShadeOfAkamaKillingChannelersStartsPhase2Trigger : public Trigger
 {
 public:
