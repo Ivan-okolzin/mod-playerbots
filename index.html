@@ -82,30 +82,664 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
 <div class="wrap">
   <header>
     <h1>Рейдовые тактики ботов</h1>
-    <p class="lede">Источник аудита: Ivan-okolzin/mod-playerbots origin/raid/all 7a7ad12369dba9ebdaae652ad2b0bacfa68ce28c. Вхождение обоих коммитов подтверждено Git. Срез на 2026-11-24T20:56+05:00: покрытие 157 энкаунтеров 23 рейдов
+    <p class="lede">18 рейдовых ветвей интегрированы. Итоговые codestyle и git diff --check прошли. Игровая проверка ожидается. Срез на 2026-11-24: покрытие 157 энкаунтеров 23 рейдов
     3.3.5 в <code>mod-playerbots</code>. Статус боссу ставит аудит по числу подключённых
     триггеров с механиками: «есть» — четыре и больше, «частично» — от одного до трёх,
     «заглушка» — только вспомогательные, «нет» — ничего.</p>
   </header>
 
-  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Очередь</a> <a href="#tasks">Задачи</a> <a href="#questions">Вопросы</a></nav>
+  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Исходы</a> <a href="#tasks">Первые игровые тесты</a> <a href="#questions">Вопросы</a></nav>
   <section data-view="coverage" id="coverage">
     <h2>Сводка</h2>
-    <div class="sum"><span class="big">89</span><span class="pill">из 157 боссов
+    <div class="sum"><span class="big">94</span><span class="pill">из 157 боссов
       имеют ≥ 4 триггеров механик</span><span class="pill">рейдов в работе: 0</span>
-      <span class="pill">закрыто в этом конвейере: 11</span></div>
-    <span class="bar wide"><span class="seg good" style="flex:89" title="есть: 89"></span><span class="seg partial" style="flex:65" title="частично: 65"></span><span class="seg none" style="flex:3" title="нет: 3"></span></span>
-    <div class="sum"><span class="pill good">есть 89</span> <span class="pill partial">частично 65</span> <span class="pill none">нет 3</span></div>
+      <span class="pill">закрыто в этом конвейере: 18</span></div>
+    <span class="bar wide"><span class="seg good" style="flex:94" title="есть: 94"></span><span class="seg partial" style="flex:60" title="частично: 60"></span><span class="seg none" style="flex:3" title="нет: 3"></span></span>
+    <div class="sum"><span class="pill good">есть 94</span> <span class="pill partial">частично 60</span> <span class="pill none">нет 3</span></div>
   </section>
 
-  <section data-view="queue" id="queue"><h2>Очередь · 68 встреч</h2>
-    <p>Источник покрытия · <code>Ivan-okolzin/mod-playerbots origin/raid/all 7a7ad12369dba9ebdaae652ad2b0bacfa68ce28c</code></p><h3>Волна 1 · Naxx Kara ICC</h3><h4>Naxx · 10</h4><ul><li>Anub&#x27;Rekhan · <code>partial</code> · в очереди</li><li>Grand Widow Faerlina · <code>partial</code> · в очереди</li><li>Maexxna · <code>partial</code> · в очереди</li><li>Heigan the Unclean · <code>partial</code> · в очереди</li><li>Loatheb · <code>partial</code> · в очереди</li><li>Instructor Razuvious · <code>partial</code> · в очереди</li><li>The Four Horsemen · <code>partial</code> · в очереди</li><li>Gluth · <code>partial</code> · в очереди</li><li>Sapphiron · <code>partial</code> · в очереди</li><li>Kel&#x27;Thuzad · <code>partial</code> · в очереди</li></ul><h4>Kara · 10</h4><ul><li>Attumen the Huntsman · <code>partial</code> · в очереди</li><li>Moroes · <code>partial</code> · в очереди</li><li>Maiden of Virtue · <code>partial</code> · в очереди</li><li>Opera: The Wizard of Oz · <code>partial</code> · в очереди</li><li>Opera: The Big Bad Wolf · <code>partial</code> · в очереди</li><li>Opera: Romulo and Julianne · <code>partial</code> · в очереди</li><li>The Curator · <code>partial</code> · в очереди</li><li>Terestian Illhoof · <code>partial</code> · в очереди</li><li>Chess Event (Echo of Medivh) · <code>none</code> · пропущено</li><li>Prince Malchezaar · <code>partial</code> · в очереди</li></ul><h4>ICC · 5</h4><ul><li>Lord Marrowgar · <code>partial</code> · в очереди</li><li>Lady Deathwhisper · <code>partial</code> · в очереди</li><li>Deathbringer Saurfang · <code>partial</code> · в очереди</li><li>Festergut · <code>partial</code> · в очереди</li><li>Blood-Queen Lana&#x27;thel · <code>partial</code> · в очереди</li></ul><h3>Волна 2 · Uld BWL MC</h3><h4>Uld · 5</h4><ul><li>Flame Leviathan · <code>partial</code> · в очереди</li><li>The Assembly of Iron · <code>partial</code> · в очереди</li><li>Hodir · <code>partial</code> · в очереди</li><li>Freya · <code>partial</code> · в очереди</li><li>General Vezax · <code>partial</code> · в очереди</li></ul><h4>BWL · 8</h4><ul><li>Razorgore the Untamed · <code>partial</code> · в очереди</li><li>Vaelastrasz the Corrupt · <code>partial</code> · в очереди</li><li>Broodlord Lashlayer · <code>partial</code> · в очереди</li><li>Firemaw · <code>partial</code> · в очереди</li><li>Ebonroc · <code>partial</code> · в очереди</li><li>Flamegor · <code>partial</code> · в очереди</li><li>Chromaggus · <code>partial</code> · в очереди</li><li>Nefarian · <code>partial</code> · в очереди</li></ul><h4>MC · 7</h4><ul><li>Lucifron · <code>partial</code> · в очереди</li><li>Magmadar · <code>partial</code> · в очереди</li><li>Gehennas · <code>partial</code> · в очереди</li><li>Garr · <code>partial</code> · в очереди</li><li>Shazzrah · <code>partial</code> · в очереди</li><li>Baron Geddon · <code>partial</code> · в очереди</li><li>Sulfuron Harbinger · <code>partial</code> · в очереди</li></ul><h3>Волна 3 · AQ40 Aq20 ZG</h3><h4>AQ40 · 3</h4><ul><li>Fankriss the Unyielding · <code>partial</code> · в очереди</li><li>Viscidus · <code>partial</code> · в очереди</li><li>Princess Huhuran · <code>partial</code> · в очереди</li></ul><h4>Aq20 · 4</h4><ul><li>Kurinnaxx · <code>partial</code> · в очереди</li><li>General Rajaxx · <code>partial</code> · в очереди</li><li>Moam · <code>partial</code> · в очереди</li><li>Ayamiss the Hunter · <code>partial</code> · в очереди</li></ul><h4>ZG · 3</h4><ul><li>High Priestess Mar&#x27;li · <code>partial</code> · в очереди</li><li>Gahz&#x27;ranka · <code>partial</code> · в очереди</li><li>High Priestess Arlokk · <code>partial</code> · в очереди</li></ul><h3>Волна 4 · ToC VoA OS</h3><h4>ToC · 2</h4><ul><li>Northrend Beasts: Acidmaw &amp; Dreadscale · <code>partial</code> · в очереди</li><li>Faction Champions · <code>partial</code> · в очереди</li></ul><h4>VoA · 2</h4><ul><li>Archavon the Stone Watcher · <code>partial</code> · в очереди</li><li>Koralon the Flame Watcher · <code>partial</code> · в очереди</li></ul><h4>OS · 3</h4><ul><li>Tenebron · <code>partial</code> · в очереди</li><li>Shadron · <code>none</code> · в очереди</li><li>Vesperon · <code>none</code> · в очереди</li></ul><h3>Волна 5 · TK BT ZA</h3><h4>TK · 1</h4><ul><li>High Astromancer Solarian · <code>partial</code> · в очереди</li></ul><h4>BT · 1</h4><ul><li>Shade of Akama · <code>partial</code> · в очереди</li></ul><h4>ZA · 1</h4><ul><li>Nalorakk · <code>partial</code> · в очереди</li></ul><h3>Волна 6 · SWP RS EoE</h3><h4>SWP · 1</h4><ul><li>Kalecgos / Sathrovarr · <code>partial</code> · в очереди</li></ul><h4>RS · 1</h4><ul><li>General Zarithrian · <code>partial</code> · в очереди</li></ul><h4>EoE · 1</h4><ul><li>Malygos · <code>partial</code> · в очереди</li></ul></section>
-  <section data-view="tasks" id="tasks"><h2>Задачи</h2><ul class="cards"><li class="card"><strong>BWL</strong> · P1<p>Проверить в игре уход в укрытие и возврат после дыхания Хромаггуса.</p></li><li class="card"><strong>OS</strong> · P1<p>Проверить в игре переходы в сумеречную фазу у Шадрона и Весперона.</p></li></ul></section>
-  <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards"><li class="card"><strong>Торим</strong> · Ожидает решения<p>Триггер вызывает thorim fall from floor action, но класс отсутствует в реестре creators. Разрешить регистрацию и проверку поведения в игре?</p></li><li class="card"><strong>Генерал Раджакс</strong> · Отложен<p>Во время семи волн энкаунтер ещё не имеет статуса IN_PROGRESS. Разрешить изменение общего условия активации стратегии для волн?</p></li></ul></section>
+  <section data-view="queue" id="queue"><h2>Исходы · 68 встреч</h2>
+    <p>Источник покрытия · <code>origin/raid/all 50081ef2d70eae8ffd26799032cf16fae67f5388</code></p><h3>Волна 1 · Naxx Kara ICC</h3><h4>Naxx · 10</h4><ul><li>Anub&#x27;Rekhan · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Grand Widow Faerlina · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Maexxna · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Heigan the Unclean · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Loatheb · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Instructor Razuvious · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>The Four Horsemen · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Gluth · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Sapphiron · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li><li>Kel&#x27;Thuzad · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Naxx.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · Naxx</summary><pre style='white-space:pre-wrap'># Наксрамас, 10 и 25 игроков
+
+Рабочее дерево `src/wt-finish-naxx`, ветка `raid/finish-naxx`, коммит `45f55170` от `raid/all` на `7a7ad123`. В локальном audit.json этой базе соответствуют десять встреч со статусом partial. Механики сверены с файлами в `src/azerothcore-wotlk/src/server/scripts/Northrend/Naxxramas/`.
+
+| Встреча и скрипт ядра | Действия и роли | Ограничения и открытые вопросы |
+|---|---|---|
+| Anub&#x27;Rekhan · boss_anubrekhan.cpp | Подключён существующий выбор цели. Основной танк держит босса, второй подбирает Crypt Guard, DPS добивает стражей, хил сохраняет цель. Кайт получил приоритет и проверяет каст или ауру Locust Swarm с учётом сложности. | Маршрут кайта унаследован. Проходимость точек требует боевой проверки. |
+| Grand Widow Faerlina · boss_faerlina.cpp | Сохранён выход из AoE. Новое действие DPS атакует ближайшего Follower (16505), которых ядро призывает в рейде на 25 игроков. Танк и хил сохраняют назначения. | Автоматическую жертву Worshipper пропустили. Скрипт подтверждает реакцию на Widow’s Embrace, но момент жертвы и управление почитателем требуют отдельной координации. |
+| Maexxna · boss_maexxna.cpp | Ядро снимает Web Wrap при смерти кокона. Новый приоритет DPS переключает на живой кокон (16486) прежде обычного захода за спину. Танк остаётся на боссе, хил продолжает лечение. | Досягаемость коконов вдоль стен для ближнего боя требует проверки в игре. |
+| Heigan · boss_heigan.cpp | Существующие танец ближней группы, позиция дальней группы и ограничение долгих кастов покрывают обе фазы. Ядро повторяет извержения каждые 10 и 4 секунды соответственно. Сохранена текущая реализация. | Второй независимый таймер пропущен, поскольку уже есть расчёт безопасного сектора и окна для каста. |
+| Loatheb · boss_loatheb.cpp | Сохранены позиции и окно лечения Necrotic Aura. Смена цели на спору теперь доступна DPS. Танк держит босса, хилу действие выбора цели уступает ход. | Принудительное распределение спор между группами пропущено, поскольку стратегия не отслеживает получателей каждой споры. |
+| Instructor Razuvious · boss_razuvious.cpp | Сохранены кристаллы для 10 игроков и Mind Control для 25. Подконтрольный ученик применяет Bone Barrier, Taunt и Blood Strike с фактической дистанции ближнего боя. Хил освобождён от общего действия атаки. | Выбор кристаллов использует унаследованные spawn ID. Соответствие размещению на сервере не проверялось. |
+| Four Horsemen · boss_four_horsemen.cpp | Существующие действия разводят назначенных игроков и задают танкам и DPS порядок целей. Хилы освобождены от принудительного выбора цели общего порядка. | Дополнительная ротация всего рейда по стакам меток пропущена. Односторонняя смена угла может оставить дальнего всадника без ближайшей цели. |
+| Gluth · boss_gluth.cpp | Сохранены смена танка по Mortal Wound, кайт Zombie Chow, ловушки охотников и добивание после Decimate. Хил больше не переключается на зомби через действие выбора цели. | Вариант кайта для состава без назначенных танков и охотников требует отдельного распределения ролей. |
+| Sapphiron · boss_sapphiron.cpp | Сохранены обход Chill и укрытие за замороженным игроком. При выборе укрытия исключены умершие, отсутствующие и находящиеся на другой карте участники. | Ядро проверяет положение блока между боссом и игроком и дистанцию до 10 ярдов. Достижение укрытия до взрыва остаётся игровой проверкой. |
+| Kel&#x27;Thuzad · boss_kelthuzad.cpp | Сохранены распределение волн между ближними и дальними, позиции и подбор Guardians вторым танком. При выборе между свободными стражами сравнивается расстояние обоих до центра комнаты. Хил сохраняет цель лечения. | Дополнительную перестановку рейда при Frost Blast пропустили, поскольку она может пересечь назначенные танкам позиции и требует проверки дистанций. |
+
+## Проверки
+
+Репозиторный codestyle прошёл все девять проверок. Проверены регистрация стратегии на карте 533, подключение трёх контекстов и наличие всех 75 имён действий и триггеров стратегии в таблицах creators. Для последователей и коконов зарегистрированы отдельные кэшированные списки GUID. Git diff --check прошёл. Результаты относятся к статической проверке исходников. Сборка и бой на сервере не проводились.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Anub&#x27;Rekhan — реализовано.
+- Grand Widow Faerlina — реализовано.
+- Maexxna — реализовано.
+- Heigan the Unclean — уже покрыто.
+- Loatheb — реализовано.
+- Instructor Razuvious — реализовано.
+- The Four Horsemen — реализовано.
+- Gluth — реализовано.
+- Sapphiron — реализовано.
+- Kel&#x27;Thuzad — реализовано.
+
+### Открытая игровая проверка
+
+На Сапфироне проверить укрытие за живым замороженным игроком до взрыва. На Разувии проверить доступность кристаллов в режиме на 10 игроков.
+</pre></details><h4>Kara · 10</h4><ul><li>Attumen the Huntsman · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Moroes · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Maiden of Virtue · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Opera: The Wizard of Oz · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Opera: The Big Bad Wolf · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Opera: Romulo and Julianne · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>The Curator · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Terestian Illhoof · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Chess Event (Echo of Medivh) · <strong>пропущено</strong> Шахматы исключены из задания на реализацию. <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li><li>Prince Malchezaar · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Kara.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · Kara</summary><pre style='white-space:pre-wrap'># Каражан · карта 532
+
+Модуль `raid/finish-Kara`, коммит `db7c4605`, база `raid/all@7a7ad123`. Скрипты проверены в `src/azerothcore-wotlk/src/server/scripts/EasternKingdoms/Karazhan`, ревизия `e7e2e28`. По исходному audit.json в работу вошли девять встреч со статусом partial.
+
+| Встреча и источник | Роли, механика и результат |
+|---|---|
+| Attumen · boss_midnight.cpp | Второй танк отделяет пешего всадника от Midnight. После посадки танк позиционирует босса, группа собирается за ним против Charge. Действие первой фазы теперь прекращается при появлении всадника 16152, вторая фаза выбирает именно его, запуск задержки DPS проверяет переход повторно. |
+| Moroes · boss_moroes.cpp | Координатор помечает гостей для общего фокуса DPS. Действие повторно проверяет доступность Мороуса. Лекарям остаётся поддерживать цели Garrote (37066). Автоматическое снятие кровотечения не добавлено, поскольку доступность иммунитета зависит от класса. |
+| Maiden of Virtue · boss_maiden_of_virtue.cpp | Танк позиционирует босса, дальняя группа рассредоточивается для Holy Wrath, шаман ставит Grounding Totem против Holy Fire. Перед установкой теперь повторно проверяются босс и наличие тотема. Намеренный заход лекаря под Holy Ground ради выхода из Repentance пропущен из-за риска немоты при лечении танка. |
+| Opera, Wizard of Oz · bosses_opera.cpp | Координатор назначает фокус, маг использует Scorch по Strawman. Ядро даёт попаданию огнём шанс 10% вызвать Burning Straw (31075). Пока эффект активен, триггер и действие освобождают мага для обычной ротации. |
+| Opera, Big Bad Wolf · bosses_opera.cpp | Танк позиционирует Волка, выбранный игрок любой роли бежит по периметру. Действие проверяет ауру перед прерыванием каста и движением. Открытый вопрос для игровой проверки — скрипт применяет 30768, а существующая тактика отслеживает ауру 30756. Связь этих ID не подтверждена. |
+| Opera, Romulo and Julianne · bosses_opera.cpp | После совместного воскрешения координатор выравнивает здоровье боссов через метку для DPS. Новое действие прерывает Eternal Affection (30878) у Джулианны независимо от адресата лечения. Проверяет актуальный каст, доступность и применимость классового прерывания к Джулианне. |
+| Curator · boss_curator.cpp | Танк ставит босса, дальние расходятся, координатор помечает Astral Flare. Шаман сохраняет Bloodlust/Heroism для Evocation. Ограничение снимается при 15% здоровья и ниже, когда скрипт уже не запускает следующую Evocation. |
+| Terestian Illhoof · boss_terestian_illhoof.cpp | При Sacrifice группа переключается по метке на Demon Chains, затем на Kil’rek и босса. Координатор повторно проверяет босса перед назначением цели. Лечение жертвы остаётся в обычной ротации лекарей. |
+| Prince Malchezaar · boss_prince_malchezaar.cpp | Танк позиционирует босса, остальные обходят инферналов. Enfeeble снижает здоровье жертвы до единицы. Перед поиском безопасной точки вдали от Shadow Nova и инферналов действие повторно проверяет ауру, чтобы после восстановления здоровья бот вернулся к своей роли. |
+
+Shade of Aran, Netherspite и Nightbane имели статус good. Шахматы исключены по заданию.
+
+## Проверки
+
+Codestyle модуля и git diff --check прошли. Все 39 имён TriggerNode и 39 имён NextAction найдены в соответствующих таблицах creators. Проверены общие контексты, регистрация стратегии karazhan и выбор для карты 532. Локальный Apple clang-format сообщает о расхождениях стиля, в том числе в исходных строках. Сборку и игровую проверку не проводили. Статус good по этим изменениям не присваивался.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Attumen the Huntsman — реализовано.
+- Moroes — реализовано.
+- Maiden of Virtue — реализовано.
+- Opera: The Wizard of Oz — реализовано.
+- Opera: The Big Bad Wolf — реализовано.
+- Opera: Romulo and Julianne — реализовано.
+- The Curator — реализовано.
+- Terestian Illhoof — реализовано.
+- Chess Event (Echo of Medivh) — пропущено. Шахматы исключены из задания на реализацию.
+- Prince Malchezaar — реализовано.
+
+### Открытая игровая проверка
+
+На Волке записать ауру Красной Шапочки (30768 или 30756) и проверить, что бежит только отмеченный игрок.
+</pre></details><h4>ICC · 5</h4><ul><li>Lord Marrowgar · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ICC.md">Отчёт</a></li><li>Lady Deathwhisper · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ICC.md">Отчёт</a></li><li>Deathbringer Saurfang · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ICC.md">Отчёт</a></li><li>Festergut · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ICC.md">Отчёт</a></li><li>Blood-Queen Lana&#x27;thel · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ICC.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · ICC</summary><pre style='white-space:pre-wrap'># Icecrown Citadel
+
+Ветка `raid/finish-icc`, база `raid/all@7a7ad123`, коммит `b534abbef4a29d3370cbe2b42fb42861ccc484f1`. Аудит снят с той же базы. Скрипты сверены в локальном ядре `e7e2e28`, каталог `src/server/scripts/Northrend/IcecrownCitadel`.
+
+## Встречи со статусом partial
+
+| Встреча и файл ядра | Механика, роли и результат |
+|---|---|
+| Lord Marrowgar · boss_lord_marrowgar.cpp | Общий триггер запускает позиционирование танков и разбор шипов. Ядро разделяет Bone Storm, Coldflame и вызов шипов. Исправлена ветка без живых шипов вне бури. Команду переместиться из фронта босса на точку ближнего боя теперь получают только бойцы ближнего боя вне танковой роли. Дальний бой и лекари дальнего боя сохраняют свою позицию. |
+| Lady Deathwhisper · boss_lady_deathwhisper.cpp | Существуют действия для аддов, расстановки дальнего боя и ухода от Vengeful Shade. Новое действие для всех ролей находит активную зону Death and Decay босса по варианту заклинания 71001 для сложности и выводит бота за фактический радиус с запасом 2 ярда. Проверяет бой и положение при исполнении. Мультипликатор сохраняет исключительный приоритет ухода от преследующей тени. Универсальную смену танков на Touch of Insignificance пропущено из-за иммунитета к провокации во второй фазе героика. |
+| Deathbringer Saurfang · boss_deathbringer_saurfang.cpp | Ядро накладывает Rune of Blood (72410) на жертву. Смена уже работает внутри действия танка, бойцы получают отдельное действие для кровавых чудовищ. Успешная провокация босса теперь завершает действие до попытки забрать чудовище. Отдельный зарегистрированный триггер руны дублировал бы эту смену. |
+| Festergut · boss_festergut.cpp | Gastric Bloat (72219) взрывается на десяти стаках. Существующее действие танков запрашивает смену с шести. Теперь сообщает об успехе сразу после провокации. Сохраняются сбор под спору, расстановка ближнего боя, дистанция дальнего боя и лекарей, уклонение от Malleable Goo. Порог смены оставлен прежним. |
+| Blood-Queen Lana’thel · boss_blood_queen_lana_thel.cpp | Ядро исключает текущую жертву и назначенного второго танка из выбора Swarming Shadows (71264), но допускает другого игрока танковой роли. Такой бот теперь использует общий маршрут носителя вдоль стенки вместо удаления ауры. Действия для сбора по Pact и укуса при Frenzied Bloodthirst остаются подключены. |
+
+В исходном аудите статус good имеют Gunship Battle, Rotface, Professor Putricide, Blood Prince Council, Valithria Dreamwalker, Sindragosa и The Lich King.
+
+## Сверка Obsidian Sanctum
+
+Коммит `750e76d3` входит в базу. Для Шадрона общий вход в портал проверяет Gift of Twilight, для Весперона — Twilight Torment, в том числе во время боя с Сартарионом. Танки и первый выделенный лекарь остаются снаружи. Общие действия DPS и позиционирования ближнего боя распознают обоих драконов. Поэтому строки Shadron и Vesperon со статусом none пропускают существующую логику. Аудит приписывает общие боевые триггеры Сартариону (good), а вход и выход из портала — Тенеброну (partial). Эта привязка сама по себе не подтверждает работу с яйцами Тенеброна.
+
+## Проверка
+
+Штатный codestyle и git diff --check прошли. Все 56 уникальных имён NextAction и 51 имя TriggerNode из ICCStrategy.cpp найдены в соответствующих таблицах creators. Проверены регистрация стратегии и общих контекстов. Проверка статическая. Для игрового прогона остаются геометрия выхода из зоны у стен, варианты зоны на четырёх сложностях и одновременная погоня тени. Сборка и серверный прогон не проводились.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Lord Marrowgar — реализовано.
+- Lady Deathwhisper — реализовано.
+- Deathbringer Saurfang — реализовано.
+- Festergut — реализовано.
+- Blood-Queen Lana&#x27;thel — реализовано.
+
+### Открытая игровая проверка
+
+На Леди Смертный Шёпот совместить зону смерти и преследование тенью. Проверить уход и возобновление обычного действия.
+</pre></details><h3>Волна 2 · Uld BWL MC</h3><h4>Uld · 5</h4><ul><li>Flame Leviathan · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Uld.md">Отчёт</a></li><li>The Assembly of Iron · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Uld.md">Отчёт</a></li><li>Hodir · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Uld.md">Отчёт</a></li><li>Freya · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Uld.md">Отчёт</a></li><li>General Vezax · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Uld.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · Uld</summary><pre style='white-space:pre-wrap'># Ulduar — завершение локального прохода
+
+Ветка модуля `raid/finish-Uld`, коммит `49d25161`, база `raid/all@7a7ad123`, дерево `src/wt-finish-Uld`. В исходном audit.json пять встреч со статусом partial. Сверка использует локальные скрипты ядра в `src/server/scripts/Northrend/Ulduar/Ulduar` и таблицу creature_template для вариантов на 25 игроков. HEAD ядра — `e7e2e28`.
+
+| Встреча | Механики, роли и результат |
+|---|---|
+| Flame Leviathan | В boss_flame_leviathan.cpp преследование 62374 меняет цель, Flame Vents 62396 прерывается осадной машиной. Существующие действия обеспечивают посадку, отход преследуемой машины и атаки по типу места. Исправлена проверка топлива у стрелка разрушителя. В spell_vehicle_grab_pyrite ядро заправляет родительскую машину, теперь бот читает энергию именно у неё. Посадку на босса для Overload Circuit пропустили: последовательность требует согласовать катапульту, свободное место и возвращение пассажира. |
+| The Assembly of Iron | В boss_assembly_of_iron.cpp Брундир применяет Overload и Lightning Tendrils. Сохранены уход нетанков от Overload, отход рейда от Tendrils и вывод цели танком из Rune of Power. Устранены пустые срабатывания в промежутке между радиусом триггера и границей отхода. Для каждой механики триггер и действие используют одну горизонтальную дистанцию. 25 и 28 ярдов взяты из прежних действий. Для Rune of Death 62269 скрипт подтверждает каст по случайной цели, но для маршрута отхода нужны проверенные центр области и радиус. |
+| Hodir | Существующие действия перемещают рейд к снежной насыпи и снимают Biting Cold прыжком. В boss_hodir.cpp Flash Freeze создаёт отдельный ледяной блок вокруг игрока. Новый триггер поручает бойцам атаковать блок 32926/33352. Лёд помощников исключён из выборки: удар по нему до боя запускает Ходира. Танки и лекари сохраняют свои задачи. |
+| Freya | Существующие действия отмечают Eonar’s Gift и адов, уводят от Nature Bomb и ведут к споре. В boss_freya.cpp смерть корня освобождает призывателя от бесконечной ауры. Бойцы получили переключение на Strengthened Iron Roots 33168/33397. Обычный корень отдельной встречи с Древнем Железная Ветвь в выборку не включён. |
+| General Vezax | Сохранены реакции на Shadow Crash и Mark of the Faceless. В boss_general_vezax.cpp уже призванный Saronite Animus каждые две секунды применяет Profound Darkness, его смерть уведомляет Везакса. Бойцы переключаются на 33524/34152. Решение о запуске сложного режима остаётся у рейда. |
+
+Три новых переключения используют кэш живых существ, проверку доступности цели при срабатывании и повторный поиск при исполнении. Приоритет ACTION_RAID − 1 оставляет место для выхода из опасной зоны. В бою следует проверить устойчивость переключения при активной метке рейда и возврат на босса после исчезновения цели.
+
+## Торим
+
+У существующей пары есть проверка расстояния до центра арены и высоты бота. isUseful повторяет триггер. Execute проверяет наличие лидера и телепортирует бота в его координаты на текущей карте бота. Ни состояние встречи с Торимом, ни нахождение лидера на безопасном участке того же экземпляра таким кодом не гарантированы. Регистрация отложена.
+
+## Сопоставление Obsidian Sanctum
+
+Коммит `750e76d3` входит в базу ветки. У Сартариона статус good соответствует действиям танка и бойцов, позиционированию, волне и разлому. Для Шадрона и Весперона аудит показывает отсутствие именных триггеров. Общий ShouldEnterTwilightPortal проверяет Gift соответственно Torment в сольном и совместном бою. Танки и назначенный лекарь остаются снаружи. В сумерках бойцы через SartharionAttackPriorityAction атакуют живого ученика или послушника одного из двух драконов, его присутствие блокирует выход. Для Тенеброна partial отражает общее подключение порталов. Внешний приоритет атаки учитывает дракона, но решение о входе и список сумеречных целей яйца Тенеброна не обрабатывают.
+
+## Проверки
+
+Штатный codestyle прошёл. git diff --check и git show --check прошли. Проверены 99 уникальных имён триггеров и 99 действий стратегии. Все триггеры зарегистрированы. Среди действий attack rti target зарегистрировано в общем ActionContext, единственный отсутствующий ключ — описанный выше экшен Торима. Три новых значения присутствуют в контекстах действий, триггеров и значений. Все три контекста включены в BuildShared. Сборка и игровой прогон не выполнялись. Статусы audit.json относятся к базе ветки.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Flame Leviathan — реализовано.
+- The Assembly of Iron — реализовано.
+- Hodir — реализовано.
+- Freya — реализовано.
+- General Vezax — реализовано.
+
+### Открытая игровая проверка
+
+На Левиафане проверить показания пирита у стрелка разрушителя после дозаправки. На Ходире проверить освобождение игрока из ледяного блока.
+</pre></details><h4>BWL · 8</h4><ul><li>Razorgore the Untamed · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Vaelastrasz the Corrupt · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Broodlord Lashlayer · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Firemaw · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Ebonroc · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Flamegor · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Chromaggus · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li><li>Nefarian · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BWL.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · BWL</summary><pre style='white-space:pre-wrap'># Blackwing Lair
+
+Ветка `raid/finish-bwl`, рабочее дерево `src/wt-finish-bwl`, база `raid/all@7a7ad123`, коммит `c94aa5a84d256d0934833f54e96ebcc302842f47`. Все восемь встреч имели статус `partial` в audit.json. Сверка по локальным boss_*.cpp и instance_blackwing_lair.cpp из BlackwingLair и стратегии src/Ai/Raid/BWL.
+
+| Встреча | Механика, роли и результат |
+|---|---|
+| Razorgore | До уничтожения яиц боты учитывают контроль босса, оффтанк удерживает цель. После яиц свободные танки избегают фронтального Cleave. Управление сферой оставлено игроку: ядро проверяет питомца и Mind Exhaustion, а стратегия не назначает оператора и его сменщика. |
+| Vaelastrasz | Ядро дважды выбирает манапользователя, затем текущую жертву. При снятии 18173 носитель взрывается. Исправлены направление отхода и проверка безопасной дистанции: DPS и лекари с аурой учитывают также других носителей. Танк, удерживающий босса, сохраняет позицию. |
+| Broodlord | Knockback 25778 снижает угрозу текущей жертвы на 50%. Танки уже накапливают угрозу на боссе, DPS разбирают дракончиков, дальние отходят из зоны Blast Wave. Фиксированный обмен танками после каждого удара пропущен: потеря части угрозы не гарантирует смену жертвы. |
+| Firemaw | Shadow Flame, Wing Buffet со снижением угрозы и Flame Buffet. Действующие реакции дают сопротивление огню и уводят остальных из фронта, пока жертва держит направление. Отход за стену для сброса стаков пропущен: безопасная точка с сохранением линии лечения не проверена. |
+| Ebonroc | Ядро накладывает Shadow of Ebonroc 23340 на жертву. Добавлен триггер для танка без ауры, уже выбравшего босса: пока жертва помечена, используется классовый taunt spell. После передачи на чистого танка условие исчезает. Уход остальных из фронта сохранён. |
+| Flamegor | Frenzy 23342 на самом боссе периодически вызывает Fire Nova. Снятие исступления с текущей цели уже есть в GenericHunterStrategy через tranquilizing shot enrage. Дальним и ближним остаются общие огнезащита и позиционирование, отдельный выстрел не добавлен. |
+| Chromaggus | В базе уже есть e694d376: участники возвращаются из укрытия после дыхания. Танк держит босса, остальные учитывают линию видимости. Существующий множитель повышает приоритет очищения при трёх разных affliction и учитывает уязвимую школу для урона. Для бронзы есть Hourglass Sand. Повторных изменений нет. |
+| Nefarian | При поднятии костяных конструктов DPS переключаются на них, удерживающий босса танк сохраняет цель. Для классовых призывов есть приоритет порченых тотемов, Ice Block у магов и ограничение прямого лечения жреца. Универсальный запрет лечения пропущен: он блокировал бы и допустимые заклинания. |
+
+## Сопоставление OS
+
+В базе присутствует 750e76d3. Аудит относит twilight portal enter/exit к Tenebron и оставляет Shadron и Vesperon без именных триггеров. В действительности общий предикат проверяет Gift у Shadron и Torment у Vesperon, отдельно учитывает бой с Sartharion и оставляет снаружи танков и выделенного лекаря. Действие повторяет проверку перед входом. Внутри код перечисляет служителей обоих драконов. Для Tenebron сами имена портальных триггеров не подтверждают обработку яиц. У Sartharion отдельно зарегистрированы цунами, разлом и позиционирование. Это статическое сопоставление, статус аудита не повышался.
+
+## Проверки
+
+Штатный codestyle прошёл. Все литералы TriggerNode и NextAction стратегии BWL найдены в creators, включая классовые реализации taunt spell. Подтверждены общие контексты действий и триггеров, стратегия bwl и выбор карты 469. git diff --check прошёл. Локальный Apple clang-format --dry-run --Werror сообщил о форматировании затронутых файлов, в том числе существующих include. Сборка и проверка в игре не выполнялись. Для игровой проверки остаются передача Эбонрока и расхождение двух одновременно помеченных игроков у Ваэластраза.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Razorgore the Untamed — уже покрыто.
+- Vaelastrasz the Corrupt — реализовано.
+- Broodlord Lashlayer — уже покрыто.
+- Firemaw — уже покрыто.
+- Ebonroc — реализовано.
+- Flamegor — уже покрыто.
+- Chromaggus — уже покрыто.
+- Nefarian — уже покрыто.
+
+### Открытая игровая проверка
+
+На Эбонроке проверить передачу босса чистому танку. На Ваэластразе проверить дистанцию между двумя носителями адреналина.
+</pre></details><h4>MC · 7</h4><ul><li>Lucifron · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Magmadar · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Gehennas · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Garr · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Shazzrah · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Baron Geddon · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li><li>Sulfuron Harbinger · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/MC.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · MC</summary><pre style='white-space:pre-wrap'># Molten Core · карта 409
+
+Ветка `raid/finish-mc`, база `raid/all@e1e32dda`, коммит `b5c6d4c1`. На момент создания дерева код MC в базе совпадал с `6285d244`. Статусы ниже взяты из audit.json со снимка `7a7ad123`. Источник механик — локальные boss_*.cpp в EasternKingdoms/BlackrockMountain/MoltenCore. Подробные ссылки на скрипты и разбор адов приведены в MC/PLAN.md.
+
+| Встреча | Статус аудита | Действия по ролям и результат сверки |
+|---|---|---|
+| Lucifron | partial | Основной танк держит босса, помощники подбирают Protectors, DPS разбирают их первыми. Для Curse и Impending Doom остаются классовые снятия проклятий и магии по доступности. Особое действие против контроля Protector не добавлено без надёжного выбора дружественной цели. |
+| Magmadar | partial | Танк держит босса, все роли выходят из Lava Bomb. Для Panic (19408, первый каст через 9,5 с) добавлен триггер шамана любой роли. Пока встреча активна и тотема рядом нет, он вызывает существующее классовое действие tremor totem. Для Frenzy (19451) у охотников уже есть Tranquilizing Shot против enrage. Magma Spit пропущен: в скрипте есть ID, но нет каста. |
+| Gehennas | partial | Основной танк на боссе, помощники на Flamewakers, DPS сначала убивают адов. Все роли выходят из Rain of Fire, для проклятия используется классовое снятие. Точный радиус зоны скрипт не задаёт, существующий порог оставлен для игровой проверки. |
+| Garr | partial | Основной танк удерживает Гарра, помощники берут Firesworn рядом с ним из-за Separation Anxiety. DPS фокусируют адов по одному, мультипликатор ограничивает AoE. Хилы поддерживают танков. Упреждающий отход от Eruption пропущен: скрипт запускает взрыв без надёжного окна предупреждения. |
+| Shazzrah | partial | Основной танк возвращает босса после Gate и сброса угрозы. Дальние отходят из зоны Arcane Explosion, мили продолжают атаку, хилы обслуживают группу. Для Counterspell отдельное размещение пропущено: радиус в скрипте не подтверждён. |
+| Baron Geddon | partial | Действия для всех ролей — отход от Inferno и изоляция носителя Living Bomb. Теперь при одновременном срабатывании изоляция имеет больший приоритет. Блокировка обычного сближения при Inferno использует тот же поиск босса с кэшем, что и отход, в том числе для хила без цели-босса. Armageddon пропущен: для выбора безопасной позиции и момента отхода не подтверждены радиус и длительность. |
+| Sulfuron Harbinger | partial | Основной танк держит босса, помощники держат жрецов, мили и дальние убивают их до босса из-за Dark Mending. Хилы продолжают лечение. Отдельное прерывание лечения на вторичной цели пропущено: требуется выбор конкретного кастующего жреца с доступным прерыванием. |
+| Golemagg | good | Существующие действия распределяют босса и Core Ragers между танками, задают позицию хилов и отход DPS при стаках Magma Splash. |
+| Majordomo Executus | good | Основной танк возвращает угрозу после телепорта, помощники собирают адов, DPS учитывают щиты. |
+| Ragnaros | good | Танк возвращает босса после всплытия, в погружении бойцы переключаются на Sons of Flame, хилы продолжают лечение. Для всех ролей есть отход от Lava Burst. |
+
+## Сверка OS
+
+В 750e76d3 общий код Twilight Portal проверяет Gift у Шадрона и Torment у Весперона, учитывает отдельный бой и бой с Сартарионом. Танки и назначенный хил остаются снаружи. Общие триггеры DPS и позиции мили также обслуживают сумеречную фазу и драконов. Поэтому строки Shadron и Vesperon без именных триггеров в аудите пропускают реализованные реакции. У Tenebron аудит приписывает вход и выход из портала по именам, однако условия входа в этом коммите относятся к Gift и Torment. По этим двум именам нельзя подтвердить обработку яиц. Строка Sartharion включает общие DPS, позиционирование и Twilight Fissure.
+
+## Проверки и открытые вопросы
+
+Codestyle прошёл. Все 41 имя TriggerNode и 41 имя NextAction разрешаются в таблицах creators, включая классовое действие шамана. Проверены подключение трёх контекстов MC и выбор moltencore для карты 409. git diff --check прошёл. Сборка и игровой прогон не выполнялись. Для игровой проверки остаются замена земного тотема другими действиями шамана между Panic и траектория носителя бомбы при одновременном Inferno.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Lucifron — уже покрыто.
+- Magmadar — реализовано.
+- Gehennas — уже покрыто.
+- Garr — уже покрыто.
+- Shazzrah — уже покрыто.
+- Baron Geddon — реализовано.
+- Sulfuron Harbinger — уже покрыто.
+
+### Открытая игровая проверка
+
+На Геддоне совместить Living Bomb и Inferno. Проверить, что носитель уходит от группы, включая лекаря без выбранного босса.
+</pre></details><h3>Волна 3 · AQ40 Aq20 ZG</h3><h4>AQ40 · 3</h4><ul><li>Fankriss the Unyielding · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/AQ40.md">Отчёт</a></li><li>Viscidus · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/AQ40.md">Отчёт</a></li><li>Princess Huhuran · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/AQ40.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · AQ40</summary><pre style='white-space:pre-wrap'># AQ40 — доработка тактик
+
+Ветка `raid/finish-aq40`, коммит `9e896a49`, база `raid/all` на `e1e32dda`. В исходном audit.json три встречи имеют статус partial. Остальные шесть, включая C’Thun, имеют статус good.
+
+## Fankriss the Unyielding
+
+В boss_fankriss.cpp Entangle выбирает одного игрока, а SummonHatchlingWaves создаёт по четыре Vekniss Hatchling в трёх местах. Отдельный таймер вызывает от одного до трёх червей. Раньше только ассист-танки получали команду атаковать ближайшего адда из общего списка. Теперь мили и дальний DPS выбирают ближайшего Spawn of Fankriss (15630) из отдельного кэша. Ассист-танки продолжают подбирать оба вида аддов. Для основного танка сохранены атака босса и смена ассист-танком по Mortal Wound (25646). Хилы продолжают лечить. Фиксированный маршрут возврата после Entangle пропущен — три точки в скрипте задают места появления аддов, а позиция группы меняется.
+
+## Viscidus
+
+В boss_viscidus.cpp морозные попадания переводят босса в фазу заморозки. Затем ядро считает прямые попадания и проверяет состояние ближней атаки у атакующего при раскалывании. Пока действует Freeze (25937), мили-бот с другой целью переключается на босса. Триггер и действие проверяют ауру. Морозное заклинание теперь повторно проверяет заморозку и наличие глобул перед кастом. Ранее реализованные действия обеспечивают морозные заклинания доступных классов, дистанцию дальников и переключение боевых ролей на глобулы. Хилы сохраняют обычное лечение. Блокировка мили во время накопления мороза пропущена — ядро сохраняет счётчик при обычном ударе.
+
+## Princess Huhuran
+
+В boss_huhuran.cpp Frenzy (26051) и Berserk (26068) раздельны. Снятие доступного для развеивания исступления с текущей цели уже зарегистрировано в GenericHunterStrategy через tranquilizing shot enrage. Рейдовый дубль пропущен. Танк удерживает босса, дальники расходятся, мили продолжают наносить урон, хилы лечат. Мультипликатор ограничивает развеивание Wyvern Sting (26180), за которое ядро наносит цели 3000 урона. Аудит также видит действие выхода из Noxious Poison. Скрипт кастует 26053 на случайную цель и сам по себе не подтверждает создание наземного объекта. Работоспособность существующего выхода из зоны остаётся открытой. Для Poison Bolt ядро сортирует цели по близости при превышении лимита. Гарантированный выбор конкретных игроков по роли из этого условия не следует. Новых действий для Хухуран нет.
+
+## Проверки
+
+codestyle-cpp.py и git diff --cached --check прошли. Сверены все 44 имени триггеров и 44 имени действий в Aq40Strategy с таблицами creators, включая базовый rear flank. Проверены регистрация нового значения, общие контексты, регистрация стратегии aq40 и её назначение карте 531. Проверка статическая. Сборка и игровой прогон не выполнялись. Ветка не слита, исходный аудит отражает состояние до этих изменений.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Fankriss the Unyielding — реализовано.
+- Viscidus — реализовано.
+- Princess Huhuran — уже покрыто.
+
+### Открытая игровая проверка
+
+На Висцидусе проверить переключение мили на замороженного босса. На Хухуран проверить наличие наземного объекта Noxious Poison.
+</pre></details><h4>Aq20 · 4</h4><ul><li>Kurinnaxx · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Aq20.md">Отчёт</a></li><li>General Rajaxx · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Aq20.md">Отчёт</a></li><li>Moam · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Aq20.md">Отчёт</a></li><li>Ayamiss the Hunter · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/Aq20.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · Aq20</summary><pre style='white-space:pre-wrap'># Руины Ан’Киража (AQ20)
+
+Ветка `raid/finish-Aq20`, коммит `83f7c792`, база `raid/all` на `e1e32dda`. В audit.json четыре встречи имеют статус partial, две — good. Проверка статическая. Имена действий сохранены.
+
+| Встреча | Механики ядра, роли и результат |
+|---|---|
+| Kurinnaxx · partial | В boss_kurinnaxx.cpp Mortal Wound применяется к текущей жертве каждые 8–10 с. Исправлено условие смены: первый запасной танк забирает босса при пороге стаков у основного и после полного спадания собственных стаков. Все роли уже отходят от Sand Trap с задержкой срабатывания 5 с. Точный радиус и время жизни объекта после срабатывания требуют игровой проверки. Для Wide Slash угол в скрипте не задан. |
+| General Rajaxx · partial | В boss_rajaxx.cpp сразу после Thundercrash сбрасывается угроза. Существующее действие основного танка возвращает босса таунтом, хилеры восстанавливают рейд после урона в половину текущего здоровья с минимумом 100. Для Disarm отдельного ответа не найдено, Frenzy только объявлен. Волны пропущены по заданию. |
+| Moam · partial | В boss_moam.cpp смерть последнего призванного существа позволяет завершить Energize досрочно. Прежний триггер уводил основного танка на Mana Fiend и конкурировал с возвратом на босса. Теперь аддов получают бойцы и запасные танки, основной танк держит Моама, хилеры лечат. Существующий мультипликатор ограничивает урон бойцов по боссу в каменной фазе при живом адде. Для Drain Mana и Trample скрипт не задаёт дистанции отхода. |
+| Buru the Gorger · good | Уже есть ведение босса фиксированной целью к яйцу, атака яйца и детёнышей, ограничение мили-атак под шипами и захват танком после превращения. Хилеры поддерживают фиксированную цель. Изменений нет. |
+| Ayamiss the Hunter · partial | В boss_ayamiss.cpp на 70% босс сбрасывает угрозу и снимает флаги полёта до завершения посадки. Только после наземной точки он возвращается в агрессивное состояние. Триггер и действие основного танка теперь проверяют оба признака. Бойцы уже переключаются на личинку у парализованного игрока, мили и танки атакуют роевиков, дальние могут бить босса в воздухе. Для Stinger Spray скрипт не задаёт безопасного радиуса. |
+| Ossirian the Unscarred · good | Уже есть подвод босса танком к кристаллу, активация для наложения слабости и отход от вихря. Радиусы действия слабости и вихря остаются оценками. Изменений нет. |
+
+## Регистрация и проверки
+
+Все 17 TriggerNode и 17 NextAction из Aq20Strategy.cpp найдены в соответствующих таблицах creators. Стратегия aq20 подключена для карты 509, контексты действий, триггеров и значений зарегистрированы. Codestyle и git diff --check прошли. Сборка и игровой прогон не выполнялись.
+
+## Сверка Obsidian Sanctum
+
+В 750e76d3 общие Twilight Portal Enter/Exit проверяют Gift или Torment для Шадрона и Весперона, в отдельном бою и с Сартарионом. В сумеречной фазе бойцы атакуют послушника или ученика соответствующего дракона, выход ожидает исчезновения адда. Поэтому строки Shadron и Vesperon без именных совпадений в аудите пропускают реальное покрытие. Строка Tenebron содержит имена общих портальных триггеров, но данный коммит не подтверждает обработку яиц Тенеброна. Для Sartharion аудит уже видит танкование, позиции, цунами и разлом. Правок OS в ветке AQ20 нет.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Kurinnaxx — реализовано.
+- General Rajaxx — уже покрыто.
+- Moam — реализовано.
+- Ayamiss the Hunter — реализовано.
+
+### Открытая игровая проверка
+
+На Аямисс проверить захват танком после посадки. На Куриннаксе проверить передачу только после спадания стаков у сменщика.
+</pre></details><h4>ZG · 3</h4><ul><li>High Priestess Mar&#x27;li · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ZG.md">Отчёт</a></li><li>Gahz&#x27;ranka · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ZG.md">Отчёт</a></li><li>High Priestess Arlokk · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ZG.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · ZG</summary><pre style='white-space:pre-wrap'># Zul’Gurub · карта 309
+
+Ветка `raid/finish-ZG`, коммит `a5bba08a`, рабочее дерево `src/wt-finish-ZG`. База при создании — `raid/all@8eb576a7`. Входной `audit.json` описывает более ранний снимок `7a7ad123`. Из десяти встреч три имеют статус `partial`.
+
+| Встреча | Механика ядра и существующие роли | Изменение или причина пропуска |
+|---|---|---|
+| High Priestess Mar’li | В `boss_marli.cpp` пауки получают Growth 24086 каждые 4 секунды, после пяти применений следует Full Grown 24088. Паутина снимает угрозу поражённых игроков. Основной танк держит жрицу и перехватывает её после смены цели. DPS переключаются на пауков, лекари продолжают лечить. | Существующее действие DPS теперь выбирает полностью выросшего паука, затем паука с наибольшим числом стаков Growth. Расстояние решает при равенстве. Отдельный таймер роста не нужен. |
+| Gahz’ranka | В `boss_gahzranka.cpp` Slam 24326 отбрасывает и снимает угрозу у поражённых, если число выбранных целей меньше размера списка угрозы. Основной танк уже реагирует, когда босс атакует не танка. DPS сохраняют цель, лекари восстанавливают здоровье рейда. | Дополнительного действия нет. Скрипт не задаёт безопасную точку приземления или геометрию для Frost Breath и Massive Geyser. Принудительная перебежка по предполагаемому радиусу могла бы сорвать лечение. |
+| High Priestess Arlokk | В `boss_arlokk.cpp` метка 24210 вызывает эффект 24211. Пантера, получившая эффект, атакует его заклинателя. Основной танк уже перехватывает Арлокк после исчезновения, мультипликатор подавляет погоню, DPS бьют пантер. | Существующее действие DPS сначала выбирает пантеру, которая действительно атакует цель с меткой. При равном приоритете выбирает ближайшую. Лекарь с меткой продолжает лечить. Принудительный кайт пропущен, поскольку скрипт не задаёт маршрут. |
+
+Оба изменения используют общий выбор цели в триггере и действии и существующий кэш адов. Новых имён для регистрации нет. Проверены 48 имён TriggerNode и 48 имён NextAction по соответствующим creators, контексты действий, триггеров и значений, стратегия карты 309. Codestyle и git diff --check прошли. Сборка и проверка в игре не проводились. В бою остаётся проверить переключение между пауками разного возраста и защиту отмеченного игрока при нескольких пантерах.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- High Priestess Mar&#x27;li — реализовано.
+- Gahz&#x27;ranka — уже покрыто.
+- High Priestess Arlokk — реализовано.
+
+### Открытая игровая проверка
+
+На Мар’ли проверить выбор выросшего паука. На Арлокк проверить фокус пантеры, атакующей отмеченного игрока.
+</pre></details><h3>Волна 4 · ToC VoA OS</h3><h4>ToC · 2</h4><ul><li>Northrend Beasts: Acidmaw &amp; Dreadscale · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/toc.md">Отчёт</a></li><li>Faction Champions · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/toc.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · ToC</summary><pre style='white-space:pre-wrap'># Trial of the Crusader · карта 649
+
+Ветка `raid/finish-toc`, коммит `6f1c95c8`, база `raid/all` на `8eb576a7`. В audit.json две встречи со статусом partial. Gormok, Icehowl, Jaraxxus, Twin Val’kyr и Anub’arak имеют статус good.
+
+## Acidmaw и Dreadscale
+
+Подвижность червя меняется при переходе фаз, при всплытии сбрасывается угроза, смерть одного усиливает второго (boss_northrend_beasts.cpp, строки 676–842). Назначение двух танков уже учитывает подвижность и Paralytic Toxin, все роли выходят из Slime Pool. Исправлено действие `acidmaw and dreadscale assign tanks`: когда виден один активный червь, бот оставляет его живому напарнику, которого червь уже атакует. До исправления оба танка пытались вернуть его таунтом. При потере цели остаётся возможность перехвата. Для ДД и хилов дополнительных действий нет. Сближение с носителем Burning Bile пропущено: локальный обработчик токсина (строки 909–959) подтверждает нарастающее замедление и паралич, но не подтверждает снятие при сближении.
+
+## Faction Champions
+
+Паладин применяет Divine Shield 66010 к себе (boss_faction_champions.cpp, строки 2225–2228). Теперь выбор цели для `faction champions attack focus target` и его мультипликатора пропускает чемпиона с этой аурой. После окончания щита снова действует обычный приоритет хилов. ДД и танки продолжают фокус, хилы лечат, прерывания остаются классовыми. Hand of Protection 66009 не исключает цель из общего фокуса: магические атаки остаются возможны. Координированная цепочка контроля пропущена: стратегия не отслеживает назначения контроля, в героике есть снятие контроля тринкетом.
+
+## Проверки
+
+Изменена общая логика уже зарегистрированных действий. Имена TriggerNode и NextAction сверены с соответствующими creators, проверены подключения трёх контекстов, стратегия и карта 649. Codestyle и git diff --check прошли. Сборка и игровая проверка не проводились.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Northrend Beasts: Acidmaw &amp; Dreadscale — реализовано.
+- Faction Champions — реализовано.
+
+### Открытая игровая проверка
+
+Оставить одного активного червя и проверить назначения двух танков. У чемпионов проверить смену фокуса на время Divine Shield.
+</pre></details><h4>VoA · 2</h4><ul><li>Archavon the Stone Watcher · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/VoA.md">Отчёт</a></li><li>Koralon the Flame Watcher · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/VoA.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · VoA</summary><pre style='white-space:pre-wrap'># Крепость Аркавона · карта 624
+
+Ветка `raid/finish-VoA`, база `raid/all@8eb576a7`, коммит `f54b838b`. Аудит отмечает Аркавона и Коралона как `partial`. Источник механик — локальные скрипты `Northrend/VaultOfArchavon`.
+
+## Аркавон · partial
+
+В `boss_archavon.cpp` Rock Shards и Crushing Leap выбирают случайную цель. Существующий `archavon spread ranged` разводит дальников и хилов дальнего боя. Главный танк выбирает босса через `archavon main tank attack boss`. Раньше это действие завершалось сразу, если Аркавон уже был выбран, даже когда он бил хила или бойца.
+
+Новая пара `archavon attacking non tank` → `archavon taunt boss` проверяет фактическую жертву в бою. Главный танк применяет доступный классовый таунт. Если удар принимает другой танк, действие не срабатывает. Случайная цель прыжка сама по себе таунт не запускает. Мили продолжают наносить урон, хилы поддерживают текущую жертву.
+
+Stomp и следующий через три секунды Impale направлены на текущую жертву. В скрипте нет условия обязательной смены танков. Для события Choking Cloud скрипт показывает каст прыжка, но не задаёт надёжную точку и радиус облака. Обе отдельные реакции пропущены. Для Berserk на пятой минуте в ядре нет способа прервать или снять эффект.
+
+## Коралон · partial
+
+В `boss_koralon.cpp` Burning Breath (66665) учитывает сложность. Исправлена проверка существующей пары `koralon burning breath incoming` → `koralon move behind koralon`. Триггер и действие узнают текущий каст через ID для сложности карты. Перед принудительным перемещением действие повторно проверяет роль и положение относительно босса. Главный танк удерживает босса, мили в переднем секторе уходят за спину. Геометрия сектора остаётся оценкой из исходной стратегии. Последующее вращение отдельно не моделируется.
+
+Для дальников и хилов уже есть рассредоточение при Flaming Cinder и действие огнестойкости у подходящих классов. Ядро посылает снаряд 66682 в координаты цели. Тип и радиус остающегося пятна из этого обработчика не следуют, поэтому уход из пятна пропущен. Для Meteor Fists ядро показывает прок 66765 по жертве удара. Распределение урона между соседними игроками не подтверждено, обязательное сближение второго танка пропущено. Burning Fury применяется боссом к себе при входе в бой. Хилы продолжают обычное лечение по здоровью.
+
+## Встречи со статусом good
+
+- **Эмалон.** Существующая стратегия назначает миньонов дополнительным танкам, переключает урон на перегруженного миньона, разводит дальников и отводит игроков от Lightning Nova. Правок нет.
+- **Торавон.** Существующая стратегия удерживает босса, переключает дальников на сферы и обрабатывает приближение сферы и Freezing Ground. Правок нет.
+
+## Проверки
+
+Codestyle завершился сообщением `Everything looks good`. Для 21 узла триггеров и 21 назначения действий в стратегии найдены соответствующие регистрации. Проверены общие контексты действий, триггеров и значений, регистрация `voa` и выбор стратегии для карты 624. Проверка `git diff --check` прошла. Сборка и игровой тест не проводились. Открытая проверка в игре — восстановление агро после переключения на бойца и реакция мили на дыхание в обоих размерах рейда.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Archavon the Stone Watcher — реализовано.
+- Koralon the Flame Watcher — реализовано.
+
+### Открытая игровая проверка
+
+На Аркавоне проверить возврат агро с бойца. На Коралоне проверить выход мили из фронта при дыхании в режимах 10 и 25.
+</pre></details><h4>OS · 3</h4><ul><li>Tenebron · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/OS.md">Отчёт</a></li><li>Shadron · <strong>уже покрыто</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/OS.md">Отчёт</a></li><li>Vesperon · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/OS.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · OS</summary><pre style='white-space:pre-wrap'># OS — Обсидиановое святилище
+
+Ветка `raid/finish-OS`, коммит `ba611c7b`, база `raid/all` на `8eb576a7`. Сверены `audit.json`, стратегия `wotlk-os`, локальные `boss_sartharion.cpp`, `instance_obsidian_sanctum.cpp` и `obsidian_sanctum.h`. Статусы ниже взяты из входного аудита.
+
+## Тенеброн — partial
+
+Аудит приписывает Тенеброну вход и выход через портал. До правки условия входа реагировали на ауры других драконов, а поиск целей внутри учитывал только их прислужников. В отдельном бою ядро переводит встречу Тенеброна в IN_PROGRESS, открывает портал 193988, через две секунды создаёт шесть яиц 30882 в фазе 16. Через 25 секунд из оставшихся живых яиц появляются дракончики 30890, ядро снимает Twilight Shift.
+
+Расширены существующие действия. В отдельном бою DPS и допущенные лекари используют появившийся портал. Танки и лекарь с индексом 0 остаются снаружи. Внутри DPS выбирает живое яйцо после приоритетных прислужников. Бот ждёт снятия фазы ядром, в том числе в двухсекундном окне до появления яиц. Снаружи мили-DPS использует общий rear flank против дыхания, уход из разлома уже подключён для всех ролей.
+
+В совместном бою уже вошедшие DPS также выбирают яйца. Вход исключительно ради яиц здесь пропущен: ядро использует общий портал со счётчиком нескольких драконов, а яйца скрыты от наблюдателя обычной фазы. Сам открытый портал не подтверждает кладку.
+
+## Шадрон — none
+
+Коммит `750e76d3` входит в базу. Gift of Twilight на Шадроне (57835) либо Сартарионе (58766) запускает общий вход. В фазе DPS выбирает ученика 30688 или прислужника 31218. Общий выход проверяет оставшиеся цели. Танки и первый лекарь остаются снаружи, остальные лекари могут сопровождать DPS. Мили использует rear flank, разлом обслуживает twilight fissure. Эти соответствия не видны в строке Шадрона, поскольку стратегия использует общие имена. Отдельное действие не потребовалось.
+
+## Весперон — none
+
+В `750e76d3` уже подключены общие портал, приоритет DPS для 30858 и 31219, разлом и позиция мили. Роли распределены как на Шадроне. Ядро применяет Twilight Torment через DoCastSelf: 57935 в отдельном бою и 58835 при вызове Сартарионом. Для второго случая добавлена проверка ауры на самом Веспероне, сохранён сигнал на игроке. Новый класс действия не потребовался.
+
+## Сартарион — good
+
+Проверен как общий контекст трёх встреч. В стратегии остаются позиции танков, подбор драконов офтанком, выбор цели DPS, разлом и обход огненной волны. При совместном портале прислужники Шадрона и Весперона сохраняют приоритет перед яйцами.
+
+## Проверка
+
+Codestyle модуля и git diff --check прошли. Найдены регистрации всех семи TriggerNode и семи NextAction, оба OS-контекста в движке, стратегия wotlk-os и выбор стратегии для карты 615. Рекомендательный Apple clang-format --dry-run --Werror сообщил о форматировании затронутых файлов, включая существующий код. Проверка статическая. Сборка и игровой прогон не выполнялись. Поведение портальной группы в бою остаётся непроверенным.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Tenebron — реализовано.
+- Shadron — уже покрыто.
+- Vesperon — реализовано.
+
+### Открытая игровая проверка
+
+В отдельном бою с Тенеброном проверить вход после открытия портала, выбор яйца и выход при снятии фазы. Танк и первый лекарь должны остаться снаружи.
+</pre></details><h3>Волна 5 · TK BT ZA</h3><h4>TK · 1</h4><ul><li>High Astromancer Solarian · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/tk.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · TK</summary><pre style='white-space:pre-wrap'># Tempest Keep — карта 550
+
+Ветка модуля `raid/finish-tk`, база `raid/all` на `0108e09c`, коммит `6e3b5997`. Рабочее дерево `src/wt-finish-tk`.
+
+| Встреча | Статус audit.json | Результат |
+|---|---|---|
+| Al&#x27;ar | good | Вне выборки. Уже подключены платформы и Flame Quills, танкование углей, переход и огненные зоны второй фазы. |
+| Void Reaver | good | Вне выборки. Уже подключены позиции танков и дальнего боя, Arcane Orb и реакция на потерю угрозы. |
+| High Astromancer Solarian | partial | Исправлены выбор жрецов дальним DPS и условия существующих действий. |
+| Kael&#x27;thas Sunstrider | good | Вне выборки. Аудит видит советников, оружие, контроль разума и Gravity Lapse. |
+
+## High Astromancer Solarian
+
+В локальном ядре `src/server/scripts/Outland/TempestKeep/Eye/boss_astromancer.cpp` призывает агентов 18925, затем жрецов 18806. Wrath of the Astromancer имеет ID 42783. На 20% здоровья босс отменяет прежнее расписание и переходит к Void Bolt и Psychic Scream.
+
+- Главный танк удерживает активного босса. Действие повторно проверяет роль и пассивность босса перед атакой.
+- Ближний бой, кроме главного танка и лекарей, распределяется между живыми жрецами. Дальний DPS подключается, когда поиск целей больше не видит агента. Ранее эта ветка действия была недостижима. Пока бот должен атаковать жреца, обычные действия ассиста подавлены. Лекари продолжают лечить.
+- Носитель Wrath использует существующий отход от группы на 15 ярдов. Действие повторно проверяет ауру перед прерыванием каста и отходом.
+- Новые классы действий не понадобились. Для Void Bolt и Psychic Scream отдельное перемещение не добавлено: скрипт подтверждает касты, но из него не следует безопасная общая позиция для всех ролей.
+
+## Проверка
+
+Codestyle и `git diff --check` прошли. Все 40 уникальных NextAction и 35 TriggerNode из TKStrategy имеют записи creators. Проверены регистрация tempestkeep, назначение стратегии на карте 550 и контексты действий, триггеров и значений.
+
+Число триггеров Солариан осталось равным трём. По эвристике audit_build.py это по-прежнему partial. Сборка и игровой прогон не выполнялись. Для игровой проверки нужны две последовательные ситуации: живы агенты и жрецы, затем остаются только жрецы. Во второй дальний DPS должен переключиться на жреца, а лекарь продолжить лечение.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- High Astromancer Solarian — реализовано.
+
+### Открытая игровая проверка
+
+На Солариан оставить в живых только жрецов. Проверить переключение дальнего DPS и сохранение лечения.
+</pre></details><h4>BT · 1</h4><ul><li>Shade of Akama · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/BT.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · BT</summary><pre style='white-space:pre-wrap'># Black Temple
+
+Ветка `raid/finish-BT`, коммит `e5393749`, база `raid/all` на `0108e09c`. Рабочее дерево `src/wt-finish-BT`. Статусы взяты из входного audit.json.
+
+## Shade of Akama — partial
+
+В локальном boss_shade_of_akama.cpp заклинание Акамы 40447 начинает встречу и открывает для атаки ченнелеров 23421. Призванный колдун 23215 подходит к Тени и начинает тот же канал 40401. В точке POINT_ENGAGE Тень становится доступной целью, останавливает генераторы и вступает в бой с Акамой. В instance_black_temple.cpp Тень 22841 зарегистрирована под индексом встречи 2.
+
+Мили-DPS сохраняет существующее позиционирование и общий фокус ченнелеров. Триггер и действие теперь проверяют активность встречи и флаг недоступности Тени. Новое действие `shade of akama focus target` назначает дальнему DPS ближайшего доступного колдуна, в том числе на подходе. После освобождения все DPS переключаются на Тень. Повторный выбор текущей цели пропускается, чтобы продолжалась классовая ротация.
+
+Танки и лекари продолжают штатные действия против волн и лечение группы. Фиксированные позиции танков у дверей и отдельное назначение лекаря на Акаму пропущены: скрипт подтверждает атаку волн на Акаму, но не задаёт распределения танков и не подтверждает доступность Акамы как цели штатного лечения ботов. Эффективность базовых ролей требует игровой проверки.
+
+## Остальные встречи
+
+| Встреча | Входной статус | Уже подключённые механики по аудиту |
+|---|---|---|
+| High Warlord Naj&#x27;entus | good | Щит, снятие и бросок шипа |
+| Supremus | good | Фиксация, вулканы и смена фаз |
+| Teron Gorefiend | good | Shadow of Death и управление духом |
+| Gurtogg Bloodboil | good | Bloodboil и Fel Rage |
+| Reliquary of Souls | good | Фиксация, Rune Shield, Deaden и ограничения лечения |
+| Mother Shahraz | good | Fatal Attraction и позиционирование танков |
+| The Illidari Council | good | Распределение целей и выделенный лекарь мага-танка |
+| Illidan Stormrage | good | Пламя, паразиты, демон, посадка и ловушки |
+
+## Проверки
+
+Codestyle и git diff --check прошли. Проверены обе записи creators, имена в BTStrategy и подключение контекстов BT. Сборка и игровой прогон не выполнялись. Изменения находятся в отдельной ветке.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Shade of Akama — реализовано.
+
+### Открытая игровая проверка
+
+До освобождения Акамы проверить фокус дальнего DPS на подходящем колдуне, после освобождения — на Тени.
+</pre></details><h4>ZA · 1</h4><ul><li>Nalorakk · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/ZA.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · ZA</summary><pre style='white-space:pre-wrap'># Zul’Aman · карта 568
+
+Ветка модуля `raid/finish-ZA`, база `raid/all@0108e09c`, коммит `f41138da`. Источник статусов — локальный `playerbots-raids/audit.json`. Из шести встреч доработки требовала одна.
+
+## Налоракк · partial
+
+Источник механик — `src/server/scripts/EasternKingdoms/ZulAman/boss_nalorakk.cpp` локального ядра, методы `JustEngagedWith` и `ShapeShift`.
+
+- **Танки.** В форме тролля босс применяет Mangle (42389) и Brutal Swipe (42384) к жертве. В форме медведя применяет Lacerating Slash (42395) и Rend Flesh (42397) к жертве. Существующее действие сводит обоих танков на одну позицию и передаёт босса по ауре Bear Form (42377). Теперь позиционирование, разрешение провокации и передача угрозы используют один выбор танка. Тролля принимает первый помощник, медведя — основной танк. При отсутствии назначенного живого танка выбирается второй, если его возвращает групповой поиск.
+- **Охотник.** Существующее действие Misdirection на пуле теперь выбирает танка текущей формы. Раньше оно выбирало основного танка даже на пуле тролля. Ключ регистрации сохранён для совместимости.
+- **Дальний бой и лекари дальнего боя.** Surge (42402) выбирает случайную цель в пределах 45 ярдов. При превращении ядро отменяет группу событий тролля. Триггер и новое действие `NalorakkSpreadForSurgeAction` проверяют форму перед разбеганием. Действие использует существующее движение на 11 ярдов. Эту дистанцию унаследовали из тактики модуля. Назначать приманку по максимальной дистанции оснований в скрипте нет.
+- **Лекари и ближний бой.** Кровотечения остаются задачей обычного лечения активного танка. Для Deafening Roar (42398) скрипт планирует каст на самого босса со случайным интервалом. Надёжный сигнал для упреждающего прерывания собственного лечения не установлен. Отдельное действие для Berserk по истечении десяти минут также пропущено — скрипт не задаёт ответной позиционной механики.
+
+## Остальные встречи
+
+| Встреча | Аудит | Существующие действия стратегии |
+|---|---|---|
+| Акил’зон | good | Танки позиционируют босса, дальние расходятся для Static Disruption, группа собирается под Electrical Storm. |
+| Джан’алай | good | Танки позиционируют босса, дальние расходятся для Flame Breath, боты обходят бомбы и отмечают выводителей. |
+| Халаззи | good | Основной танк позиционирует босса, помощник подбирает дух рыси, бойцы переключаются на тотем. |
+| Повелитель проклятий Малакрасс | good | Бойцы выбирают прислужников по приоритету, группа уходит от Whirlwind и Freezing Trap. |
+| Зул’джин | good | Стратегия включает отход от Whirlwind, массовое рассеивание Creeping Paralysis и позиционирование дальних в формах орла и дракондора. |
+
+## Проверки
+
+Codestyle прошёл все девять проверок. Все 29 ключей триггеров и 29 ключей действий из стратегии найдены в соответствующих таблицах creators. Проверены подключение контекстов, регистрация стратегии и назначение на карту 568. Проверка diff прошла. Результат проверен статически, без сборки и игрового прогона.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Nalorakk — реализовано.
+
+### Открытая игровая проверка
+
+На Налоракке проверить адресата Misdirection в обеих формах и прекращение разбегания при превращении.
+</pre></details><h3>Волна 6 · SWP RS EoE</h3><h4>SWP · 1</h4><ul><li>Kalecgos / Sathrovarr · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/SWP.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · SWP</summary><pre style='white-space:pre-wrap'># Sunwell Plateau, карта 580
+
+Рабочее дерево `src/wt-finish-SWP`, ветка `raid/finish-SWP`, база `raid/all@0108e09c`, коммит `ddf3130d`. Статусы ниже взяты из исходного audit.json.
+
+## Kalecgos / Sathrovarr — partial
+
+В локальном boss_kalecgos.cpp функция SpectralBlastCheck исключает текущую жертву, игроков нижнего мира и носителей Spectral Exhaustion (44867). Попадание Spectral Blast создаёт портал и телепортирует цель. Снятие ауры мира (46021) запускает обратный переход. Поиск босса через личный список угрозы мог вернуть пустую цель сразу после перехода. В instance_sunwell_plateau.cpp оба босса уже зарегистрированы с ключами 0 и 10.
+
+Сохранены оба триггера смены мира, имена действий и фильтр недоступной цели. Новый KalecgosAttackRealmBossAction получает соответствующего босса из инстанса. Триггер и действие проверяют карту, состояние именно этой встречи, мир, роль и допустимость атаки. Танк, мили и дальний ДД выбирают босса своего мира даже без личной угрозы. Хил сохраняет текущую задачу лечения.
+
+Ротацию через портал пропустили: одной проверки отсутствия Exhaustion недостаточно, чтобы оставить танка и лечение в каждом мире. Отдельное снятие Curse of Boundless Agony пропустили: обработчик снятия может перенести проклятие на другого игрока, а безопасный момент для рейдовой ротации не подтверждён.
+
+## Brutallus — good
+
+Уже подключены действия танка для удержания босса и реакции на Meteor Slash, выход горящего игрока и отход соседей от Burn. Изменений нет.
+
+## Felmyst — good
+
+Уже подключены танкование, расстановка дальних, реакции на дыхание, Vapor Trail и порабощённого союзника, переключение на Unyielding Dead. Изменений нет.
+
+## Eredar Twins — good
+
+Существующие действия распределяют танков, направляют мили на Сакролаш, заклинателей на Алитесс и разводят дальних. Изменений нет.
+
+## M’uru / Entropius — good
+
+Танки берут босса и Void Sentinel, бойцы переключаются на аддов. Есть действия отхода от Darkness и Singularity. Изменений нет.
+
+## Kil’jaeden — good
+
+Есть отход от Armageddon, расстановка дальних, атака Shield Orb, Sinister Reflection и Hand of the Deceiver. Управление синим драконом этими действиями не покрыто. Изменений нет.
+
+## Проверка
+
+Codestyle и git diff --check прошли. Все 29 имён триггеров и 28 имён действий из SWPStrategy.cpp найдены в соответствующих таблицах creators. Проверены регистрация стратегии sunwell для карты 580 и подключение трёх общих контекстов. Сборка и проверка в игре не выполнялись.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Kalecgos / Sathrovarr — реализовано.
+
+### Открытая игровая проверка
+
+На Калесгосе проверить выбор босса сразу после смены мира у бойца без личной угрозы. Лекарь должен сохранить цель лечения.
+</pre></details><h4>RS · 1</h4><ul><li>General Zarithrian · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/RS.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · RS</summary><pre style='white-space:pre-wrap'># Рубиновое святилище
+
+Ветка `raid/finish-RS`, коммит `789be67c`, база `raid/all` на `0108e09c`. Рабочее дерево `src/wt-finish-RS`.
+
+## General Zarithrian — partial в audit.json
+
+Локальный скрипт ядра `boss_general_zarithrian.cpp` накладывает Cleave Armor (74367) на текущую жертву через 9 секунд после начала боя и далее через 15 секунд. Вызов огнепризывателей начинается через 18 секунд с двух сторон и повторяется через 40 секунд. В рейде на 25 игроков есть вторая пара через 20 секунд с тем же периодом.
+
+Действие `rs zarithrian tank` уже распределяет босса и аддов между основным и вспомогательным танками. Исправлено чтение стаков по ID ауры. Для смены учитываются живые участники боя в том же экземпляре. Если оба назначенных танка достигли существующего порога в пять стаков, текущий танк продолжает держать босса. Когда другой танк держит генерала, множитель подавляет у танка с пятью стаками обычные классовые провокации по генералу. Прежний множитель блокировал также защитные действия, обычные атаки и провокации по аддам.
+
+Для бойцов уже подключены `rs zarithrian adds` и `attack rti target`. Назначенный бот помечает огнепризывателя возле босса, остальные бойцы атакуют метку. Лекари продолжают обычное лечение. Новых имён действий не потребовалось.
+
+Intimidating Roar (74384) срабатывает через 14 секунд и далее каждые 30 секунд. У огнепризывателей есть Blast Nova (74392) и Lava Gout (74394). Отдельную классовую реакцию на рёв и прерывание заклинаний оставили открытыми: скрипт подтверждает касты, но сам по себе не подтверждает применимость конкретного контрзаклинания или прерывания на каждой сложности. Порог смены взят из существующей стратегии.
+
+## Остальные встречи
+
+| Встреча | audit.json | Существующие действия |
+|---|---|---|
+| Baltharus the Warborn | good | Позиции танка и лекарей, уход из фронтального сектора, реакция на Brand. |
+| Saviana Ragefire | good | Позиция танка, уход из фронтального сектора, рассредоточение ближнего боя, Conflagration. |
+| Halion | good | Позиции танков в двух мирах, портал, конусы, Cutter, метеор, адды, Combustion и Consumption. |
+
+## Проверки
+
+Codestyle и git diff --check прошли. В RSStrategy сверены имена 28 рейдовых триггеров и 27 рейдовых действий с таблицами creators. Общий attack rti target также зарегистрирован. Сборку и боевой прогон не выполняли. Для проверки в игре остаются смена при пяти стаках, одновременные стаки у обоих танков и подбор огнепризывателя танком с дебаффом.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- General Zarithrian — реализовано.
+
+### Открытая игровая проверка
+
+Довести обоих танков до пяти стаков Cleave Armor. Проверить удержание генерала и возможность подобрать огнепризывателя.
+</pre></details><h4>EoE · 1</h4><ul><li>Malygos · <strong>реализовано</strong>  <a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/finish/EoE.md">Отчёт</a></li></ul><details><summary>Финальный отчёт · EoE</summary><pre style='white-space:pre-wrap'># Око Вечности · Малигос (10/25)
+
+Ветка `raid/finish-EoE`, коммит `373c615c`, база `raid/all` на `0108e09c`. В audit.json единственная встреча имеет статус partial. Триггер power spark был зарегистрирован, но стратегия его не вызывала.
+
+В локальном boss_malygos.cpp событие EVENT_SUMMON_POWER_SPARK запускает искру к боссу в первой фазе. На расстоянии 12 ярдов она усиливает Малигоса. При смертельном уроне npc_power_spark оставляет наземное усиление и становится недоступным для атаки на оставшееся время жизни.
+
+- **Первая фаза.** Подключено действие kill power spark. Дальний DPS выбирает доступную для атаки искру 30084, ближайшую к боссу. Действие повторно проверяет фазу и цель. Обычный выбор Малигоса возобновляется после исчезновения доступных искр. Существующая логика задаёт позицию основного танка и сбор группы. Ближний DPS продолжает атаковать босса, хилы сохраняют свою роль.
+- **Вторая фаза.** Существующее действие malygos target направляет дальний DPS на Scion of Eternity, остальных атакующих на Nexus Lord. Лечение использует обычную логику.
+- **Третья фаза.** Существующие eoe fly drake и eoe drake attack управляют полётом за ведущим, атакой и лечением на драконе. Ограничение существующего кода — Revivify применяется к собственному дракону.
+- **Пропуск.** Притягивание искры Death Grip в точку сбора оставлено вне реализации. Скрипт ядра подтверждает эффект уничтожения искры на месте, но успешность и конечная позиция притягивания на платформе не проверены.
+
+Codestyle и git diff --check прошли. Имена всех TriggerNode и NextAction сверены с creators, проверены стратегия wotlk-eoe, карта 616 и регистрация общих контекстов. Сборка и игровой прогон не выполнялись. Для проверки в бою остаётся переключение дальнего DPS с искры на Малигоса сразу после появления наземного усиления.
+
+## Итог интеграции
+
+Ветка входит в `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Итоговые статические проверки прошли.
+
+- Malygos — реализовано.
+
+### Открытая игровая проверка
+
+В первой фазе дать дальнему бойцу две искры. После гибели ближайшей к Малигосу проверить переключение на следующую доступную цель.
+</pre></details></section>
+  <section data-view="tasks" id="tasks"><h2>Первые игровые тесты</h2><ul class="cards"><li class="card"><strong>OS</strong> · первый игровой тест<p>В отдельном бою с Тенеброном проверить вход после открытия портала, выбор яйца и выход при снятии фазы. Танк и первый лекарь должны остаться снаружи.</p></li><li class="card"><strong>Kara</strong> · первый игровой тест<p>На Волке записать ауру Красной Шапочки (30768 или 30756) и проверить, что бежит только отмеченный игрок.</p></li><li class="card"><strong>RS</strong> · первый игровой тест<p>Довести обоих танков до пяти стаков Cleave Armor. Проверить удержание генерала и возможность подобрать огнепризывателя.</p></li><li class="card"><strong>EoE</strong> · первый игровой тест<p>В первой фазе дать дальнему бойцу две искры. После гибели ближайшей к Малигосу проверить переключение на следующую доступную цель.</p></li><li class="card"><strong>Naxx</strong> · первый игровой тест<p>На Сапфироне проверить укрытие за живым замороженным игроком до взрыва. На Разувии проверить доступность кристаллов в режиме на 10 игроков.</p></li><li class="card"><strong>Uld</strong> · первый игровой тест<p>На Левиафане проверить показания пирита у стрелка разрушителя после дозаправки. На Ходире проверить освобождение игрока из ледяного блока.</p></li><li class="card"><strong>MC</strong> · первый игровой тест<p>На Геддоне совместить Living Bomb и Inferno. Проверить, что носитель уходит от группы, включая лекаря без выбранного босса.</p></li><li class="card"><strong>BWL</strong> · первый игровой тест<p>На Эбонроке проверить передачу босса чистому танку. На Ваэластразе проверить дистанцию между двумя носителями адреналина.</p></li><li class="card"><strong>ZG</strong> · первый игровой тест<p>На Мар’ли проверить выбор выросшего паука. На Арлокк проверить фокус пантеры, атакующей отмеченного игрока.</p></li><li class="card"><strong>Aq20</strong> · первый игровой тест<p>На Аямисс проверить захват танком после посадки. На Куриннаксе проверить передачу только после спадания стаков у сменщика.</p></li><li class="card"><strong>AQ40</strong> · первый игровой тест<p>На Висцидусе проверить переключение мили на замороженного босса. На Хухуран проверить наличие наземного объекта Noxious Poison.</p></li><li class="card"><strong>TK</strong> · первый игровой тест<p>На Солариан оставить в живых только жрецов. Проверить переключение дальнего DPS и сохранение лечения.</p></li><li class="card"><strong>BT</strong> · первый игровой тест<p>До освобождения Акамы проверить фокус дальнего DPS на подходящем колдуне, после освобождения — на Тени.</p></li><li class="card"><strong>ZA</strong> · первый игровой тест<p>На Налоракке проверить адресата Misdirection в обеих формах и прекращение разбегания при превращении.</p></li><li class="card"><strong>SWP</strong> · первый игровой тест<p>На Калесгосе проверить выбор босса сразу после смены мира у бойца без личной угрозы. Лекарь должен сохранить цель лечения.</p></li><li class="card"><strong>ToC</strong> · первый игровой тест<p>Оставить одного активного червя и проверить назначения двух танков. У чемпионов проверить смену фокуса на время Divine Shield.</p></li><li class="card"><strong>VoA</strong> · первый игровой тест<p>На Аркавоне проверить возврат агро с бойца. На Коралоне проверить выход мили из фронта при дыхании в режимах 10 и 25.</p></li><li class="card"><strong>ICC</strong> · первый игровой тест<p>На Леди Смертный Шёпот совместить зону смерти и преследование тенью. Проверить уход и возобновление обычного действия.</p></li></ul></section>
+  <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards"><li class="card"><strong>Kara</strong> · ожидает проверки в игре<p>На Волке записать ауру Красной Шапочки (30768 или 30756) и проверить, что бежит только отмеченный игрок.</p></li><li class="card"><strong>OS</strong> · ожидает проверки в игре<p>В отдельном бою с Тенеброном проверить вход после открытия портала, выбор яйца и выход при снятии фазы. Танк и первый лекарь должны остаться снаружи.</p></li><li class="card"><strong>RS</strong> · ожидает проверки в игре<p>Довести обоих танков до пяти стаков Cleave Armor. Проверить удержание генерала и возможность подобрать огнепризывателя.</p></li><li class="card"><strong>AQ40</strong> · ожидает проверки в игре<p>На Висцидусе проверить переключение мили на замороженного босса. На Хухуран проверить наличие наземного объекта Noxious Poison.</p></li><li class="card"><strong>Naxx</strong> · ожидает проверки в игре<p>На Сапфироне проверить укрытие за живым замороженным игроком до взрыва. На Разувии проверить доступность кристаллов в режиме на 10 игроков.</p></li></ul></section>
   <section data-view="agents" id="agents">
-    <p>Этапы по журналу агентов · готово 11/23 · без записи 12/23. Каражан · в плане 12 из 13. Исключение: Chess Event (Echo of Medivh).</p>
-    <h2>Конвейер: один рейд — один агент</h2>
-    <ul class="cards"><li class="card done"><div class="chead"><span class="rk">AQ40</span><span class="state done">готово</span></div><div class="ctitle">Храм Ан&#x27;Киража</div><div class="sub">9 боссов, закрыт полностью</div><div class="meta">raid/aq40 · c5a75923</div></li><li class="card done"><div class="chead"><span class="rk">SWP</span><span class="state done">готово</span></div><div class="ctitle">Плато Солнечного Колодца</div><div class="sub">6 боссов</div><div class="meta">raid/swp · 05f0a6ba</div></li><li class="card done"><div class="chead"><span class="rk">ToC</span><span class="state done">готово</span></div><div class="ctitle">Испытание Крестоносца</div><div class="sub">5 энкаунтеров</div><div class="meta">raid/crusader · 26d46067</div></li><li class="card done"><div class="chead"><span class="rk">ZG</span><span class="state done">готово</span></div><div class="ctitle">Зул&#x27;Гуруб</div><div class="sub">контексты не были зарегистрированы — заготовка ожила</div><div class="meta">raid/zg · aa7a4dfc</div></li><li class="card done"><div class="chead"><span class="rk">Naxx</span><span class="state done">готово</span></div><div class="ctitle">Наксрамас</div><div class="sub">Нот, Готик, Patchwerk</div><div class="meta">raid/naxx · e2a9e376</div></li><li class="card done"><div class="chead"><span class="rk">VoA</span><span class="state done">готово</span></div><div class="ctitle">Крепость Аркавона</div><div class="sub">4 Смотрителя: 14 триггеров, 14 экшенов, 3 значения, 1 мультипликатор</div><div class="meta">raid/voa · df412091</div></li><li class="card done"><div class="chead"><span class="rk">Uld</span><span class="state done">готово</span></div><div class="ctitle">Улдуар</div><div class="sub">XT-002, Игнис, Ауриайя, Алгалон: 27 триггеров, 27 экшенов, 17 значений, 3 мультипликатора</div><div class="meta">raid/uld · 46c9fe60</div></li><li class="card done"><div class="chead"><span class="rk">Aq20</span><span class="state done">готово</span></div><div class="ctitle">Руины Ан&#x27;Киража</div><div class="sub">6 боссов: 17 триггеров, 17 экшенов, 8 значений, 3 мультипликатора</div><div class="meta">raid/aq20 · 6bdd894c</div></li><li class="card done"><div class="chead"><span class="rk">MC</span><span class="state done">готово</span></div><div class="ctitle">Огненные Недра</div><div class="sub">Механики боссов интегрированы в raid/all</div><div class="meta">raid/mc · 6285d244</div></li><li class="card done"><div class="chead"><span class="rk">BWL</span><span class="state done">готово</span></div><div class="ctitle">Логово Крыла Тьмы</div><div class="sub">Интегрировано исправление возврата из укрытия после дыхания Хромаггуса.</div><div class="meta">raid/next-bwl · e694d376</div></li><li class="card done"><div class="chead"><span class="rk">OS</span><span class="state done">готово</span></div><div class="ctitle">Обсидиановое святилище</div><div class="sub">Интегрированы механики Шадрона и Весперона. Аудит сопоставляет имена триггеров с боссами и не учитывает изменения внутри общих сумеречных механик.</div><div class="meta">raid/next-os · 750e76d3</div></li></ul>
+    <p>Этапы по журналу агентов · готово 18/23 · без записи 5/23. Каражан · в плане 12 из 13. Исключение: Chess Event (Echo of Medivh).</p>
+    <h2>Интегрированные ветви</h2>
+    <ul class="cards"><li class="card done"><div class="chead"><span class="rk">OS</span><span class="state done">готово</span></div><div class="ctitle">Обсидиановое святилище</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-OS · ba611c7b</div></li><li class="card done"><div class="chead"><span class="rk">Kara</span><span class="state done">готово</span></div><div class="ctitle">Каражан</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-Kara · db7c4605</div></li><li class="card done"><div class="chead"><span class="rk">RS</span><span class="state done">готово</span></div><div class="ctitle">Рубиновое святилище</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-RS · 789be67c</div></li><li class="card done"><div class="chead"><span class="rk">EoE</span><span class="state done">готово</span></div><div class="ctitle">Око Вечности</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-EoE · 373c615c</div></li><li class="card done"><div class="chead"><span class="rk">Naxx</span><span class="state done">готово</span></div><div class="ctitle">Наксрамас</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-naxx · 45f55170</div></li><li class="card done"><div class="chead"><span class="rk">Uld</span><span class="state done">готово</span></div><div class="ctitle">Улдуар</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-Uld · 49d25161</div></li><li class="card done"><div class="chead"><span class="rk">MC</span><span class="state done">готово</span></div><div class="ctitle">Огненные Недра</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-mc · b5c6d4c1</div></li><li class="card done"><div class="chead"><span class="rk">BWL</span><span class="state done">готово</span></div><div class="ctitle">Логово Крыла Тьмы</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-bwl · c94aa5a84d256d0934833f54e96ebcc302842f47</div></li><li class="card done"><div class="chead"><span class="rk">ZG</span><span class="state done">готово</span></div><div class="ctitle">Зул&#x27;Гуруб</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-ZG · a5bba08a</div></li><li class="card done"><div class="chead"><span class="rk">Aq20</span><span class="state done">готово</span></div><div class="ctitle">Руины Ан&#x27;Киража</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-Aq20 · 83f7c792</div></li><li class="card done"><div class="chead"><span class="rk">AQ40</span><span class="state done">готово</span></div><div class="ctitle">Храм Ан&#x27;Киража</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-aq40 · 9e896a49</div></li><li class="card done"><div class="chead"><span class="rk">TK</span><span class="state done">готово</span></div><div class="ctitle">Крепость Бурь: Око</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-tk · 6e3b5997</div></li><li class="card done"><div class="chead"><span class="rk">BT</span><span class="state done">готово</span></div><div class="ctitle">Чёрный храм</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-BT · e5393749</div></li><li class="card done"><div class="chead"><span class="rk">ZA</span><span class="state done">готово</span></div><div class="ctitle">Зул&#x27;Аман</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-ZA · f41138da</div></li><li class="card done"><div class="chead"><span class="rk">SWP</span><span class="state done">готово</span></div><div class="ctitle">Плато Солнечного Колодца</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-SWP · ddf3130d</div></li><li class="card done"><div class="chead"><span class="rk">ToC</span><span class="state done">готово</span></div><div class="ctitle">Испытание Крестоносца</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-toc · 6f1c95c8</div></li><li class="card done"><div class="chead"><span class="rk">VoA</span><span class="state done">готово</span></div><div class="ctitle">Крепость Аркавона</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-VoA · f54b838b</div></li><li class="card done"><div class="chead"><span class="rk">ICC</span><span class="state done">готово</span></div><div class="ctitle">Цитадель Ледяной Короны</div><div class="sub">Интегрировано в raid/all. Игровой тест ожидается.</div><div class="meta">raid/finish-icc · b534abbef4a29d3370cbe2b42fb42861ccc484f1</div></li></ul>
   </section>
 
   <section data-view="coverage">
@@ -113,7 +747,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     <div class="tablewrap"><table>
       <thead><tr><th scope="col">Рейд</th><th scope="col">Боссов</th>
         <th scope="col">Покрытие</th><th scope="col">Этап</th></tr></thead>
-      <tbody><tr><th scope="row"><span class="rk">MC</span><div class="sub">Огненные Недра · карта 409 · 40</div></th><td class="num">10</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:7" title="частично: 7"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 7</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/mc <code>6285d244</code><br>Механики боссов интегрированы в raid/all</div></td></tr><tr><th scope="row"><span class="rk">BWL</span><div class="sub">Логово Крыла Тьмы · карта 469 · 40</div></th><td class="num">8</td><td><span class="bar"><span class="seg partial" style="flex:8" title="частично: 8"></span></span><span class="pill partial">частично 8</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/next-bwl <code>e694d376</code><br>Интегрировано исправление возврата из укрытия после дыхания Хромаггуса.</div></td></tr><tr><th scope="row"><span class="rk">ZG</span><div class="sub">Зул&#x27;Гуруб · карта 309 · 20</div></th><td class="num">10</td><td><span class="bar"><span class="seg good" style="flex:7" title="есть: 7"></span><span class="seg partial" style="flex:3" title="частично: 3"></span></span><span class="pill good">есть 7</span> <span class="pill partial">частично 3</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/zg <code>aa7a4dfc</code><br>контексты не были зарегистрированы — заготовка ожила</div></td></tr><tr><th scope="row"><span class="rk">Aq20</span><div class="sub">Руины Ан&#x27;Киража · карта 509 · 20</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span><span class="seg partial" style="flex:4" title="частично: 4"></span></span><span class="pill good">есть 2</span> <span class="pill partial">частично 4</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/aq20 <code>6bdd894c</code><br>6 боссов: 17 триггеров, 17 экшенов, 8 значений, 3 мультипликатора</div></td></tr><tr><th scope="row"><span class="rk">AQ40</span><div class="sub">Храм Ан&#x27;Киража · карта 531 · 40</div></th><td class="num">9</td><td><span class="bar"><span class="seg good" style="flex:6" title="есть: 6"></span><span class="seg partial" style="flex:3" title="частично: 3"></span></span><span class="pill good">есть 6</span> <span class="pill partial">частично 3</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/aq40 <code>c5a75923</code><br>9 боссов, закрыт полностью</div></td></tr><tr><th scope="row"><span class="rk">Ony</span><div class="sub">Логово Ониксии · карта 249 · 10/25</div></th><td class="num">1</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span></span><span class="pill good">есть 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Kara</span><div class="sub">Каражан · карта 532 · 10</div></th><td class="num">13</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:9" title="частично: 9"></span><span class="seg none" style="flex:1" title="нет: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 9</span> <span class="pill none">нет 1</span></td><td class="stage"><div class="sub">Каражан · в плане 12 из 13. Исключение: Chess Event (Echo of Medivh).</div></td></tr><tr><th scope="row"><span class="rk">Gruul</span><div class="sub">Логово Груула · карта 565 · 25</div></th><td class="num">2</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span></span><span class="pill good">есть 2</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Mag</span><div class="sub">Логово Магтеридона · карта 544 · 25</div></th><td class="num">1</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span></span><span class="pill good">есть 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">SSC</span><div class="sub">Логово Змея · карта 548 · 25</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:6" title="есть: 6"></span></span><span class="pill good">есть 6</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">TK</span><div class="sub">Крепость Бурь: Око · карта 550 · 25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Hyjal</span><div class="sub">Битва за Хиджал · карта 534 · 25</div></th><td class="num">5</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span></span><span class="pill good">есть 5</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">BT</span><div class="sub">Чёрный храм · карта 564 · 25</div></th><td class="num">9</td><td><span class="bar"><span class="seg good" style="flex:8" title="есть: 8"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 8</span> <span class="pill partial">частично 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">ZA</span><div class="sub">Зул&#x27;Аман · карта 568 · 10</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">SWP</span><div class="sub">Плато Солнечного Колодца · карта 580 · 25</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/swp <code>05f0a6ba</code><br>6 боссов</div></td></tr><tr><th scope="row"><span class="rk">Naxx</span><div class="sub">Наксрамас · карта 533 · 10/25</div></th><td class="num">15</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:10" title="частично: 10"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 10</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/naxx <code>e2a9e376</code><br>Нот, Готик, Patchwerk</div></td></tr><tr><th scope="row"><span class="rk">OS</span><div class="sub">Обсидиановое святилище · карта 615 · 10/25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span><span class="seg partial" style="flex:1" title="частично: 1"></span><span class="seg none" style="flex:2" title="нет: 2"></span></span><span class="pill good">есть 1</span> <span class="pill partial">частично 1</span> <span class="pill none">нет 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/next-os <code>750e76d3</code><br>Интегрированы механики Шадрона и Весперона. Аудит сопоставляет имена триггеров с боссами и не учитывает изменения внутри общих сумеречных механик.</div></td></tr><tr><th scope="row"><span class="rk">EoE</span><div class="sub">Око Вечности · карта 616 · 10/25</div></th><td class="num">1</td><td><span class="bar"><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill partial">частично 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Uld</span><div class="sub">Улдуар · карта 603 · 10/25</div></th><td class="num">14</td><td><span class="bar"><span class="seg good" style="flex:9" title="есть: 9"></span><span class="seg partial" style="flex:5" title="частично: 5"></span></span><span class="pill good">есть 9</span> <span class="pill partial">частично 5</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/uld <code>46c9fe60</code><br>XT-002, Игнис, Ауриайя, Алгалон: 27 триггеров, 27 экшенов, 17 значений, 3 мультипликатора</div></td></tr><tr><th scope="row"><span class="rk">ToC</span><div class="sub">Испытание Крестоносца · карта 649 · 10/25 + героик</div></th><td class="num">7</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:2" title="частично: 2"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/crusader <code>26d46067</code><br>5 энкаунтеров</div></td></tr><tr><th scope="row"><span class="rk">VoA</span><div class="sub">Крепость Аркавона · карта 624 · 10/25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span><span class="seg partial" style="flex:2" title="частично: 2"></span></span><span class="pill good">есть 2</span> <span class="pill partial">частично 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/voa <code>df412091</code><br>4 Смотрителя: 14 триггеров, 14 экшенов, 3 значения, 1 мультипликатор</div></td></tr><tr><th scope="row"><span class="rk">ICC</span><div class="sub">Цитадель Ледяной Короны · карта 631 · 10/25 + героик</div></th><td class="num">12</td><td><span class="bar"><span class="seg good" style="flex:7" title="есть: 7"></span><span class="seg partial" style="flex:5" title="частично: 5"></span></span><span class="pill good">есть 7</span> <span class="pill partial">частично 5</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">RS</span><div class="sub">Рубиновое святилище · карта 724 · 10/25 + героик</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 1</span></td><td class="stage"></td></tr></tbody>
+      <tbody><tr><th scope="row"><span class="rk">MC</span><div class="sub">Огненные Недра · карта 409 · 40</div></th><td class="num">10</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:7" title="частично: 7"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 7</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-mc <code>b5c6d4c1</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">BWL</span><div class="sub">Логово Крыла Тьмы · карта 469 · 40</div></th><td class="num">8</td><td><span class="bar"><span class="seg partial" style="flex:8" title="частично: 8"></span></span><span class="pill partial">частично 8</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-bwl <code>c94aa5a84d256d0934833f54e96ebcc302842f47</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">ZG</span><div class="sub">Зул&#x27;Гуруб · карта 309 · 20</div></th><td class="num">10</td><td><span class="bar"><span class="seg good" style="flex:7" title="есть: 7"></span><span class="seg partial" style="flex:3" title="частично: 3"></span></span><span class="pill good">есть 7</span> <span class="pill partial">частично 3</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-ZG <code>a5bba08a</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">Aq20</span><div class="sub">Руины Ан&#x27;Киража · карта 509 · 20</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span><span class="seg partial" style="flex:4" title="частично: 4"></span></span><span class="pill good">есть 2</span> <span class="pill partial">частично 4</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-Aq20 <code>83f7c792</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">AQ40</span><div class="sub">Храм Ан&#x27;Киража · карта 531 · 40</div></th><td class="num">9</td><td><span class="bar"><span class="seg good" style="flex:8" title="есть: 8"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 8</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-aq40 <code>9e896a49</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">Ony</span><div class="sub">Логово Ониксии · карта 249 · 10/25</div></th><td class="num">1</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span></span><span class="pill good">есть 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Kara</span><div class="sub">Каражан · карта 532 · 10</div></th><td class="num">13</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:9" title="частично: 9"></span><span class="seg none" style="flex:1" title="нет: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 9</span> <span class="pill none">нет 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-Kara <code>db7c4605</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div><div class="sub">Каражан · в плане 12 из 13. Исключение: Chess Event (Echo of Medivh).</div></td></tr><tr><th scope="row"><span class="rk">Gruul</span><div class="sub">Логово Груула · карта 565 · 25</div></th><td class="num">2</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span></span><span class="pill good">есть 2</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">Mag</span><div class="sub">Логово Магтеридона · карта 544 · 25</div></th><td class="num">1</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span></span><span class="pill good">есть 1</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">SSC</span><div class="sub">Логово Змея · карта 548 · 25</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:6" title="есть: 6"></span></span><span class="pill good">есть 6</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">TK</span><div class="sub">Крепость Бурь: Око · карта 550 · 25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-tk <code>6e3b5997</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">Hyjal</span><div class="sub">Битва за Хиджал · карта 534 · 25</div></th><td class="num">5</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span></span><span class="pill good">есть 5</span></td><td class="stage"></td></tr><tr><th scope="row"><span class="rk">BT</span><div class="sub">Чёрный храм · карта 564 · 25</div></th><td class="num">9</td><td><span class="bar"><span class="seg good" style="flex:8" title="есть: 8"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 8</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-BT <code>e5393749</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">ZA</span><div class="sub">Зул&#x27;Аман · карта 568 · 10</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-ZA <code>f41138da</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">SWP</span><div class="sub">Плато Солнечного Колодца · карта 580 · 25</div></th><td class="num">6</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-SWP <code>ddf3130d</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">Naxx</span><div class="sub">Наксрамас · карта 533 · 10/25</div></th><td class="num">15</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:10" title="частично: 10"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 10</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-naxx <code>45f55170</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">OS</span><div class="sub">Обсидиановое святилище · карта 615 · 10/25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span><span class="seg partial" style="flex:1" title="частично: 1"></span><span class="seg none" style="flex:2" title="нет: 2"></span></span><span class="pill good">есть 1</span> <span class="pill partial">частично 1</span> <span class="pill none">нет 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-OS <code>ba611c7b</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">EoE</span><div class="sub">Око Вечности · карта 616 · 10/25</div></th><td class="num">1</td><td><span class="bar"><span class="seg good" style="flex:1" title="есть: 1"></span></span><span class="pill good">есть 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-EoE <code>373c615c</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">Uld</span><div class="sub">Улдуар · карта 603 · 10/25</div></th><td class="num">14</td><td><span class="bar"><span class="seg good" style="flex:11" title="есть: 11"></span><span class="seg partial" style="flex:3" title="частично: 3"></span></span><span class="pill good">есть 11</span> <span class="pill partial">частично 3</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-Uld <code>49d25161</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">ToC</span><div class="sub">Испытание Крестоносца · карта 649 · 10/25 + героик</div></th><td class="num">7</td><td><span class="bar"><span class="seg good" style="flex:5" title="есть: 5"></span><span class="seg partial" style="flex:2" title="частично: 2"></span></span><span class="pill good">есть 5</span> <span class="pill partial">частично 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-toc <code>6f1c95c8</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">VoA</span><div class="sub">Крепость Аркавона · карта 624 · 10/25</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:2" title="есть: 2"></span><span class="seg partial" style="flex:2" title="частично: 2"></span></span><span class="pill good">есть 2</span> <span class="pill partial">частично 2</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-VoA <code>f54b838b</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">ICC</span><div class="sub">Цитадель Ледяной Короны · карта 631 · 10/25 + героик</div></th><td class="num">12</td><td><span class="bar"><span class="seg good" style="flex:7" title="есть: 7"></span><span class="seg partial" style="flex:5" title="частично: 5"></span></span><span class="pill good">есть 7</span> <span class="pill partial">частично 5</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-icc <code>b534abbef4a29d3370cbe2b42fb42861ccc484f1</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr><tr><th scope="row"><span class="rk">RS</span><div class="sub">Рубиновое святилище · карта 724 · 10/25 + героик</div></th><td class="num">4</td><td><span class="bar"><span class="seg good" style="flex:3" title="есть: 3"></span><span class="seg partial" style="flex:1" title="частично: 1"></span></span><span class="pill good">есть 3</span> <span class="pill partial">частично 1</span></td><td class="stage"><span class="state done">готово</span><div class="sub">raid/finish-RS <code>789be67c</code><br>Интегрировано в raid/all. Игровой тест ожидается.</div></td></tr></tbody>
     </table></div>
   </section>
 

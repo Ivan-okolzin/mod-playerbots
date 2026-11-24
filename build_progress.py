@@ -55,24 +55,22 @@ assert state["excluded_encounters"].keys() <= {raid["key"] for raid, _ in rows}
 waves = ["Naxx Kara ICC", "Uld BWL MC", "AQ40 Aq20 ZG", "ToC VoA OS", "TK BT ZA", "SWP RS EoE"]
 raids = {raid["key"]: raid for raid, _ in rows}
 queue = []
+outcomes = json.loads(Path(BASE, "finish_outcomes.json").read_text())
 queued = 0
 for number, wave in enumerate(waves, 1):
     queue.append(f"<h3>Волна {number} · {e(wave)}</h3>")
     for key in wave.split():
-        bosses = [b for b in raids[key]["bosses"] if b["status"] != "good"]
-        queued += len(bosses)
-        queue.append(f"<h4>{e(key)} · {len(bosses)}</h4><ul>")
-        for boss in bosses:
-            skipped = boss["name"] in state["excluded_encounters"].get(key, [])
-            stage = "пропущено" if skipped else "в очереди"
-            queue.append(f'<li>{e(boss["name"])} · <code>{e(boss["status"])}</code> · {stage}</li>')
-        queue.append("</ul>")
-        report = Path(BASE, "finish", key + ".md")
-        if report.is_file():
-            queue.append("<details><summary>Финальный отчёт · " + e(key)
-                         + "</summary><pre style='white-space:pre-wrap'>"
-                         + e(report.read_text(encoding="utf-8")) + "</pre></details>")
-assert queued == total_bosses - tot.get("good", 0)
+        entries = [item for item in outcomes if item["raid"] == key]
+        queued += len(entries)
+        report = Path(BASE, entries[0]["source"])
+        queue.append(f"<h4>{e(key)} · {len(entries)}</h4><ul>")
+        for item in entries:
+            queue.append(f'<li>{e(item["name"])} · <strong>{e(item["outcome"])}</strong> {e(item["reason"])} '
+                         f'<a href="https://github.com/Ivan-okolzin/mod-playerbots/blob/gh-pages/{e(item["source"])}">Отчёт</a></li>')
+        queue.append("</ul><details><summary>Финальный отчёт · " + e(key)
+                     + "</summary><pre style='white-space:pre-wrap'>"
+                     + e(report.read_text(encoding="utf-8")) + "</pre></details>")
+assert queued == len({(r["raid"], r["name"]) for r in outcomes}) == 68
 
 stage_styles = {"готово": "done", "в работе": "live", "реализация": "live", "независимое ревью": "live"}
 raid_rows = []
@@ -206,7 +204,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     «заглушка» — только вспомогательные, «нет» — ничего.</p>
   </header>
 
-  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Очередь</a> <a href="#tasks">Задачи</a> <a href="#questions">Вопросы</a></nav>
+  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Исходы</a> <a href="#tasks">Первые игровые тесты</a> <a href="#questions">Вопросы</a></nav>
   <section data-view="coverage" id="coverage">
     <h2>Сводка</h2>
     <div class="sum"><span class="big">__GOOD__</span><span class="pill">из __BOSSES__ боссов
@@ -216,13 +214,13 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     <div class="sum">__TOTPILLS__</div>
   </section>
 
-  <section data-view="queue" id="queue"><h2>Очередь · __COUNT__ встреч</h2>
+  <section data-view="queue" id="queue"><h2>Исходы · __COUNT__ встреч</h2>
     <p>Источник покрытия · <code>__SOURCE__</code></p>__QUEUE__</section>
-  <section data-view="tasks" id="tasks"><h2>Задачи</h2><ul class="cards">__TASKS__</ul></section>
+  <section data-view="tasks" id="tasks"><h2>Первые игровые тесты</h2><ul class="cards">__TASKS__</ul></section>
   <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards">__QUESTIONS__</ul></section>
   <section data-view="agents" id="agents">
     <p>Этапы по журналу агентов · __STAGES__. __EXCLUDED__</p>
-    <h2>Конвейер: один рейд — один агент</h2>
+    <h2>Интегрированные ветви</h2>
     <ul class="cards">__CARDS__</ul>
   </section>
 

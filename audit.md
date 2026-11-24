@@ -1,13 +1,13 @@
 # Аудит рейдовых тактик mod-playerbots
 
-Источник: `Ivan-okolzin/mod-playerbots origin/raid/all 7a7ad12369dba9ebdaae652ad2b0bacfa68ce28c`. Каталог энкаунтеров: `bosses.json`.
+Источник — `origin/raid/all@50081ef2d70eae8ffd26799032cf16fae67f5388`. Аудит рассчитан по исходникам рейдовых стратегий и `bosses.json`.
 Дата: 2026-11-24.
 
 Статусы: **есть** — 4+ механик подключено; **частично** — 1–3 механики; **заглушка** —
 подключены только вспомогательные вещи (аура сопротивления, метка, падение с платформы);
 **отключено** — объекты есть в коде, но закомментированы; **нет** — ничего.
 
-Итог по 157 энкаунтерам 23 рейдов: **есть** — 89, **частично** — 65, **нет** — 3.
+Итог по 157 энкаунтерам 23 рейдов: **есть** — 94, **частично** — 60, **нет** — 3.
 
 
 ## Classic
@@ -17,7 +17,7 @@
 | Босс | Статус | Подключённые триггеры |
 |---|---|---|
 | Lucifron | частично | `mc lucifron protectors spawned`, `mc lucifron shadow resistance`, `mc lucifron should be tanked` |
-| Magmadar | частично | `mc magmadar bot in lava bomb`, `mc magmadar fire resistance`, `mc magmadar should be tanked` |
+| Magmadar | частично | `mc magmadar bot in lava bomb`, `mc magmadar fire resistance`, `mc magmadar should be tanked`, `mc magmadar tremor` |
 | Gehennas | частично | `mc gehennas bot in rain of fire`, `mc gehennas flamewakers spawned`, `mc gehennas shadow resistance`, `mc gehennas should be tanked` |
 | Garr | частично | `mc garr fire resistance`, `mc garr firesworn spawned`, `mc garr should be tanked` |
 | Shazzrah | частично | `mc shazzrah lost threat`, `mc shazzrah ranged`, `mc shazzrah should be tanked` |
@@ -37,7 +37,7 @@
 | Vaelastrasz the Corrupt | частично | `bwl vaelastrasz burning adrenaline`, `bwl vaelastrasz fire resistance`, `bwl vaelastrasz positioning` |
 | Broodlord Lashlayer | частично | `bwl broodlord fire resistance`, `bwl broodlord ranged too close` |
 | Firemaw | частично | `bwl firemaw fire resistance`, `bwl firemaw not victim` |
-| Ebonroc | частично | `bwl ebonroc not victim` |
+| Ebonroc | частично | `bwl ebonroc not victim`, `bwl ebonroc tank swap` |
 | Flamegor | частично | `bwl flamegor fire resistance`, `bwl flamegor not victim` |
 | Chromaggus | частично | `bwl chromaggus avoid breath`, `bwl chromaggus fire resistance` |
 | Nefarian | частично | `bwl nefarian corrupted totem`, `bwl nefarian positioning`, `bwl nefarian wild magic` |
@@ -79,8 +79,8 @@
 | The Prophet Skeram | есть | `the prophet skeram attacking mind controlled ally`, `the prophet skeram images spawned`, `the prophet skeram ranged should spread`, `the prophet skeram should assign dps priority`, `the prophet skeram should be tanked` |
 | Silithid Royalty (Vem / Lord Kri / Princess Yauj) | есть | `bug trio bot in poison cloud`, `bug trio brood spawned`, `bug trio should assign dps priority`, `bug trio targets should be tanked` |
 | Battleguard Sartura | есть | `battleguard sartura melee in whirlwind range`, `battleguard sartura royal guards should be tanked`, `battleguard sartura should assign dps priority`, `battleguard sartura should be tanked` |
-| Fankriss the Unyielding | частично | `fankriss the unyielding main tank has mortal wound stacks`, `fankriss the unyielding should be tanked`, `fankriss the unyielding worms spawned` |
-| Viscidus | частично | `viscidus globs spawned`, `viscidus in frost phase`, `viscidus ranged should spread` |
+| Fankriss the Unyielding | есть | `fankriss the unyielding main tank has mortal wound stacks`, `fankriss the unyielding should be tanked`, `fankriss the unyielding spawns present`, `fankriss the unyielding worms spawned` |
+| Viscidus | есть | `viscidus frozen`, `viscidus globs spawned`, `viscidus in frost phase`, `viscidus ranged should spread` |
 | Princess Huhuran | частично | `princess huhuran bot in noxious poison`, `princess huhuran ranged should spread`, `princess huhuran should be tanked` |
 | Twin Emperors (Vek'lor / Vek'nilash) | есть | `twin emperors bot in blizzard`, `twin emperors casters should attack vek'lor`, `twin emperors melee should attack vek'nilash`, `twin emperors should be tanked apart` |
 | Ouro | есть | `ouro melee in front of boss`, `ouro ranged should spread`, `ouro scarabs spawned`, `ouro should be tanked`, `ouro submerged` |
@@ -115,7 +115,7 @@
 | Prince Malchezaar | частично | `prince malchezaar boss engaged by tanks`, `prince malchezaar bot is enfeebled`, `prince malchezaar engaged by non-tanks` |
 | Nightbane | есть | `nightbane boss engaged by tanks`, `nightbane boss is flying`, `nightbane bot went out of bounds`, `nightbane ground phase engaged by ranged`, `nightbane pets ignore collision to chase flying boss`, `nightbane should manage timers and trackers` |
 
-Общее и треш: `karazhan bot is not in combat`, `karazhan enemies cast fear`, `karazhan reset encounter states`, `karazhan set tremor totem`, `mana warp is about to explode`, `mana warp stun creature before warp breach`
+Общее и треш: `julianne casting eternal affection`, `julianne interrupt eternal affection`, `karazhan bot is not in combat`, `karazhan enemies cast fear`, `karazhan reset encounter states`, `karazhan set tremor totem`, `mana warp is about to explode`, `mana warp stun creature before warp breach`
 
 ### Gruul's Lair (Логово Груула), карта 565, 25, стратегия `gruulslair`
 
@@ -174,7 +174,7 @@
 |---|---|---|
 | High Warlord Naj'entus | есть | `high warlord naj'entus boss engaged by tanks`, `high warlord naj'entus boss has tidal shield`, `high warlord naj'entus casts needle spines`, `high warlord naj'entus player is impaled`, `high warlord naj'entus pulling boss` |
 | Supremus | есть | `supremus boss engaged by ranged`, `supremus boss is fixated on bot`, `supremus need to manage phase timer`, `supremus pulling boss or changing phase`, `supremus volcano is nearby` |
-| Shade of Akama | частично | `shade of akama killing channelers starts phase 2` |
+| Shade of Akama | частично | `shade of akama focus target`, `shade of akama killing channelers starts phase 2` |
 | Teron Gorefiend | есть | `teron gorefiend boss engaged by ranged`, `teron gorefiend boss engaged by tanks`, `teron gorefiend boss is casting shadow of death`, `teron gorefiend bot has shadow of death`, `teron gorefiend bot transformed into vengeful spirit`, `teron gorefiend pulling boss` |
 | Gurtogg Bloodboil | есть | `gurtogg bloodboil boss casts bloodboil`, `gurtogg bloodboil boss engaged by tanks`, `gurtogg bloodboil bot has fel rage`, `gurtogg bloodboil need to manage phase timer`, `gurtogg bloodboil pulling boss` |
 | Reliquary of Souls | есть | `reliquary of souls aggro resets upon phase change`, `reliquary of souls essence of desire casting deaden`, `reliquary of souls essence of desire has rune shield`, `reliquary of souls essence of suffering disables healing`, `reliquary of souls essence of suffering fixates on closest target` |
@@ -216,8 +216,8 @@
 | Босс | Статус | Подключённые триггеры |
 |---|---|---|
 | Anub'Rekhan | частично | `anub'rekhan` |
-| Grand Widow Faerlina | частично | `faerlina` |
-| Maexxna | частично | `maexxna` |
+| Grand Widow Faerlina | частично | `faerlina`, `faerlina follower present` |
+| Maexxna | частично | `maexxna`, `maexxna web wrap present` |
 | Noth the Plaguebringer | есть | `noth the plaguebringer balcony phase`, `noth the plaguebringer lost threat`, `noth the plaguebringer should be tanked`, `noth the plaguebringer skeletons should be tanked` |
 | Heigan the Unclean | частично | `heigan melee`, `heigan ranged` |
 | Loatheb | частично | `loatheb` |
@@ -244,7 +244,7 @@
 
 | Босс | Статус | Подключённые триггеры |
 |---|---|---|
-| Malygos | частично | `drake combat`, `group flying`, `malygos` — зарегистрированы, но не подключены: `power spark`; закомментировано строк: 2 |
+| Malygos | есть | `drake combat`, `group flying`, `malygos`, `power spark` |
 
 ### Ulduar (Улдуар), карта 603, 10/25, стратегия `ulduar`
 
@@ -257,11 +257,11 @@
 | The Assembly of Iron | частично | `iron assembly lightning tendrils trigger`, `iron assembly overload trigger`, `iron assembly rune of power trigger` |
 | Kologarn | есть | `kologarn attack dps target trigger`, `kologarn crunch armor trigger`, `kologarn eyebeam trigger`, `kologarn fall from floor trigger`, `kologarn mark dps target trigger`, `kologarn nature resistance trigger`, `kologarn rti target trigger`, `kologarn rubble slowdown trigger` |
 | Auriaya | есть | `auriaya bot in seeping essence`, `auriaya fall from floor trigger`, `auriaya feral defender spawned`, `auriaya sanctum sentry should be killed`, `auriaya sentries spawned`, `auriaya should be tanked` |
-| Hodir | частично | `hodir biting cold`, `hodir frost resistance trigger`, `hodir near snowpacked icicle` |
+| Hodir | частично | `hodir biting cold`, `hodir frost resistance trigger`, `hodir near snowpacked icicle`, `hodir player ice spawned` |
 | Thorim | есть | `thorim arena positioning trigger`, `thorim fall from floor trigger`, `thorim frost resistance trigger`, `thorim gauntlet positioning trigger`, `thorim mark dps target trigger`, `thorim nature resistance trigger`, `thorim phase 2 positioning trigger`, `thorim unbalancing strike trigger` |
-| Freya | частично | `freya fire resistance trigger`, `freya mark dps target trigger`, `freya move to healing spore trigger`, `freya nature resistance trigger`, `freya near nature bomb` |
+| Freya | есть | `freya fire resistance trigger`, `freya mark dps target trigger`, `freya move to healing spore trigger`, `freya nature resistance trigger`, `freya near nature bomb`, `freya strengthened iron roots spawned` |
 | Mimiron | есть | `mimiron aerial command unit trigger`, `mimiron cheat trigger`, `mimiron fire resistance trigger`, `mimiron p3wx2 laser barrage trigger`, `mimiron phase 1 positioning trigger`, `mimiron phase 4 mark dps trigger`, `mimiron rapid burst trigger`, `mimiron rocket strike trigger`, `mimiron shock blast trigger` |
-| General Vezax | частично | `vezax cheat trigger`, `vezax mark of the faceless trigger`, `vezax shadow crash trigger`, `vezax shadow resistance trigger` |
+| General Vezax | есть | `vezax cheat trigger`, `vezax mark of the faceless trigger`, `vezax saronite animus spawned`, `vezax shadow crash trigger`, `vezax shadow resistance trigger` |
 | Yogg-Saron | есть | `sara shadow resistance trigger`, `yogg-saron boss room movement cheat trigger`, `yogg-saron brain link trigger`, `yogg-saron death orb trigger`, `yogg-saron fall from floor trigger`, `yogg-saron guardian positioning trigger`, `yogg-saron illusion room trigger`, `yogg-saron lunatic gaze trigger`, `yogg-saron malady of the mind trigger`, `yogg-saron mark target trigger`, `yogg-saron move to enter portal trigger`, `yogg-saron move to exit portal trigger`, `yogg-saron ominous cloud cheat trigger`, `yogg-saron phase 3 positioning trigger`, `yogg-saron sanity trigger`, `yogg-saron shadow resistance trigger`, `yogg-saron use portal trigger` |
 | Algalon the Observer | есть | `algalon big bang incoming`, `algalon bot near cosmic smash`, `algalon collapsing star should be killed`, `algalon constellation chasing bot`, `algalon dark matter spawned`, `algalon main tank has phase punch stacks`, `algalon should be tanked` |
 
@@ -281,7 +281,7 @@
 
 | Босс | Статус | Подключённые триггеры |
 |---|---|---|
-| Archavon the Stone Watcher | частично | `archavon ranged should spread`, `archavon should be tanked` |
+| Archavon the Stone Watcher | частично | `archavon attacking non tank`, `archavon ranged should spread`, `archavon should be tanked` |
 | Emalon the Storm Watcher | есть | `emalon fall from floor trigger`, `emalon lighting nova trigger`, `emalon mark boss trigger`, `emalon nature resistance trigger`, `emalon overcharge trigger`, `emalon overcharged minion should be killed`, `emalon ranged should spread`, `emalon should be tanked`, `emalon tempest minions spawned` |
 | Koralon the Flame Watcher | частично | `koralon burning breath incoming`, `koralon fire resistance trigger`, `koralon ranged should spread`, `koralon should be tanked` |
 | Toravon the Ice Watcher | есть | `toravon bot in freezing ground`, `toravon bot near frozen orb`, `toravon bot pursued by frozen orb`, `toravon frozen orbs spawned`, `toravon should be tanked` |
@@ -303,7 +303,7 @@
 | Sindragosa | есть | `icc sindragosa blistering cold`, `icc sindragosa chilled to the bone`, `icc sindragosa frost beacon`, `icc sindragosa frost bomb`, `icc sindragosa group position`, `icc sindragosa hot`, `icc sindragosa mystic buffet`, `icc sindragosa unchained magic` |
 | The Lich King | есть | `icc lich king adds`, `icc lich king necrotic plague`, `icc lich king shadow trap`, `icc lich king spirit bomb`, `icc lich king winter` |
 
-Общее и треш: `icc cannon fire`, `icc dark reckoning`, `icc dogs`, `icc dogs tank position`, `icc rotting frost giant tank position`, `icc sister svalna`, `icc valkyre spear`
+Общее и треш: `icc avoid death and decay`, `icc cannon fire`, `icc dark reckoning`, `icc dogs`, `icc dogs tank position`, `icc rotting frost giant tank position`, `icc sister svalna`, `icc valkyre spear`
 
 ### The Ruby Sanctum (Рубиновое святилище), карта 724, 10/25 + героик, стратегия `rs`
 

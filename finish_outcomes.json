@@ -1,0 +1,478 @@
+[
+  {
+    "raid": "MC",
+    "name": "Lucifron",
+    "outcome": "уже покрыто",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Magmadar",
+    "outcome": "реализовано",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Gehennas",
+    "outcome": "уже покрыто",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Garr",
+    "outcome": "уже покрыто",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Shazzrah",
+    "outcome": "уже покрыто",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Baron Geddon",
+    "outcome": "реализовано",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "MC",
+    "name": "Sulfuron Harbinger",
+    "outcome": "уже покрыто",
+    "source": "finish/MC.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Razorgore the Untamed",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Vaelastrasz the Corrupt",
+    "outcome": "реализовано",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Broodlord Lashlayer",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Firemaw",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Ebonroc",
+    "outcome": "реализовано",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Flamegor",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Chromaggus",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "BWL",
+    "name": "Nefarian",
+    "outcome": "уже покрыто",
+    "source": "finish/BWL.md",
+    "reason": ""
+  },
+  {
+    "raid": "ZG",
+    "name": "High Priestess Mar'li",
+    "outcome": "реализовано",
+    "source": "finish/ZG.md",
+    "reason": ""
+  },
+  {
+    "raid": "ZG",
+    "name": "Gahz'ranka",
+    "outcome": "уже покрыто",
+    "source": "finish/ZG.md",
+    "reason": ""
+  },
+  {
+    "raid": "ZG",
+    "name": "High Priestess Arlokk",
+    "outcome": "реализовано",
+    "source": "finish/ZG.md",
+    "reason": ""
+  },
+  {
+    "raid": "Aq20",
+    "name": "Kurinnaxx",
+    "outcome": "реализовано",
+    "source": "finish/Aq20.md",
+    "reason": ""
+  },
+  {
+    "raid": "Aq20",
+    "name": "General Rajaxx",
+    "outcome": "уже покрыто",
+    "source": "finish/Aq20.md",
+    "reason": ""
+  },
+  {
+    "raid": "Aq20",
+    "name": "Moam",
+    "outcome": "реализовано",
+    "source": "finish/Aq20.md",
+    "reason": ""
+  },
+  {
+    "raid": "Aq20",
+    "name": "Ayamiss the Hunter",
+    "outcome": "реализовано",
+    "source": "finish/Aq20.md",
+    "reason": ""
+  },
+  {
+    "raid": "AQ40",
+    "name": "Fankriss the Unyielding",
+    "outcome": "реализовано",
+    "source": "finish/AQ40.md",
+    "reason": ""
+  },
+  {
+    "raid": "AQ40",
+    "name": "Viscidus",
+    "outcome": "реализовано",
+    "source": "finish/AQ40.md",
+    "reason": ""
+  },
+  {
+    "raid": "AQ40",
+    "name": "Princess Huhuran",
+    "outcome": "уже покрыто",
+    "source": "finish/AQ40.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Attumen the Huntsman",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Moroes",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Maiden of Virtue",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Opera: The Wizard of Oz",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Opera: The Big Bad Wolf",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Opera: Romulo and Julianne",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "The Curator",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Terestian Illhoof",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "Kara",
+    "name": "Chess Event (Echo of Medivh)",
+    "outcome": "пропущено",
+    "source": "finish/Kara.md",
+    "reason": "Шахматы исключены из задания на реализацию."
+  },
+  {
+    "raid": "Kara",
+    "name": "Prince Malchezaar",
+    "outcome": "реализовано",
+    "source": "finish/Kara.md",
+    "reason": ""
+  },
+  {
+    "raid": "TK",
+    "name": "High Astromancer Solarian",
+    "outcome": "реализовано",
+    "source": "finish/tk.md",
+    "reason": ""
+  },
+  {
+    "raid": "BT",
+    "name": "Shade of Akama",
+    "outcome": "реализовано",
+    "source": "finish/BT.md",
+    "reason": ""
+  },
+  {
+    "raid": "ZA",
+    "name": "Nalorakk",
+    "outcome": "реализовано",
+    "source": "finish/ZA.md",
+    "reason": ""
+  },
+  {
+    "raid": "SWP",
+    "name": "Kalecgos / Sathrovarr",
+    "outcome": "реализовано",
+    "source": "finish/SWP.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Anub'Rekhan",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Grand Widow Faerlina",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Maexxna",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Heigan the Unclean",
+    "outcome": "уже покрыто",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Loatheb",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Instructor Razuvious",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "The Four Horsemen",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Gluth",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Sapphiron",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "Naxx",
+    "name": "Kel'Thuzad",
+    "outcome": "реализовано",
+    "source": "finish/Naxx.md",
+    "reason": ""
+  },
+  {
+    "raid": "OS",
+    "name": "Tenebron",
+    "outcome": "реализовано",
+    "source": "finish/OS.md",
+    "reason": ""
+  },
+  {
+    "raid": "OS",
+    "name": "Shadron",
+    "outcome": "уже покрыто",
+    "source": "finish/OS.md",
+    "reason": ""
+  },
+  {
+    "raid": "OS",
+    "name": "Vesperon",
+    "outcome": "реализовано",
+    "source": "finish/OS.md",
+    "reason": ""
+  },
+  {
+    "raid": "EoE",
+    "name": "Malygos",
+    "outcome": "реализовано",
+    "source": "finish/EoE.md",
+    "reason": ""
+  },
+  {
+    "raid": "Uld",
+    "name": "Flame Leviathan",
+    "outcome": "реализовано",
+    "source": "finish/Uld.md",
+    "reason": ""
+  },
+  {
+    "raid": "Uld",
+    "name": "The Assembly of Iron",
+    "outcome": "реализовано",
+    "source": "finish/Uld.md",
+    "reason": ""
+  },
+  {
+    "raid": "Uld",
+    "name": "Hodir",
+    "outcome": "реализовано",
+    "source": "finish/Uld.md",
+    "reason": ""
+  },
+  {
+    "raid": "Uld",
+    "name": "Freya",
+    "outcome": "реализовано",
+    "source": "finish/Uld.md",
+    "reason": ""
+  },
+  {
+    "raid": "Uld",
+    "name": "General Vezax",
+    "outcome": "реализовано",
+    "source": "finish/Uld.md",
+    "reason": ""
+  },
+  {
+    "raid": "ToC",
+    "name": "Northrend Beasts: Acidmaw & Dreadscale",
+    "outcome": "реализовано",
+    "source": "finish/toc.md",
+    "reason": ""
+  },
+  {
+    "raid": "ToC",
+    "name": "Faction Champions",
+    "outcome": "реализовано",
+    "source": "finish/toc.md",
+    "reason": ""
+  },
+  {
+    "raid": "VoA",
+    "name": "Archavon the Stone Watcher",
+    "outcome": "реализовано",
+    "source": "finish/VoA.md",
+    "reason": ""
+  },
+  {
+    "raid": "VoA",
+    "name": "Koralon the Flame Watcher",
+    "outcome": "реализовано",
+    "source": "finish/VoA.md",
+    "reason": ""
+  },
+  {
+    "raid": "ICC",
+    "name": "Lord Marrowgar",
+    "outcome": "реализовано",
+    "source": "finish/ICC.md",
+    "reason": ""
+  },
+  {
+    "raid": "ICC",
+    "name": "Lady Deathwhisper",
+    "outcome": "реализовано",
+    "source": "finish/ICC.md",
+    "reason": ""
+  },
+  {
+    "raid": "ICC",
+    "name": "Deathbringer Saurfang",
+    "outcome": "реализовано",
+    "source": "finish/ICC.md",
+    "reason": ""
+  },
+  {
+    "raid": "ICC",
+    "name": "Festergut",
+    "outcome": "реализовано",
+    "source": "finish/ICC.md",
+    "reason": ""
+  },
+  {
+    "raid": "ICC",
+    "name": "Blood-Queen Lana'thel",
+    "outcome": "реализовано",
+    "source": "finish/ICC.md",
+    "reason": ""
+  },
+  {
+    "raid": "RS",
+    "name": "General Zarithrian",
+    "outcome": "реализовано",
+    "source": "finish/RS.md",
+    "reason": ""
+  }
+]
