@@ -162,7 +162,7 @@ namespace
 Unit* FindTwilightAdd(Player* bot)
 {
     for (uint32 entry : {NPC_DISCIPLE_OF_SHADRON, NPC_ACOLYTE_OF_SHADRON, NPC_DISCIPLE_OF_VESPERON,
-                         NPC_ACOLYTE_OF_VESPERON})
+                         NPC_ACOLYTE_OF_VESPERON, NPC_TWILIGHT_EGG})
         if (Creature* add = bot->FindNearestCreature(entry, 150.0f, true))
             return add;
 
@@ -205,7 +205,7 @@ bool EnterTwilightPortalAction::Execute(Event /*event*/)
     if (!ShouldEnterTwilightPortal(botAI))
         return false;
 
-    GameObject* portal = bot->FindNearestGameObject(GO_TWILIGHT_PORTAL, 100.0f);
+    GameObject* portal = bot->FindNearestGameObject(GO_TWILIGHT_PORTAL, 100.0f, true);
     if (!portal) { return false; }
 
     if (!portal->IsAtInteractDistance(bot))
@@ -221,7 +221,7 @@ bool EnterTwilightPortalAction::Execute(Event /*event*/)
 
 bool ExitTwilightPortalAction::Execute(Event /*event*/)
 {
-    if (!bot->HasAura(SPELL_TWILIGHT_SHIFT) || FindTwilightAdd(bot))
+    if (!bot->HasAura(SPELL_TWILIGHT_SHIFT) || IsStandaloneTenebronActive(bot) || FindTwilightAdd(bot))
         return false;
 
     GameObject* portal = bot->FindNearestGameObject(GO_NORMAL_PORTAL, 100.0f);

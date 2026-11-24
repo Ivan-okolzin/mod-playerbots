@@ -76,6 +76,7 @@ enum ObsidianSanctumIDs
 
 const uint32 OS_MAP_ID = 615;
 
+bool IsStandaloneTenebronActive(Player* bot);
 bool ShouldEnterTwilightPortal(PlayerbotAI* botAI);
 
 class SartharionTankTrigger : public Trigger

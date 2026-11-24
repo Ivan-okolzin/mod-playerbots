@@ -5,6 +5,7 @@
  */
 
 #include "OSTriggers.h"
+#include "InstanceScript.h"
 #include "SharedDefines.h"
 
 bool SartharionTankTrigger::IsActive()
@@ -72,7 +73,8 @@ bool SartharionMeleePositioningTrigger::IsActive()
     if (!PlayerbotAI::IsMelee(bot) || !PlayerbotAI::IsDps(bot)) { return false; }
 
     Unit* target = AI_VALUE(Unit*, "current target");
-    if (target && (target->GetEntry() == NPC_SHADRON || target->GetEntry() == NPC_VESPERON))
+    if (target && (target->GetEntry() == NPC_TENEBRON || target->GetEntry() == NPC_SHADRON ||
+                   target->GetEntry() == NPC_VESPERON))
         return true;
 
     Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
@@ -85,22 +87,34 @@ bool SartharionMeleePositioningTrigger::IsActive()
     return !(shadron || tenebron || vesperon);
 }
 
+bool IsStandaloneTenebronActive(Player* bot)
+{
+    constexpr uint32 dataTenebron = 1;
+    InstanceScript* instance = bot->GetInstanceScript();
+    return instance && instance->GetBossState(dataTenebron) == IN_PROGRESS;
+}
+
 bool ShouldEnterTwilightPortal(PlayerbotAI* botAI)
 {
     Player* bot = botAI->GetBot();
     if (bot->HasAura(SPELL_TWILIGHT_SHIFT) || PlayerbotAI::IsTank(bot) || PlayerbotAI::IsAssistHealOfIndex(bot, 0))
         return false;
 
+    if (IsStandaloneTenebronActive(bot))
+        return true;
+
     AiObjectContext* context = botAI->GetAiObjectContext();
     Unit* sartharion = AI_VALUE2(Unit*, "find target", "sartharion");
-    if (sartharion)
-        return sartharion->HasAura(SPELL_GIFT_OF_TWILIGHT_FIRE) || bot->HasAura(SPELL_TWILIGHT_TORMENT_SARTHARION);
+    if (sartharion && sartharion->HasAura(SPELL_GIFT_OF_TWILIGHT_FIRE))
+        return true;
 
     Unit* shadron = AI_VALUE2(Unit*, "find target", "shadron");
     Unit* vesperon = AI_VALUE2(Unit*, "find target", "vesperon");
     return (shadron && shadron->HasAura(SPELL_GIFT_OF_TWILIGHT_SHADOW)) ||
            (vesperon && (vesperon->HasAura(SPELL_TWILIGHT_TORMENT_VESPERON) ||
-                         bot->HasAura(SPELL_TWILIGHT_TORMENT_VESPERON)));
+                         vesperon->HasAura(SPELL_TWILIGHT_TORMENT_SARTHARION) ||
+                         bot->HasAura(SPELL_TWILIGHT_TORMENT_VESPERON))) ||
+           (sartharion && bot->HasAura(SPELL_TWILIGHT_TORMENT_SARTHARION));
 }
 
 bool TwilightPortalEnterTrigger::IsActive()
@@ -110,5 +124,5 @@ bool TwilightPortalEnterTrigger::IsActive()
 
 bool TwilightPortalExitTrigger::IsActive()
 {
-    return bot->HasAura(SPELL_TWILIGHT_SHIFT);
+    return bot->HasAura(SPELL_TWILIGHT_SHIFT) && !IsStandaloneTenebronActive(bot);
 }
