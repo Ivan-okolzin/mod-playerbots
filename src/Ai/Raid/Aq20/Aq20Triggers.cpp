@@ -43,7 +43,7 @@ bool Aq20MainTankAuraStacksTrigger::IsActiveInEncounter()
     if (!mainTank || boss->GetVictim() != mainTank)
         return false;
 
-    return GetAuraStacks(mainTank, _spellId) >= _stacks;
+    return GetAuraStacks(mainTank, _spellId) >= _stacks && !GetAuraStacks(bot, _spellId);
 }
 
 bool Aq20AddsSpawnedTrigger::IsActiveInEncounter()
@@ -54,6 +54,10 @@ bool Aq20AddsSpawnedTrigger::IsActiveInEncounter()
             if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
                 return false;
             break;
+        case Aq20AddRole::DamageAndOffTanks:
+            if (PlayerbotAI::IsMainTank(bot))
+                return false;
+            [[fallthrough]];
         case Aq20AddRole::Everyone:
             if (PlayerbotAI::IsHeal(bot))
                 return false;
@@ -120,7 +124,7 @@ bool AyamissShouldBeTankedTrigger::IsActiveInEncounter()
         return false;
 
     Unit* ayamiss = FindThreatCreature(bot, Id(Aq20Npcs::NPC_AYAMISS));
-    if (!IsAttackableNow(ayamiss) || IsAyamissInAirPhase(ayamiss))
+    if (!CanTankAyamiss(ayamiss))
         return false;
 
     return AI_VALUE(Unit*, "current target") != ayamiss || ayamiss->GetVictim() != bot;

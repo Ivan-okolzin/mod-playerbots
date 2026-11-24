@@ -72,6 +72,7 @@ private:
 enum class Aq20AddRole : uint8
 {
     Everyone,
+    DamageAndOffTanks,
     MeleeAndTanks,
 };
 
