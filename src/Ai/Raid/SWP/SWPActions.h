@@ -28,6 +28,17 @@ private:
     uint32 const _entry;
 };
 
+class KalecgosAttackRealmBossAction : public AttackAction
+{
+public:
+    KalecgosAttackRealmBossAction(PlayerbotAI* botAI, bool spectral)
+        : AttackAction(botAI, spectral ? "kalecgos attack sathrovarr" : "kalecgos attack boss"), _spectral(spectral) {}
+    bool Execute(Event event) override;
+
+private:
+    bool const _spectral;
+};
+
 class SwpAttackNearestAddAction : public AttackAction
 {
 public:
