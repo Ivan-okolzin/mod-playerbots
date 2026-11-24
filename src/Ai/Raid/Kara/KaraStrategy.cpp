@@ -55,6 +55,9 @@ void RaidKarazhanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         { NextAction("big bad wolf position boss", ACTION_RAID) }));
 
     // Romulo and Julianne
+    triggers.push_back(new TriggerNode("julianne casting eternal affection",
+        { NextAction("julianne interrupt eternal affection", ACTION_RAID + 2) }));
+
     triggers.push_back(new TriggerNode("romulo and julianne both bosses revived",
         { NextAction("romulo and julianne mark target", ACTION_RAID) }));
 

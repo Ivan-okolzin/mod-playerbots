@@ -37,6 +37,9 @@ enum class KaraSpells : uint32
     // Opera Event
     SPELL_LITTLE_RED_RIDING_HOOD  = 30756,
 
+    SPELL_ETERNAL_AFFECTION       = 30878,
+    SPELL_BURNING_STRAW           = 31075,
+
     // The Curator
     SPELL_CURATOR_EVOCATION       = 30254,
 

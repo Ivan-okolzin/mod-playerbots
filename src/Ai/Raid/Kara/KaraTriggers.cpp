@@ -125,6 +125,12 @@ bool BigBadWolfBossIsChasingLittleRedRidingHoodTrigger::IsActive()
 
 // Romulo and Julianne
 
+bool JulianneEternalAffectionTrigger::IsActive()
+{
+    Unit* julianne = AI_VALUE2(Unit*, "find target", "julianne");
+    return julianne && julianne->FindCurrentSpellBySpellId(Id(KaraSpells::SPELL_ETERNAL_AFFECTION));
+}
+
 bool RomuloAndJulianneBothBossesRevivedTrigger::IsActive()
 {
     if (!IsMechanicTrackerBot(bot, KARA_MAP_ID))
@@ -151,7 +157,11 @@ bool WizardOfOzNeedTargetPriorityTrigger::IsActive()
 
 bool WizardOfOzStrawmanIsVulnerableToFireTrigger::IsActive()
 {
-    return bot->getClass() == CLASS_MAGE && AI_VALUE2(Unit*, "find target", "strawman");
+    if (bot->getClass() != CLASS_MAGE)
+        return false;
+
+    Unit* strawman = AI_VALUE2(Unit*, "find target", "strawman");
+    return strawman && !strawman->HasAura(Id(KaraSpells::SPELL_BURNING_STRAW));
 }
 
 // The Curator
