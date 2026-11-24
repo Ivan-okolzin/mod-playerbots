@@ -62,8 +62,9 @@ bool IccDbsTankPositionAction::Execute(Event /*event*/)
 
         // Tank without Rune of Blood: taunt boss if current tank has the debuff
         Unit* currentTarget = boss->GetVictim();
-        if (currentTarget && currentTarget != bot && botAI->GetAura("Rune of Blood", currentTarget))
-            IccCastClassTaunt(bot, botAI,boss);
+        if (currentTarget && currentTarget != bot && botAI->GetAura("Rune of Blood", currentTarget) &&
+            IccCastClassTaunt(bot, botAI, boss))
+            return true;
 
         // Taunt any blood beasts not targeting a tank
         std::array<uint32, 4> const bloodBeastEntries = {NPC_BLOOD_BEAST1, NPC_BLOOD_BEAST2, NPC_BLOOD_BEAST3,

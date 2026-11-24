@@ -19,7 +19,8 @@ void RaidIccStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         { NextAction("icc dark reckoning", ACTION_MOVE + 5) }));
 
     triggers.push_back(new TriggerNode("icc lady deathwhisper",
-        { NextAction("icc ranged position lady deathwhisper", ACTION_MOVE + 2),
+        { NextAction("icc avoid death and decay", ACTION_RAID + 5),
+          NextAction("icc ranged position lady deathwhisper", ACTION_MOVE + 2),
                              NextAction("icc adds lady deathwhisper", ACTION_RAID + 3),
                              NextAction("icc shade lady deathwhisper", ACTION_RAID + 4) }));
 

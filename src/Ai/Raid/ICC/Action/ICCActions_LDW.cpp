@@ -4,6 +4,8 @@
  * or (at your option) any later version.
  */
 
+#include "DynamicObject.h"
+#include "SpellMgr.h"
 #include "GenericSpellActions.h"
 #include "ICCActions.h"
 #include "ICCTriggers.h"
@@ -15,6 +17,24 @@
 #include "Vehicle.h"
 
 // Lady Deathwhisper
+bool IccAvoidDeathAndDecayAction::Execute(Event /*event*/)
+{
+    Unit* boss = AI_VALUE2(Unit*, "find target", "lady deathwhisper");
+    if (!boss || !boss->IsInCombat())
+        return false;
+
+    constexpr uint32 deathAndDecay = 71001;
+    DynamicObject* zone = boss->GetDynObject(sSpellMgr->GetSpellIdForDifficulty(deathAndDecay, boss));
+    if (!zone || bot->GetExactDist(zone) > zone->GetRadius())
+        return false;
+
+    float const angle = zone->GetAngle(bot);
+    float const radius = zone->GetRadius() + 2.0f;
+    return MoveTo(bot->GetMapId(), zone->GetPositionX() + radius * std::cos(angle),
+                  zone->GetPositionY() + radius * std::sin(angle), bot->GetPositionZ(),
+                  false, false, false, true, MovementPriority::MOVEMENT_COMBAT);
+}
+
 bool IccDarkReckoningAction::Execute(Event /*event*/)
 {
     constexpr float SAFE_DISTANCE_THRESHOLD = 2.0f;

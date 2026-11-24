@@ -275,7 +275,7 @@ bool IccSpikeAction::Execute(Event /*event*/)
     HandleNoSpikesMarking(boss);
 
     // Melee non-tanks in front of boss should reposition
-    if (boss->isInFront(bot) && !PlayerbotAI::IsTank(bot) && !isBossInBoneStorm)
+    if (boss->isInFront(bot) && PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot) && !isBossInBoneStorm)
     {
         Position const safePosition = {-390.6757f, 2230.5283f, 0.0f};
         float const distance = bot->GetExactDist2d(safePosition.GetPositionX(), safePosition.GetPositionY());
