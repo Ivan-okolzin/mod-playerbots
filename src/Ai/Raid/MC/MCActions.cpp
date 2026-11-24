@@ -5,13 +5,13 @@
  */
 
 #include "MCActions.h"
+#include "EncounterHelpers.h"
 #include "MCHelpers.h"
 #include "Playerbots.h"
 #include "RtiTargetValue.h"
 #include <algorithm>
 
 static constexpr float LIVING_BOMB_DISTANCE = 20.0f;
-static constexpr float INFERNO_DISTANCE = 20.0f;
 
 // dedicated tank positions; prevents assist tanks from positioning Core Ragers on steep walls on pull
 static const Position GOLEMAGG_TANK_POSITION{795.7308, -994.8848, -207.18661};
@@ -24,29 +24,79 @@ static constexpr float HEALER_POSITION_TOLERANCE = 8.0f;
 static constexpr float GOLEMAGGS_TRUST_DISTANCE = 30.0f;
 static constexpr float CORE_RAGER_STEP_DISTANCE = 5.0f;
 
+using namespace EncounterHelpers;
 using namespace MoltenCoreHelpers;
+
+// Shared
+
+bool McAttackBossAction::Execute(Event /*event*/)
+{
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    if (!IsAttackableNow(boss))
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != boss && Attack(boss);
+}
+
+bool McTauntBossAction::Execute(Event event)
+{
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    if (!IsAttackableNow(boss))
+        return false;
+
+    // "taunt spell" casts at the bot's current target, so the switch has to come first.
+    if (AI_VALUE(Unit*, "current target") != boss)
+        return Attack(boss);
+
+    return botAI->DoSpecificAction("taunt spell", event, true);
+}
+
+bool McAttackNearestAddAction::Execute(Event /*event*/)
+{
+    Unit* add = GetNearestAttackableCachedUnit(botAI, _addsValue);
+    if (!add)
+        return false;
+
+    return AI_VALUE(Unit*, "current target") != add && Attack(add);
+}
+
+bool McMoveOutOfHazardAction::Execute(Event /*event*/)
+{
+    Position safePos;
+    if (!FindPositionOutsideHazards(botAI, _hazardValue, _radius, safePos))
+        return false;
+
+    bot->CastStop();
+    return MoveTo(MC_MAP_ID, safePos.GetPositionX(), safePos.GetPositionY(), bot->GetPositionZ(),
+                  false, false, false, false, MovementPriority::MOVEMENT_FORCED, true, false);
+}
+
+bool McFleeFromBossAction::Execute(Event /*event*/)
+{
+    Unit* boss = FindBoss(botAI, _bossEntry, _bossValue);
+    if (!boss)
+        return false;
+
+    float const distToTravel = _distance - bot->GetDistance2d(boss);
+    if (distToTravel <= 0.0f)
+        return false;
+
+    // Stop the swing and any channel aimed at an enemy so the run is not cut short. The target is
+    // kept on purpose: BaronGeddonAbilityMultiplier blocks every attack and cast while the aura
+    // holds, and the bot picks its rotation up again the moment it drops.
+    StopAttackingAndChanneling(bot);
+
+    return MoveAway(boss, distToTravel);
+}
+
+// Baron Geddon
 
 bool McMoveFromGroupAction::Execute(Event /*event*/)
 {
     return MoveFromGroup(LIVING_BOMB_DISTANCE);
 }
 
-bool McMoveFromBaronGeddonAction::Execute(Event /*event*/)
-{
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "baron geddon"))
-    {
-        float distToTravel = INFERNO_DISTANCE - bot->GetDistance2d(boss);
-        if (distToTravel > 0)
-        {
-            // Stop channeling spell first
-            bot->AttackStop();
-            bot->CastStop();
-
-            return MoveAway(boss, distToTravel);
-        }
-    }
-    return false;
-}
+// Shazzrah
 
 bool McShazzrahMoveAwayAction::Execute(Event /*event*/)
 {
@@ -59,58 +109,7 @@ bool McShazzrahMoveAwayAction::Execute(Event /*event*/)
     return false;
 }
 
-bool McMoveFromLavaAction::Execute(Event /*event*/)
-{
-    // Escape to the nearest raid member on dry ground: raids fight on the
-    // rock shelves, so a dry teammate marks the closest safe floor.
-    Unit* dryTarget = nullptr;
-    float bestDist = 100.0f;
-
-    if (Group* group = bot->GetGroup())
-    {
-        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
-        {
-            Player* member = ref->GetSource();
-            if (!member || member == bot || !member->IsAlive() || member->GetMapId() != bot->GetMapId())
-                continue;
-
-            if (member->GetLiquidData().Flags & MAP_LIQUID_TYPE_MAGMA)
-                continue;
-
-            float dist = bot->GetDistance(member);
-            if (dist < bestDist)
-            {
-                bestDist = dist;
-                dryTarget = member;
-            }
-        }
-    }
-
-    // No dry raid member in range: stay put and let the in-lava trigger fire
-    // again — any other destination (the current target included) can path
-    // straight back into the pool.
-    if (!dryTarget)
-        return false;
-
-    bot->CastStop();
-
-    if (!MoveTo(dryTarget->GetMapId(), dryTarget->GetPositionX(), dryTarget->GetPositionY(),
-                dryTarget->GetPositionZ(), false, false, false, true, MovementPriority::MOVEMENT_FORCED))
-        return false;
-
-    // Hold the AI so rotation/facing actions can't cancel the escape spline
-    // mid-lava. Capped at 2s on purpose: the in-lava trigger refires and
-    // re-issues the escape while the bot is still swimming.
-    constexpr uint32 MAX_ESCAPE_HOLD_MS = 2000;
-    constexpr float MIN_ESCAPE_SPEED = 0.1f;
-
-    float const speed = bot->GetSpeed(MOVE_RUN);
-    if (speed > MIN_ESCAPE_SPEED)
-        botAI->SetNextCheckDelay(
-            std::min(MAX_ESCAPE_HOLD_MS, uint32(IN_MILLISECONDS * bot->GetDistance(dryTarget) / speed)));
-
-    return true;
-}
+// Golemagg the Incinerator
 
 bool McGolemaggBackOffAction::Execute(Event /*event*/)
 {
@@ -300,6 +299,16 @@ bool McGolemaggAssistTankAttackCoreRagerAction::Execute(Event event)
     return false;
 }
 
+// Majordomo Executus
+
+bool McMajordomoStopAttackAction::Execute(Event /*event*/)
+{
+    // Auto-attack keeps swinging into the Damage Shield; the multiplier keeps a melee bot from re-engaging.
+    return bot->AttackStop();
+}
+
+// Trash and anywhere in the instance
+
 Unit* McCoreHoundMarkAction::GetTarget()
 {
     Unit* highestHealthHound = nullptr;
@@ -342,8 +351,55 @@ bool McCoreHoundMarkAction::Execute(Event /*event*/)
     return true;
 }
 
-bool McMajordomoStopAttackAction::Execute(Event /*event*/)
+bool McMoveFromLavaAction::Execute(Event /*event*/)
 {
-    // Auto-attack keeps swinging into the Damage Shield; the multiplier keeps a melee bot from re-engaging.
-    return bot->AttackStop();
+    // Escape to the nearest raid member on dry ground: raids fight on the
+    // rock shelves, so a dry teammate marks the closest safe floor.
+    Unit* dryTarget = nullptr;
+    float bestDist = 100.0f;
+
+    if (Group* group = bot->GetGroup())
+    {
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+        {
+            Player* member = ref->GetSource();
+            if (!member || member == bot || !member->IsAlive() || member->GetMapId() != bot->GetMapId())
+                continue;
+
+            if (member->GetLiquidData().Flags & MAP_LIQUID_TYPE_MAGMA)
+                continue;
+
+            float dist = bot->GetDistance(member);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                dryTarget = member;
+            }
+        }
+    }
+
+    // No dry raid member in range: stay put and let the in-lava trigger fire
+    // again — any other destination (the current target included) can path
+    // straight back into the pool.
+    if (!dryTarget)
+        return false;
+
+    bot->CastStop();
+
+    if (!MoveTo(dryTarget->GetMapId(), dryTarget->GetPositionX(), dryTarget->GetPositionY(),
+                dryTarget->GetPositionZ(), false, false, false, true, MovementPriority::MOVEMENT_FORCED))
+        return false;
+
+    // Hold the AI so rotation/facing actions can't cancel the escape spline
+    // mid-lava. Capped at 2s on purpose: the in-lava trigger refires and
+    // re-issues the escape while the bot is still swimming.
+    constexpr uint32 MAX_ESCAPE_HOLD_MS = 2000;
+    constexpr float MIN_ESCAPE_SPEED = 0.1f;
+
+    float const speed = bot->GetSpeed(MOVE_RUN);
+    if (speed > MIN_ESCAPE_SPEED)
+        botAI->SetNextCheckDelay(
+            std::min(MAX_ESCAPE_HOLD_MS, uint32(IN_MILLISECONDS * bot->GetDistance(dryTarget) / speed)));
+
+    return true;
 }

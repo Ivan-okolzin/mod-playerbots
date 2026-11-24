@@ -23,6 +23,16 @@
 
 using namespace MoltenCoreHelpers;
 
+float McHazardChaseHoldMultiplier::GetValueInEncounter(Action* action)
+{
+    // Only the two actions that walk the bot at its target are held: anything else, the escape
+    // included, has to keep running, or a bot whose escape found no way out would stand still.
+    if (!dynamic_cast<MeleeAction*>(action) && !dynamic_cast<CastReachTargetSpellAction*>(action))
+        return 1.0f;
+
+    return IsInHazard(botAI, _hazardValue, _radius) ? 0.0f : 1.0f;
+}
+
 static bool IsDpsBotWithAoeAction(Player* bot, Action* action)
 {
     if (PlayerbotAI::IsDps(bot))
@@ -56,7 +66,7 @@ static bool IsAllowedGeddonMovementAction(Action* action)
 {
     if (dynamic_cast<MovementAction*>(action) &&
                 !dynamic_cast<McMoveFromGroupAction*>(action) &&
-                !dynamic_cast<McMoveFromBaronGeddonAction*>(action))
+                !dynamic_cast<McFleeFromBossAction*>(action))
         return false;
 
     if (dynamic_cast<CastReachTargetSpellAction*>(action))

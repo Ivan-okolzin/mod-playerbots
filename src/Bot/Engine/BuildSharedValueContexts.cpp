@@ -10,6 +10,7 @@
 #include "GDValueContext.h"
 #include "GruulValueContext.h"
 #include "HyjalValueContext.h"
+#include "MCValueContext.h"
 #include "MagValueContext.h"
 #include "MechValueContext.h"
 #include "MgTValueContext.h"
@@ -35,6 +36,7 @@ void AiObjectContext::BuildSharedValueContexts(
     valueContexts.Add(new RaidGruulsLairValueContext());
     valueContexts.Add(new RaidHyjalValueContext());
     valueContexts.Add(new RaidMagtheridonValueContext());
+    valueContexts.Add(new RaidMcValueContext());
     valueContexts.Add(new RaidSscValueContext());
     valueContexts.Add(new RaidSwpValueContext());
     valueContexts.Add(new RaidCrusaderValueContext());
