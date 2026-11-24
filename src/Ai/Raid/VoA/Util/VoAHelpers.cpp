@@ -9,6 +9,7 @@
 #include "EncounterHelpers.h"
 #include "Playerbots.h"
 #include "SpellAuras.h"
+#include "SpellMgr.h"
 #include "ThreatManager.h"
 #include <algorithm>
 #include <cmath>
@@ -226,6 +227,17 @@ bool CastTankTaunt(PlayerbotAI* botAI, Unit* target)
     return botAI->CanCastSpell(taunt, target) && botAI->CastSpell(taunt, target);
 }
 
+Unit* GetArchavonToTaunt(Player* bot)
+{
+    if (!PlayerbotAI::IsMainTank(bot) || !EncounterHelpers::IsEncounterInProgress(bot, VOA_MAP_ID))
+        return nullptr;
+
+    Unit* boss = FindThreatCreature(bot, Id(VoANpcs::NPC_ARCHAVON));
+    Unit* victim = boss ? boss->GetVictim() : nullptr;
+    Player* player = victim ? victim->ToPlayer() : nullptr;
+    return player && player != bot && !PlayerbotAI::IsTank(player) && IsAttackableNow(boss) ? boss : nullptr;
+}
+
 // Emalon the Storm Watcher
 
 Unit* GetOverchargedMinion(PlayerbotAI* botAI)
@@ -246,7 +258,8 @@ bool IsBreathingFire(Unit* koralon)
     if (!koralon || !koralon->HasUnitState(UNIT_STATE_CASTING))
         return false;
 
-    return koralon->FindCurrentSpellBySpellId(Id(VoASpells::SPELL_BURNING_BREATH)) != nullptr;
+    uint32 const breath = sSpellMgr->GetSpellIdForDifficulty(Id(VoASpells::SPELL_BURNING_BREATH), koralon);
+    return koralon->FindCurrentSpellBySpellId(breath) != nullptr;
 }
 
 bool IsInFrontOfBreath(Player* bot, Unit* koralon)

@@ -15,6 +15,9 @@ void RaidVoAStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     //
     // Archavon the Stone Watcher
+    triggers.push_back(new TriggerNode(
+        "archavon attacking non tank",
+        { NextAction("archavon taunt boss", ACTION_RAID + 2) }));
     //
     triggers.push_back(new TriggerNode(
         "archavon should be tanked",

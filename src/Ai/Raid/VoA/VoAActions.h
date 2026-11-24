@@ -157,4 +157,15 @@ public:
     bool Execute(Event event) override;
 };
 
+class ArchavonTauntAction : public Action
+{
+public:
+    ArchavonTauntAction(PlayerbotAI* botAI) : Action(botAI, "archavon taunt boss") {}
+
+    bool Execute(Event /*event*/) override
+    {
+        return VoAHelpers::CastTankTaunt(botAI, VoAHelpers::GetArchavonToTaunt(bot));
+    }
+};
+
 #endif
