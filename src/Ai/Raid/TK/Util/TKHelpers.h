@@ -225,6 +225,7 @@ bool IsNearActiveArcaneOrb(Player* bot, float radius);
 
 // High Astromancer Solarian
 
+bool ShouldTargetSolariumPriests(PlayerbotAI* botAI);
 bool HasWrathOfTheAstromancer(Player* bot);
 
 // Kael'thas Sunstrider <Lord of the Blood Elves>

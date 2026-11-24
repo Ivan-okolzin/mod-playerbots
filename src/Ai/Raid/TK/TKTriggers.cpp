@@ -183,10 +183,7 @@ bool HighAstromancerSolarianWrathOfTheAstromancerTrigger::IsActiveInEncounter()
 
 bool HighAstromancerSolarianSolariumPriestsSpawnedTrigger::IsActiveInEncounter()
 {
-    if (!PlayerbotAI::IsMelee(bot) || PlayerbotAI::IsMainTank(bot))
-        return false;
-
-    return AI_VALUE2(Unit*, "find target", "solarium priest");
+    return ShouldTargetSolariumPriests(botAI) && AI_VALUE2(Unit*, "find target", "solarium priest");
 }
 
 // Kael'thas Sunstrider <Lord of the Blood Elves>
