@@ -19,6 +19,12 @@ class RaidUlduarActionContext : public NamedObjectContext<Action>
 public:
     RaidUlduarActionContext()
     {
+        creators["vezax attack saronite animus"] =
+            &RaidUlduarActionContext::attack_vezax_saronite_animus;
+        creators["freya attack strengthened iron roots"] =
+            &RaidUlduarActionContext::attack_freya_strengthened_iron_roots;
+        creators["hodir attack player ice"] =
+            &RaidUlduarActionContext::attack_hodir_player_ice;
         creators["flame leviathan vehicle"] = &RaidUlduarActionContext::flame_leviathan_vehicle;
         creators["flame leviathan enter vehicle"] = &RaidUlduarActionContext::flame_leviathan_enter_vehicle;
         creators["razorscale avoid devouring flames"] = &RaidUlduarActionContext::razorscale_avoid_devouring_flames;
@@ -147,6 +153,24 @@ public:
     }
 
 private:
+    static Action* attack_vezax_saronite_animus(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "vezax attack saronite animus",
+            UldHelpers::VEZAX_SARONITE_ANIMUS_VALUE);
+    }
+    static Action* attack_freya_strengthened_iron_roots(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "freya attack strengthened iron roots",
+            UldHelpers::FREYA_STRENGTHENED_IRON_ROOTS_VALUE);
+    }
+    static Action* attack_hodir_player_ice(PlayerbotAI* botAI)
+    {
+        return new UldAttackNearestAddAction(
+            botAI, "hodir attack player ice",
+            UldHelpers::HODIR_PLAYER_ICE_VALUE);
+    }
     static Action* flame_leviathan_vehicle(PlayerbotAI* botAI) { return new FlameLeviathanVehicleAction(botAI); }
     static Action* flame_leviathan_enter_vehicle(PlayerbotAI* botAI) { return new FlameLeviathanEnterVehicleAction(botAI); }
     static Action* razorscale_avoid_devouring_flames(PlayerbotAI* botAI) { return new RazorscaleAvoidDevouringFlameAction(botAI); }

@@ -281,8 +281,7 @@ bool IronAssemblyLightningTendrilsTrigger::IsActive()
     if (!boss || !boss->IsAlive())
         return false;
 
-    // Check if bot is within 35 yards of the boss
-    if (boss->GetDistance(bot) > 35.0f)
+    if (bot->GetDistance2d(boss) >= ULDUAR_TENDRILS_ESCAPE_DISTANCE)
         return false;
 
     // Check if the boss has the Lightning Tendrils aura
@@ -300,8 +299,7 @@ bool IronAssemblyOverloadTrigger::IsActive()
     if (!boss || !boss->IsAlive())
         return false;
 
-    // Check if bot is within 35 yards of the boss
-    if (boss->GetDistance(bot) > 35.0f)
+    if (bot->GetDistance2d(boss) >= ULDUAR_OVERLOAD_ESCAPE_DISTANCE)
         return false;
 
     // Check if the boss has the Overload aura
@@ -2180,6 +2178,10 @@ bool UldAddsSpawnedTrigger::IsActiveInEncounter()
 {
     switch (_role)
     {
+        case UldAddRole::Dps:
+            if (!PlayerbotAI::IsDps(bot))
+                return false;
+            break;
         case UldAddRole::MeleeAndTanks:
             if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
                 return false;

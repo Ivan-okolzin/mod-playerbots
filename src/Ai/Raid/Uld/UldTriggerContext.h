@@ -18,6 +18,12 @@ class RaidUlduarTriggerContext : public NamedObjectContext<Trigger>
 public:
     RaidUlduarTriggerContext()
     {
+        creators["vezax saronite animus spawned"] =
+            &RaidUlduarTriggerContext::vezax_saronite_animus_spawned;
+        creators["freya strengthened iron roots spawned"] =
+            &RaidUlduarTriggerContext::freya_strengthened_iron_roots_spawned;
+        creators["hodir player ice spawned"] =
+            &RaidUlduarTriggerContext::hodir_player_ice_spawned;
         creators["flame leviathan on vehicle"] = &RaidUlduarTriggerContext::flame_leviathan_on_vehicle;
         creators["flame leviathan vehicle near"] = &RaidUlduarTriggerContext::flame_leviathan_vehicle_near;
         creators["razorscale flying alone"] = &RaidUlduarTriggerContext::razorscale_flying_alone;
@@ -140,6 +146,24 @@ public:
     }
 
 private:
+    static Trigger* vezax_saronite_animus_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "vezax saronite animus spawned",
+            UldHelpers::VEZAX_SARONITE_ANIMUS_VALUE, UldAddRole::Dps);
+    }
+    static Trigger* freya_strengthened_iron_roots_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "freya strengthened iron roots spawned",
+            UldHelpers::FREYA_STRENGTHENED_IRON_ROOTS_VALUE, UldAddRole::Dps);
+    }
+    static Trigger* hodir_player_ice_spawned(PlayerbotAI* botAI)
+    {
+        return new UldAddsSpawnedTrigger(
+            botAI, "hodir player ice spawned",
+            UldHelpers::HODIR_PLAYER_ICE_VALUE, UldAddRole::Dps);
+    }
     static Trigger* flame_leviathan_on_vehicle(PlayerbotAI* botAI) { return new FlameLeviathanOnVehicleTrigger(botAI); }
     static Trigger* flame_leviathan_vehicle_near(PlayerbotAI* botAI) { return new FlameLeviathanVehicleNearTrigger(botAI); }
     static Trigger* razorscale_flying_alone(PlayerbotAI* botAI) { return new RazorscaleFlyingAloneTrigger(botAI); }

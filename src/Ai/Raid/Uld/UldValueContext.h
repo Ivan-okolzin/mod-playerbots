@@ -39,6 +39,12 @@ class RaidUlduarValueContext : public NamedObjectContext<UntypedValue>
 public:
     RaidUlduarValueContext()
     {
+        creators[UldHelpers::VEZAX_SARONITE_ANIMUS_VALUE] =
+            &RaidUlduarValueContext::vezax_saronite_animus;
+        creators[UldHelpers::FREYA_STRENGTHENED_IRON_ROOTS_VALUE] =
+            &RaidUlduarValueContext::freya_strengthened_iron_roots;
+        creators[UldHelpers::HODIR_PLAYER_ICE_VALUE] =
+            &RaidUlduarValueContext::hodir_player_ice;
         creators[UldHelpers::XT002_HEARTS_VALUE] = &RaidUlduarValueContext::xt002_hearts;
         creators[UldHelpers::XT002_VOID_ZONES_VALUE] = &RaidUlduarValueContext::xt002_void_zones;
         creators[UldHelpers::XT002_LIFE_SPARKS_VALUE] = &RaidUlduarValueContext::xt002_life_sparks;
@@ -70,6 +76,24 @@ public:
 private:
     // Both entries of every add: the 25-man raid spawns difficulty_entry_1 of the 10-man template
     // instead, and nothing tells a bot which raid size it is in.
+    static UntypedValue* vezax_saronite_animus(PlayerbotAI* botAI)
+    {
+        return new UldCreatureGuidsValue(
+            botAI, UldHelpers::VEZAX_SARONITE_ANIMUS_VALUE,
+            { 33524, 34152 });
+    }
+    static UntypedValue* freya_strengthened_iron_roots(PlayerbotAI* botAI)
+    {
+        return new UldCreatureGuidsValue(
+            botAI, UldHelpers::FREYA_STRENGTHENED_IRON_ROOTS_VALUE,
+            { 33168, 33397 });
+    }
+    static UntypedValue* hodir_player_ice(PlayerbotAI* botAI)
+    {
+        return new UldCreatureGuidsValue(
+            botAI, UldHelpers::HODIR_PLAYER_ICE_VALUE,
+            { 32926, 33352 });
+    }
     static UntypedValue* xt002_hearts(PlayerbotAI* botAI)
     {
         return new UldCreatureGuidsValue(
