@@ -315,6 +315,20 @@ bool IsNearActiveArcaneOrb(Player* bot, float radius)
 
 // High Astromancer Solarian
 
+bool ShouldTargetSolariumPriests(PlayerbotAI* botAI)
+{
+    Player* bot = botAI->GetBot();
+    if (PlayerbotAI::IsMainTank(bot) || PlayerbotAI::IsHeal(bot))
+        return false;
+
+    if (PlayerbotAI::IsMelee(bot))
+        return true;
+
+    AiObjectContext* context = botAI->GetAiObjectContext();
+    return PlayerbotAI::IsRanged(bot) && PlayerbotAI::IsDps(bot) &&
+        !AI_VALUE2(Unit*, "find target", "solarium agent");
+}
+
 bool HasWrathOfTheAstromancer(Player* bot)
 {
     return bot->HasAura(Id(TkSpells::SPELL_WRATH_OF_THE_ASTROMANCER));

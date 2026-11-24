@@ -753,7 +753,8 @@ bool VoidReaverAvoidArcaneOrbAction::Execute(Event /*event*/)
 bool HighAstromancerSolarianMainTankPickUpBossAction::Execute(Event /*event*/)
 {
     Unit* astromancer = AI_VALUE2(Unit*, "find target", "high astromancer solarian");
-    if (!astromancer)
+    Creature* creature = astromancer ? astromancer->ToCreature() : nullptr;
+    if (!PlayerbotAI::IsMainTank(bot) || !creature || creature->GetReactState() == REACT_PASSIVE)
         return false;
 
     return AI_VALUE(Unit*, "current target") != astromancer && Attack(astromancer);
@@ -762,7 +763,7 @@ bool HighAstromancerSolarianMainTankPickUpBossAction::Execute(Event /*event*/)
 bool HighAstromancerSolarianMoveAwayFromGroupAction::Execute(Event /*event*/)
 {
     constexpr float safeDistance = 15.0f;
-    if (!GetNearestPlayerInRadius(bot, safeDistance))
+    if (!HasWrathOfTheAstromancer(bot) || !GetNearestPlayerInRadius(bot, safeDistance))
         return false;
 
     bot->CastStop();
@@ -771,11 +772,14 @@ bool HighAstromancerSolarianMoveAwayFromGroupAction::Execute(Event /*event*/)
 
 bool HighAstromancerSolarianTargetSolariumPriestsAction::Execute(Event /*event*/)
 {
+    if (!ShouldTargetSolariumPriests(botAI))
+        return false;
+
     auto const& priestsPair = GetTargetUnitPair(botAI, Id(TkNpcs::NPC_SOLARIUM_PRIEST));
     if (!priestsPair.first)
         return false;
 
-    if (PlayerbotAI::IsRanged(bot) && !AI_VALUE2(Unit*, "find target", "solarium agent"))
+    if (!PlayerbotAI::IsMelee(bot))
     {
         return AI_VALUE(Unit*, "current target") != priestsPair.first &&
             Attack(priestsPair.first);
@@ -805,7 +809,7 @@ std::vector<Player*> HighAstromancerSolarianTargetSolariumPriestsAction::GetMele
             continue;
         }
 
-        if (PlayerbotAI::IsMelee(member) && !PlayerbotAI::IsMainTank(member))
+        if (PlayerbotAI::IsMelee(member) && !PlayerbotAI::IsMainTank(member) && !PlayerbotAI::IsHeal(member))
             meleeMembers.push_back(member);
     }
 

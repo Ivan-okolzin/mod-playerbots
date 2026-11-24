@@ -201,26 +201,17 @@ float HighAstromancerSolarianDisableMeleeTargetingMultiplier::GetValueInEncounte
     if (botAI->GetState() == BOT_STATE_NON_COMBAT)
         return 1.0f;
 
-    if (!PlayerbotAI::IsMelee(bot))
-        return 1.0f;
-
     if (!dynamic_cast<TankAssistAction*>(action) && !dynamic_cast<DpsAssistAction*>(action))
-        return 1.0f;
-
-    Unit* astromancer = AI_VALUE2(Unit*, "find target", "high astromancer solarian");
-    if (!astromancer)
         return 1.0f;
 
     if (PlayerbotAI::IsMainTank(bot))
     {
-        Creature* astromancerCreature = astromancer->ToCreature();
-        if (astromancerCreature && astromancerCreature->GetReactState() != REACT_PASSIVE)
-            return 0.0f;
-
-        return 1.0f;
+        Unit* astromancer = AI_VALUE2(Unit*, "find target", "high astromancer solarian");
+        Creature* creature = astromancer ? astromancer->ToCreature() : nullptr;
+        return creature && creature->GetReactState() != REACT_PASSIVE ? 0.0f : 1.0f;
     }
 
-    return AI_VALUE2(Unit*, "find target", "solarium priest") ? 0.0f : 1.0f;
+    return ShouldTargetSolariumPriests(botAI) && AI_VALUE2(Unit*, "find target", "solarium priest") ? 0.0f : 1.0f;
 }
 
 // Kael'thas Sunstrider <Lord of the Blood Elves>
