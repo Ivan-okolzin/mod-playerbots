@@ -30,6 +30,7 @@ public:
 
         creators["bwl firemaw fire resistance"] = &RaidBwlTriggerContext::bwl_firemaw_fire_resistance_trigger;
         creators["bwl firemaw not victim"] = &RaidBwlTriggerContext::bwl_firemaw_not_victim;
+        creators["bwl ebonroc tank swap"] = &RaidBwlTriggerContext::bwl_ebonroc_tank_swap;
         creators["bwl ebonroc not victim"] = &RaidBwlTriggerContext::bwl_ebonroc_not_victim;
         creators["bwl flamegor fire resistance"] = &RaidBwlTriggerContext::bwl_flamegor_fire_resistance_trigger;
         creators["bwl flamegor not victim"] = &RaidBwlTriggerContext::bwl_flamegor_not_victim;
@@ -57,6 +58,7 @@ private:
     static Trigger* bwl_broodlord_ranged_too_close(PlayerbotAI* botAI) { return new BwlBroodlordRangedTooCloseTrigger(botAI); }
     static Trigger* bwl_firemaw_fire_resistance_trigger(PlayerbotAI* botAI) { return new BossFireResistanceTrigger(botAI, "firemaw"); }
     static Trigger* bwl_firemaw_not_victim(PlayerbotAI* botAI) { return new BwlBlackDrakeNotVictimTrigger(botAI, "firemaw"); }
+    static Trigger* bwl_ebonroc_tank_swap(PlayerbotAI* botAI) { return new BwlEbonrocTankSwapTrigger(botAI); }
     static Trigger* bwl_ebonroc_not_victim(PlayerbotAI* botAI) { return new BwlBlackDrakeNotVictimTrigger(botAI, "ebonroc"); }
     static Trigger* bwl_flamegor_fire_resistance_trigger(PlayerbotAI* botAI) { return new BossFireResistanceTrigger(botAI, "flamegor"); }
     static Trigger* bwl_flamegor_not_victim(PlayerbotAI* botAI) { return new BwlBlackDrakeNotVictimTrigger(botAI, "flamegor"); }

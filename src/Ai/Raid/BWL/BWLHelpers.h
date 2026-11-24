@@ -21,6 +21,7 @@ namespace BlackwingLairHelpers
         SPELL_MINDCONTROL = 19832,
 
         // Vaelastrasz the Corrupt
+        SPELL_SHADOW_OF_EBONROC = 23340,
         SPELL_BURNING_ADRENALINE = 18173,
 
         // Chromaggus
@@ -79,7 +80,7 @@ namespace BlackwingLairHelpers
     bool IsActiveSuppressionDeviceInRange(GameObject const* go, Player const* bot);
     bool AreRazorgoreEggsAlive(PlayerbotAI* botAI);
     bool IsRazorgoreOffTank(Player* bot);
-    bool IsNonBABotNearPosition(Player const* bot, Position const& position, float distance);
+    bool IsGroupMemberNearPosition(Player const* bot, Position const& position, float distance);
     bool IsCorruptedWhelp(Unit const* unit);
     bool IsCorruptedTotemEntry(uint32 entry);
     bool IsCorruptedTotem(Unit const* unit);

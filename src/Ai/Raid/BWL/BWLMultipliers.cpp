@@ -126,8 +126,8 @@ float VaelastraszBurningAdrenalineMultiplier::GetValue(Action* action)
                     return 1.0f;
             }
 
-            // Block ALL other movement once bot is far enough from non-BA bots
-            if (!IsNonBABotNearPosition(bot, bot->GetPosition(), VAELASTRASZ_BA_SAFE_DISTANCE) ||
+            // Block ALL other movement once bot is far enough from other group members
+            if (!IsGroupMemberNearPosition(bot, bot->GetPosition(), VAELASTRASZ_BA_SAFE_DISTANCE) ||
                 !dynamic_cast<BwlVaelastraszMoveAwayAction*>(action))
                 return 0.0f;
         }
