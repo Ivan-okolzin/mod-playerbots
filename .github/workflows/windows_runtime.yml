@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          ref: 50081ef2d70eae8ffd26799032cf16fae67f5388
+          ref: 796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57
           path: a/modules/mod-playerbots
 
       - name: Move source tree to short path
