@@ -45,12 +45,13 @@ bool ZulAmanMisdirectBossToMainTankAction::Execute(Event /*event*/)
     if (!boss)
         return false;
 
-    Player* mainTank = GetGroupMainTank(bot);
-    if (!mainTank || !mainTank->IsAlive())
+    Player* tank = boss->GetEntry() == Id(ZaNpcs::NPC_NALORAKK)
+        ? GetNalorakkTank(bot, boss) : GetGroupMainTank(bot);
+    if (!tank || !tank->IsAlive())
         return false;
 
-    if (botAI->CanCastSpell(Id(ZaSpells::SPELL_MISDIRECTION), mainTank))
-        return botAI->CastSpell(Id(ZaSpells::SPELL_MISDIRECTION), mainTank);
+    if (botAI->CanCastSpell(Id(ZaSpells::SPELL_MISDIRECTION), tank))
+        return botAI->CastSpell(Id(ZaSpells::SPELL_MISDIRECTION), tank);
 
     if (!bot->HasAura(Id(ZaSpells::SPELL_MISDIRECTION_AURA)))
         return false;
@@ -141,6 +142,13 @@ bool AkilzonStartElectricalStormTimerAction::Execute(Event /*event*/)
 
 // Nalorakk <Bear Avatar>
 
+bool NalorakkSpreadForSurgeAction::Execute(Event event)
+{
+    Unit* boss = AI_VALUE2(Unit*, "find target", "nalorakk");
+    return boss && !IsNalorakkInBearForm(boss) && PlayerbotAI::IsRanged(bot) &&
+        ZulAmanSpreadRangedAction::Execute(event);
+}
+
 bool NalorakkTanksPositionBossAction::Execute(Event event)
 {
     Unit* nalorakk = AI_VALUE2(Unit*, "find target", "nalorakk");
@@ -150,13 +158,7 @@ bool NalorakkTanksPositionBossAction::Execute(Event event)
     if (AI_VALUE(Unit*, "current target") != nalorakk)
         return Attack(nalorakk);
 
-    Player* nalorakkTank = nullptr;
-    if (IsNalorakkInBearForm(nalorakk))
-        nalorakkTank = GetGroupMainTank(bot);
-    else
-        nalorakkTank = GetGroupAssistTank(bot, 0);
-
-    if (nalorakkTank && nalorakkTank == bot)
+    if (GetNalorakkTank(bot, nalorakk) == bot)
     {
         if (nalorakk->GetVictim() != bot)
             return botAI->DoSpecificAction("taunt spell", event, true);
