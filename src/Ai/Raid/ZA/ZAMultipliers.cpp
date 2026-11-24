@@ -175,10 +175,7 @@ float ZulAmanDisableTankActionsMultiplier::GetValueInEncounter(Action* action)
         if (!isTaunt)
             return 0.0f;
 
-        bool const isFormTank = IsNalorakkInBearForm(boss)
-            ? PlayerbotAI::IsMainTank(bot) : PlayerbotAI::IsAssistTankOfIndex(bot, 0, true);
-
-        return isFormTank ? 1.0f : 0.0f;
+        return GetNalorakkTank(bot, boss) == bot ? 1.0f : 0.0f;
     }
 
     // Halazzi: The assist tank picks up the lynx so disable the main tank from taunting it.

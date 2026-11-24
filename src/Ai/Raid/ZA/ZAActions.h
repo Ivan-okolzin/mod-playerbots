@@ -102,6 +102,14 @@ public:
 
 // Nalorakk <Bear Avatar>
 
+class NalorakkSpreadForSurgeAction : public ZulAmanSpreadRangedAction
+{
+public:
+    NalorakkSpreadForSurgeAction(PlayerbotAI* botAI)
+        : ZulAmanSpreadRangedAction(botAI, "nalorakk spread ranged", 11.0f) {}
+    bool Execute(Event event) override;
+};
+
 class NalorakkTanksPositionBossAction : public AttackAction
 {
 public:

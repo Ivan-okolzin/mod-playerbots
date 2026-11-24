@@ -136,6 +136,7 @@ Player* GetElectricalStormTarget(Player* bot);
 inline Position const NALORAKK_TANK_POSITION = { -80.208f, 1324.530f, 40.942f };
 
 bool IsNalorakkInBearForm(Unit* nalorakk);
+Player* GetNalorakkTank(Player* bot, Unit* nalorakk);
 
 // Jan'alai <Dragonhawk Avatar>
 

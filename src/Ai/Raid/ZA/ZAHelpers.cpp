@@ -107,6 +107,22 @@ bool IsNalorakkInBearForm(Unit* nalorakk)
     return nalorakk && nalorakk->HasAura(Id(ZaSpells::SPELL_BEARFORM));
 }
 
+Player* GetNalorakkTank(Player* bot, Unit* nalorakk)
+{
+    if (IsNalorakkInBearForm(nalorakk))
+    {
+        if (Player* mainTank = GetGroupMainTank(bot))
+            return mainTank;
+
+        return GetGroupAssistTank(bot, 0);
+    }
+
+    if (Player* assistTank = GetGroupAssistTank(bot, 0))
+        return assistTank;
+
+    return GetGroupMainTank(bot);
+}
+
 // Jan'alai <Dragonhawk Avatar>
 
 std::pair<Unit*, Unit*> GetAmanishiHatcherPair(PlayerbotAI* botAI)

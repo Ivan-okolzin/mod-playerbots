@@ -157,7 +157,7 @@ private:
     }
     static Action* nalorakk_spread_ranged(PlayerbotAI* botAI)
     {
-        return new ZulAmanSpreadRangedAction(botAI, "nalorakk spread ranged", 11.0f);
+        return new NalorakkSpreadForSurgeAction(botAI);
     }
 
     // Jan'alai <Dragonhawk Avatar>

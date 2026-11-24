@@ -97,7 +97,8 @@ bool NalorakkBothFormsShouldBeTankedTrigger::IsActiveInEncounter()
 
 bool NalorakkSpreadForSurgeTrigger::IsActiveInEncounter()
 {
-    return PlayerbotAI::IsRanged(bot) && AI_VALUE2(Unit*, "find target", "nalorakk");
+    Unit* boss = AI_VALUE2(Unit*, "find target", "nalorakk");
+    return boss && !IsNalorakkInBearForm(boss) && PlayerbotAI::IsRanged(bot);
 }
 
 // Jan'alai <Dragonhawk Avatar>
