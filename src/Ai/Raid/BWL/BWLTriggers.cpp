@@ -5,6 +5,7 @@
  */
 
 #include "BWLTriggers.h"
+#include "Action.h"
 #include "BWLHelpers.h"
 #include "Playerbots.h"
 
@@ -83,6 +84,12 @@ bool BwlBlackDrakeNotVictimTrigger::IsActive()
 }
 
 // Chromaggus
+
+bool BwlChromaggusBreathTrigger::IsActive()
+{
+    Action* action = botAI->GetAiObjectContext()->GetAction("bwl chromaggus avoid breath");
+    return action && action->isUseful();
+}
 
 bool BwlAfflictionBronzeTrigger::IsActive()
 {

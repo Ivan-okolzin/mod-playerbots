@@ -68,6 +68,13 @@ private:
 
 // Chromaggus
 
+class BwlChromaggusBreathTrigger : public Trigger
+{
+public:
+    BwlChromaggusBreathTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bwl chromaggus avoid breath", 1) {}
+    bool IsActive() override;
+};
+
 class BwlAfflictionBronzeTrigger : public Trigger
 {
 public:

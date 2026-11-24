@@ -10,6 +10,7 @@
 #include "Action.h"
 #include "AttackAction.h"
 #include "MovementActions.h"
+#include "UseItemAction.h"
 
 // General
 
@@ -80,10 +81,24 @@ public:
 
 // Chromaggus
 
-class BwlUseHourglassSandAction : public Action
+class BwlChromaggusBreathAction : public MovementAction
 {
 public:
-    BwlUseHourglassSandAction(PlayerbotAI* botAI) : Action(botAI, "bwl use hourglass sand") {}
+    BwlChromaggusBreathAction(PlayerbotAI* botAI) : MovementAction(botAI, "bwl chromaggus avoid breath") {}
+    bool isUseful() override;
+    bool Execute(Event event) override;
+
+private:
+    Position returnPosition;
+    ObjectGuid coverBoss;
+};
+
+class BwlUseHourglassSandAction : public UseItemAction
+{
+public:
+    BwlUseHourglassSandAction(PlayerbotAI* botAI) : UseItemAction(botAI, "bwl use hourglass sand", true, "Hitem:19183:")
+    {
+    }
     bool Execute(Event event) override;
 };
 

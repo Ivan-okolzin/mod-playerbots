@@ -48,6 +48,8 @@ void RaidBwlStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("bwl chromaggus fire resistance", {
         NextAction("bwl chromaggus fire resistance", ACTION_RAID) }));
+    triggers.push_back(
+        new TriggerNode("bwl chromaggus avoid breath", {NextAction("bwl chromaggus avoid breath", ACTION_RAID + 4)}));
     triggers.push_back(new TriggerNode("bwl affliction bronze", {
         NextAction("bwl use hourglass sand", ACTION_RAID) }));
 
@@ -69,6 +71,7 @@ void RaidBwlStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
     multipliers.push_back(new RazorgoreTankMultiplier(botAI));
     multipliers.push_back(new VaelastraszTankMultiplier(botAI));
     multipliers.push_back(new VaelastraszBurningAdrenalineMultiplier(botAI));
+    multipliers.push_back(new ChromaggusMultiplier(botAI));
     multipliers.push_back(new NefarianCorruptedHealingMultiplier(botAI));
     multipliers.push_back(new NefarianCorruptedTotemMultiplier(botAI));
 }
