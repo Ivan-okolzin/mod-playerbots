@@ -51,12 +51,13 @@ for raid, _ in rows:
                                    f'Исключение: {e(", ".join(excluded))}.')
 assert state["excluded_encounters"].keys() <= {raid["key"] for raid, _ in rows}
 
+stage_styles = {"готово": "done", "в работе": "live", "реализация": "live", "независимое ревью": "live"}
 raid_rows = []
 for r, cnt in rows:
     w = by_key.get(r["key"])
     stage = ""
     if w:
-        cls = {"готово": "done", "в работе": "live"}.get(w["state"], "wait")
+        cls = stage_styles.get(w["state"], "wait")
         commit = (' <code>%s</code>' % e(w["commit"])) if w["commit"] else ""
         stage = ('<span class="state %s">%s</span><div class="sub">%s%s<br>%s</div>'
                  % (cls, e(w["state"]), e(w["branch"]), commit, e(w["note"])))
@@ -68,12 +69,12 @@ for r, cnt in rows:
         % (e(r["key"]), e(r["name_ru"]), r["map"], e(r["sizes"]), len(r["bosses"]),
            bar(cnt, len(r["bosses"])), counts(cnt), stage))
 
-live = [w for w in state["work"] if w["state"] == "в работе"]
+live = [w for w in state["work"] if stage_styles.get(w["state"]) == "live"]
 done = [w for w in state["work"] if w["state"] == "готово"]
 
 cards = []
 for w in state["work"]:
-    cls = {"готово": "done", "в работе": "live"}.get(w["state"], "wait")
+    cls = stage_styles.get(w["state"], "wait")
     cards.append(
         '<li class="card %s"><div class="chead"><span class="rk">%s</span>'
         '<span class="state %s">%s</span></div><div class="ctitle">%s</div>'
