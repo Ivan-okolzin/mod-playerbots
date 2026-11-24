@@ -52,7 +52,8 @@ void RaidMcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                         { NextAction("mc lucifron tank attack nearest protector", ACTION_RAID + 2) }));
 
     // Magmadar
-    // TODO: tremor totem, or general anti-fear strat development. Same as King Dred (Drak'Tharon) and faction commander (Nexus).
+    triggers.push_back(
+        new TriggerNode("mc magmadar tremor", { NextAction("tremor totem", ACTION_RAID + 2) }));
     triggers.push_back(
         new TriggerNode("mc magmadar fire resistance",
                         { NextAction("mc magmadar fire resistance", ACTION_RAID) }));
@@ -96,10 +97,10 @@ void RaidMcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                         { NextAction("mc baron geddon fire resistance", ACTION_RAID) }));
     triggers.push_back(
         new TriggerNode("mc living bomb debuff",
-                        { NextAction("mc move from group", ACTION_RAID) }));
+                        { NextAction("mc move from group", ACTION_RAID + 2) }));
     triggers.push_back(
         new TriggerNode("mc baron geddon inferno",
-                        { NextAction("mc move from baron geddon", ACTION_RAID) }));
+                        { NextAction("mc move from baron geddon", ACTION_RAID + 1) }));
 
     // Shazzrah
     triggers.push_back(

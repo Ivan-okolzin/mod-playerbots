@@ -20,6 +20,7 @@ public:
         creators["mc lucifron shadow resistance"] = &RaidMcTriggerContext::lucifron_shadow_resistance;
         creators["mc lucifron should be tanked"] = &RaidMcTriggerContext::lucifron_should_be_tanked;
         creators["mc lucifron protectors spawned"] = &RaidMcTriggerContext::lucifron_protectors_spawned;
+        creators["mc magmadar tremor"] = &RaidMcTriggerContext::magmadar_tremor;
         creators["mc magmadar fire resistance"] = &RaidMcTriggerContext::magmadar_fire_resistance;
         creators["mc magmadar should be tanked"] = &RaidMcTriggerContext::magmadar_should_be_tanked;
         creators["mc magmadar bot in lava bomb"] = &RaidMcTriggerContext::magmadar_bot_in_lava_bomb;
@@ -77,6 +78,7 @@ private:
     }
 
     // Magmadar
+    static Trigger* magmadar_tremor(PlayerbotAI* botAI) { return new McMagmadarTremorTrigger(botAI); }
     static Trigger* magmadar_fire_resistance(PlayerbotAI* botAI) { return new BossFireResistanceTrigger(botAI, "magmadar"); }
     static Trigger* magmadar_should_be_tanked(PlayerbotAI* botAI)
     {

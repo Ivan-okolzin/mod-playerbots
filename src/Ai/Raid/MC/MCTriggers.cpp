@@ -6,12 +6,24 @@
 
 #include "MCTriggers.h"
 #include "EncounterHelpers.h"
+#include "InstanceScript.h"
 #include "MCHelpers.h"
 #include "SharedDefines.h"
 #include "SpellAuras.h"
 
 using namespace EncounterHelpers;
 using namespace MoltenCoreHelpers;
+
+bool McMagmadarTremorTrigger::IsActive()
+{
+    if (bot->getClass() != CLASS_SHAMAN || bot->GetMapId() != MC_MAP_ID)
+        return false;
+
+    constexpr uint32 magmadarEncounter = 1; // DATA_MAGMADAR in molten_core.h
+    InstanceScript* instance = bot->GetInstanceScript();
+    return instance && instance->GetBossState(magmadarEncounter) == IN_PROGRESS &&
+        !AI_VALUE2(bool, "has totem", "tremor totem");
+}
 
 // Shared
 

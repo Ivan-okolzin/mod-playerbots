@@ -14,6 +14,13 @@
 #include "Trigger.h"
 #include <string>
 
+class McMagmadarTremorTrigger : public Trigger
+{
+public:
+    McMagmadarTremorTrigger(PlayerbotAI* botAI) : Trigger(botAI, "mc magmadar tremor", 1) {}
+    bool IsActive() override;
+};
+
 // Shared
 
 // Every Molten Core boss script is a BossAI, so each reports IN_PROGRESS on the pull: the gate

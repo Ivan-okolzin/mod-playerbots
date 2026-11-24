@@ -77,23 +77,17 @@ static bool IsAllowedGeddonMovementAction(Action* action)
 
 float BaronGeddonAbilityMultiplier::GetValue(Action* action)
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "baron geddon"))
+    if (IsAllowedGeddonMovementAction(action))
+        return 1.0f;
+
+    if (Unit* boss = FindBoss(botAI, NPC_BARON_GEDDON, BARON_GEDDON_VALUE))
     {
         if (boss->HasAura(SPELL_INFERNO))
-        {
-            if (!IsAllowedGeddonMovementAction(action))
-                return 0.0f;
-        }
-    }
-
-    // No check for Baron Geddon, because bots may have the bomb even after Geddon died.
-    if (bot->HasAura(SPELL_LIVING_BOMB))
-    {
-        if (!IsAllowedGeddonMovementAction(action))
             return 0.0f;
     }
 
-    return 1.0f;
+    // Living Bomb can outlast the boss.
+    return bot->HasAura(SPELL_LIVING_BOMB) ? 0.0f : 1.0f;
 }
 
 static bool IsSingleLivingTankInGroup(Player* bot)
