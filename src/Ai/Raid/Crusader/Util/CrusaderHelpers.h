@@ -43,6 +43,9 @@ enum class CrusaderSpells : uint32
     SPELL_PARALYTIC_TOXIN_10H          = 67619,  // BNB:909
     SPELL_PARALYTIC_TOXIN_25H          = 67620,  // BNB:909
 
+    // Faction Champions
+    SPELL_DIVINE_SHIELD                = 66010,  // boss_faction_champions.cpp:2228
+
     // Twin Val'kyr
     SPELL_LIGHT_ESSENCE                = 65686,  // BTV:64, 10-man normal
     SPELL_LIGHT_ESSENCE_25             = 67222,  // BTV:641, difficulty table of the gossip handler

@@ -367,9 +367,16 @@ Unit* GetAssignedWorm(PlayerbotAI* botAI)
     Unit* dreadscale = FindThreatCreature(bot, Id(CrusaderNpcs::NPC_DREADSCALE));
     if (!acidmaw || !dreadscale)
     {
-        // One of them is dead or not up yet, so both tanks have the same job.
+        // Keep the surviving worm on its tank after its partner dies.
         Unit* alone = acidmaw ? acidmaw : dreadscale;
-        return IsWormSubmerged(alone) ? nullptr : alone;
+        if (!alone || IsWormSubmerged(alone))
+            return nullptr;
+
+        Player* partner = isMainTank ? GetGroupAssistTank(bot, 0) : GetGroupMainTank(bot);
+        if (partner && partner->IsAlive() && alone->GetVictim() == partner)
+            return nullptr;
+
+        return alone;
     }
 
     Unit* mobile = IsWormMobile(acidmaw) ? acidmaw : dreadscale;
@@ -410,6 +417,9 @@ Unit* FindFactionChampionFocus(Player* bot)
 
         Unit* champion = ref->GetOwner();
         if (!champion || !champion->IsInWorld() || !champion->IsAlive())
+            continue;
+
+        if (champion->HasAura(Id(CrusaderSpells::SPELL_DIVINE_SHIELD)))
             continue;
 
         uint32 const health = champion->GetHealth();
