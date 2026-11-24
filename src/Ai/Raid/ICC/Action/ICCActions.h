@@ -202,6 +202,13 @@ public:
 
 };
 
+class IccAvoidDeathAndDecayAction : public MovementAction
+{
+public:
+    explicit IccAvoidDeathAndDecayAction(PlayerbotAI* botAI) : MovementAction(botAI, "icc avoid death and decay") {}
+    bool Execute(Event event) override;
+};
+
 class IccShadeLadyDeathwhisperAction : public MovementAction
 {
 public:

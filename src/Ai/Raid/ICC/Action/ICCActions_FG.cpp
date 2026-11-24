@@ -46,8 +46,8 @@ bool IccFestergutGroupPositionAction::Execute(Event /*event*/)
         if (currentTarget && currentTarget != bot)
         {
             Aura* victimAura = botAI->GetAura("gastric bloat", currentTarget, false, true);
-            if (victimAura && victimAura->GetStackAmount() >= 6)
-                IccCastClassTaunt(bot, botAI,boss);
+            if (victimAura && victimAura->GetStackAmount() >= 6 && IccCastClassTaunt(bot, botAI, boss))
+                return true;
         }
 
         if (bot->GetExactDist2d(ICC_FESTERGUT_TANK_POSITION) > 5.0f)

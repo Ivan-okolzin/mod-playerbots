@@ -19,6 +19,7 @@ public:
         creators["icc lm tank position"] = &RaidIccActionContext::icc_lm_tank_position;
         creators["icc spike"] = &RaidIccActionContext::icc_spike;
 
+        creators["icc avoid death and decay"] = &RaidIccActionContext::icc_avoid_death_and_decay;
         creators["icc dark reckoning"] = &RaidIccActionContext::icc_dark_reckoning;
         creators["icc ranged position lady deathwhisper"] = &RaidIccActionContext::icc_ranged_position_lady_deathwhisper;
         creators["icc adds lady deathwhisper"] = &RaidIccActionContext::icc_adds_lady_deathwhisper;
@@ -90,6 +91,7 @@ private:
     static Action* icc_lm_tank_position(PlayerbotAI* botAI) { return new IccLmTankPositionAction(botAI); }
     static Action* icc_spike(PlayerbotAI* botAI) { return new IccSpikeAction(botAI); }
 
+    static Action* icc_avoid_death_and_decay(PlayerbotAI* botAI) { return new IccAvoidDeathAndDecayAction(botAI); }
     static Action* icc_dark_reckoning(PlayerbotAI* botAI) { return new IccDarkReckoningAction(botAI); }
     static Action* icc_ranged_position_lady_deathwhisper(PlayerbotAI* botAI) { return new IccRangedPositionLadyDeathwhisperAction(botAI); }
     static Action* icc_adds_lady_deathwhisper(PlayerbotAI* botAI) { return new IccAddsLadyDeathwhisperAction(botAI); }

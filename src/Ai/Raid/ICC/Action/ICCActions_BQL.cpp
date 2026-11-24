@@ -23,11 +23,6 @@ bool IccBqlGroupPositionAction::Execute(Event /*event*/)
     Aura* frenzyAura = botAI->GetAura("Frenzied Bloodthirst", bot);
     Aura* shadowAura = botAI->GetAura("Swarming Shadows", bot);
     bool isTank = PlayerbotAI::IsTank(bot);
-    if (isTank && shadowAura)
-    {
-        bot->RemoveAurasDueToSpell(shadowAura->GetId());
-        return true;
-    }
 
     // Handle tank positioning
     if (isTank && HandleTankPosition(boss, frenzyAura, shadowAura))
