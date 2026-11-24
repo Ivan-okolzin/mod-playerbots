@@ -120,6 +120,13 @@ public:
 
 // Shade of Akama
 
+class ShadeOfAkamaFocusTargetAction : public AttackAction
+{
+public:
+    ShadeOfAkamaFocusTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "shade of akama focus target") {}
+    bool Execute(Event event) override;
+};
+
 class ShadeOfAkamaMeleeDpsPrioritizeChannelersAction : public AttackAction
 {
 public:

@@ -52,6 +52,7 @@ public:
             &RaidBlackTempleActionContext::supremus_manage_phase_timer;
 
         // Shade of Akama
+        creators["shade of akama focus target"] = &RaidBlackTempleActionContext::shade_of_akama_focus_target;
         creators["shade of akama melee dps prioritize channelers"] =
             &RaidBlackTempleActionContext::shade_of_akama_melee_dps_prioritize_channelers;
 
@@ -261,6 +262,11 @@ private:
     }
 
     // Shade of Akama
+    static Action* shade_of_akama_focus_target(PlayerbotAI* botAI)
+    {
+        return new ShadeOfAkamaFocusTargetAction(botAI);
+    }
+
     static Action* shade_of_akama_melee_dps_prioritize_channelers(PlayerbotAI* botAI)
     {
         return new ShadeOfAkamaMeleeDpsPrioritizeChannelersAction(botAI);

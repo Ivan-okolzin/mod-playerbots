@@ -167,9 +167,19 @@ bool SupremusNeedToManagePhaseTimerTrigger::IsActive()
 
 // Shade of Akama
 
+bool ShadeOfAkamaFocusTargetTrigger::IsActive()
+{
+    Unit* target = GetShadeDpsTarget(bot);
+    return target && AI_VALUE(Unit*, "current target") != target;
+}
+
 bool ShadeOfAkamaKillingChannelersStartsPhase2Trigger::IsActive()
 {
     if (!PlayerbotAI::IsDps(bot) || !PlayerbotAI::IsMelee(bot))
+        return false;
+
+    Unit* shade = GetActiveShade(bot);
+    if (!shade || !shade->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE))
         return false;
 
     constexpr float searchRadius = 30.0f;

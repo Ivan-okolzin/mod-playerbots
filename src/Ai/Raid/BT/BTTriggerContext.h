@@ -52,6 +52,7 @@ public:
             &RaidBlackTempleTriggerContext::supremus_need_to_manage_phase_timer;
 
         // Shade of Akama
+        creators["shade of akama focus target"] = &RaidBlackTempleTriggerContext::shade_of_akama_focus_target;
         creators["shade of akama killing channelers starts phase 2"] =
             &RaidBlackTempleTriggerContext::shade_of_akama_killing_channelers_starts_phase_2;
 
@@ -261,6 +262,11 @@ private:
     }
 
     // Shade of Akama
+    static Trigger* shade_of_akama_focus_target(PlayerbotAI* botAI)
+    {
+        return new ShadeOfAkamaFocusTargetTrigger(botAI);
+    }
+
     static Trigger* shade_of_akama_killing_channelers_starts_phase_2(PlayerbotAI* botAI)
     {
         return new ShadeOfAkamaKillingChannelersStartsPhase2Trigger(botAI);
