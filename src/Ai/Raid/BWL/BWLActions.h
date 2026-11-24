@@ -87,6 +87,10 @@ public:
     BwlChromaggusBreathAction(PlayerbotAI* botAI) : MovementAction(botAI, "bwl chromaggus avoid breath") {}
     bool isUseful() override;
     bool Execute(Event event) override;
+
+private:
+    Position returnPosition;
+    ObjectGuid coverBoss;
 };
 
 class BwlUseHourglassSandAction : public UseItemAction

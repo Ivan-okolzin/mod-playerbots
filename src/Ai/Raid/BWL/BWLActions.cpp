@@ -295,14 +295,35 @@ bool BwlBlackDrakeAvoidBreathAction::isUseful()
 bool BwlChromaggusBreathAction::isUseful()
 {
     Unit* boss = GetEngagedChromaggus(bot);
-    return ShouldHideFromBreath(boss, bot) && boss->IsWithinLOSInMap(bot);
+    if (!boss || !boss->GetVictim() || boss->GetVictim() == bot || coverBoss != boss->GetGUID())
+        coverBoss.Clear();
+
+    if (ShouldHideFromBreath(boss, bot))
+        return boss->IsWithinLOSInMap(bot);
+
+    if (coverBoss && bot->GetExactDist(returnPosition) <= 20.0f &&
+        (bot->isMoving() || !boss->IsWithinLOSInMap(bot)))
+        return true;
+
+    coverBoss.Clear();
+    return false;
 }
 
 bool BwlChromaggusBreathAction::Execute(Event /*event*/)
 {
-    Unit* boss = GetEngagedChromaggus(bot);
-    if (!ShouldHideFromBreath(boss, bot) || !boss->IsWithinLOSInMap(bot))
+    if (!isUseful())
         return false;
+
+    Unit* boss = GetEngagedChromaggus(bot);
+    if (!ShouldHideFromBreath(boss, bot))
+    {
+        if (!MoveTo(bot->GetMapId(), returnPosition.GetPositionX(), returnPosition.GetPositionY(),
+                    returnPosition.GetPositionZ(), false, false, false, true, MovementPriority::MOVEMENT_FORCED))
+            return false;
+
+        coverBoss.Clear();
+        return true;
+    }
 
     // Try nearby cover first so a short cast does not send the raid across the room.
     for (float distance : {4.0f, 8.0f, 12.0f})
@@ -315,10 +336,16 @@ bool BwlChromaggusBreathAction::Execute(Event /*event*/)
                                   cover.GetPositionZ() + bot->GetCollisionHeight() - boss->GetCollisionHeight()))
                 continue;
 
-            bot->CastStop();
+            Position const origin = bot->GetPosition();
             if (MoveTo(bot->GetMapId(), cover.GetPositionX(), cover.GetPositionY(), cover.GetPositionZ(), false, false,
                        false, true, MovementPriority::MOVEMENT_FORCED))
+            {
+                bot->CastStop();
+                if (!coverBoss)
+                    returnPosition = origin;
+                coverBoss = boss->GetGUID();
                 return true;
+            }
         }
     }
     return false;

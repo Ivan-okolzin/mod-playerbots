@@ -21,7 +21,8 @@ namespace BlackwingLairHelpers
         if (bot->GetMapId() != 469 || !instance || instance->GetBossState(chromaggusEncounter) != IN_PROGRESS)
             return nullptr;
 
-        return instance->GetCreature(chromaggusEncounter);
+        Creature* boss = instance->GetCreature(chromaggusEncounter);
+        return boss && boss->IsInCombatWith(bot) ? boss : nullptr;
     }
 
     bool ShouldHideFromBreath(Unit* boss, Player* bot)
