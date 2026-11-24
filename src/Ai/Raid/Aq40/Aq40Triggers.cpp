@@ -69,6 +69,10 @@ bool Aq40AddsSpawnedTrigger::IsActiveInEncounter()
             if (!PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsTank(bot))
                 return false;
             break;
+        case Aq40AddRole::Dps:
+            if (PlayerbotAI::IsHeal(bot) || PlayerbotAI::IsTank(bot))
+                return false;
+            break;
         case Aq40AddRole::AssistTanks:
             if (!PlayerbotAI::IsAssistTank(bot))
                 return false;
@@ -229,6 +233,13 @@ bool FankrissMainTankMortalWoundStacksTrigger::IsActiveInEncounter()
 }
 
 // Viscidus
+
+bool ViscidusFrozenTrigger::IsActiveInEncounter()
+{
+    Unit* viscidus = FindThreatTarget(bot, VISCIDUS_NAME);
+    return PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsHeal(bot) && IsViscidusFrozen(viscidus) &&
+        AI_VALUE(Unit*, "current target") != viscidus;
+}
 
 bool ViscidusInFrostPhaseTrigger::IsActiveInEncounter()
 {

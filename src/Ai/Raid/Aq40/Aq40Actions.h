@@ -174,6 +174,14 @@ public:
     bool Execute(Event event) override;
 };
 
+class ViscidusAttackFrozenBossAction : public AttackAction
+{
+public:
+    ViscidusAttackFrozenBossAction(PlayerbotAI* botAI)
+        : AttackAction(botAI, "viscidus attack frozen boss") {}
+    bool Execute(Event event) override;
+};
+
 // Twin Emperors
 
 class TwinEmperorsTankPositionBossAction : public AttackAction

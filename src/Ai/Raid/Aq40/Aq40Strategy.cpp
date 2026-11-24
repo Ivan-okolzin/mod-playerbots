@@ -75,8 +75,14 @@ void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         { NextAction("fankriss the unyielding attack worms", ACTION_RAID) }));
 
     //
+    triggers.push_back(new TriggerNode("fankriss the unyielding spawns present",
+        { NextAction("fankriss the unyielding attack spawns", ACTION_RAID + 1) }));
+
     // Viscidus
     //
+    triggers.push_back(new TriggerNode("viscidus frozen",
+        { NextAction("viscidus attack frozen boss", ACTION_RAID + 3) }));
+
     triggers.push_back(new TriggerNode("viscidus in frost phase",
         { NextAction("viscidus cast frost spell", ACTION_RAID + 3) }));
 

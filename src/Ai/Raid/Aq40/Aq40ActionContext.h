@@ -57,8 +57,11 @@ public:
             &RaidAq40ActionContext::fankriss_tank_swap;
         creators["fankriss the unyielding attack worms"] =
             &RaidAq40ActionContext::fankriss_attack_worms;
+        creators["fankriss the unyielding attack spawns"] =
+            &RaidAq40ActionContext::fankriss_attack_spawns;
 
         // Viscidus
+        creators["viscidus attack frozen boss"] = &RaidAq40ActionContext::viscidus_attack_frozen_boss;
         creators["viscidus cast frost spell"] = &RaidAq40ActionContext::viscidus_cast_frost_spell;
         creators["viscidus attack nearest glob"] =
             &RaidAq40ActionContext::viscidus_attack_nearest_glob;
@@ -191,6 +194,16 @@ private:
             botAI, "fankriss the unyielding attack worms", Aq40Helpers::FANKRISS_WORMS_VALUE);
     }
 
+    static Action* fankriss_attack_spawns(PlayerbotAI* botAI)
+    {
+        return new Aq40AttackNearestAddAction(
+            botAI, "fankriss the unyielding attack spawns", Aq40Helpers::FANKRISS_SPAWNS_VALUE);
+    }
+
+    static Action* viscidus_attack_frozen_boss(PlayerbotAI* botAI)
+    {
+        return new ViscidusAttackFrozenBossAction(botAI);
+    }
     static Action* viscidus_cast_frost_spell(PlayerbotAI* botAI)
     {
         return new ViscidusCastFrostSpellAction(botAI);
