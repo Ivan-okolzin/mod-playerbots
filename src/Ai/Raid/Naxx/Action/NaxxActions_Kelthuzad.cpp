@@ -10,7 +10,7 @@
 
 bool KelthuzadChooseTargetAction::Execute(Event /*event*/)
 {
-    if (!helper.UpdateBossAI())
+    if (!helper.UpdateBossAI() || PlayerbotAI::IsHeal(bot))
         return false;
 
     GuidVector attackers = context->GetValue<GuidVector>("attackers")->Get();
@@ -39,7 +39,7 @@ bool KelthuzadChooseTargetAction::Execute(Event /*event*/)
                      !PlayerbotAI::IsAssistTank(unit->GetVictim()->ToPlayer()) &&
                      !PlayerbotAI::IsAssistTank(target_guardian->GetVictim()->ToPlayer()) &&
                      target_guardian->GetDistance2d(helper.center.first, helper.center.second) >
-                         bot->GetDistance2d(unit))
+                         unit->GetDistance2d(helper.center.first, helper.center.second))
             {
                 target_guardian = unit;
             }
@@ -100,7 +100,7 @@ bool KelthuzadChooseTargetAction::Execute(Event /*event*/)
             break;
         }
     }
-    if (context->GetValue<Unit*>("current target")->Get() == target)
+    if (!target || context->GetValue<Unit*>("current target")->Get() == target)
         return false;
 
     if (target_kelthuzad && target == target_kelthuzad)

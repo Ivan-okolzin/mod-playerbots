@@ -321,6 +321,19 @@ protected:
     char const* const _addsValue;
 };
 
+class NaxxDpsAttackAddAction : public NaxxAttackNearestAddAction
+{
+public:
+    NaxxDpsAttackAddAction(PlayerbotAI* botAI, std::string const& name, char const* addsValue, uint32 bossEntry)
+        : NaxxAttackNearestAddAction(botAI, name, addsValue), _bossEntry(bossEntry) {}
+
+protected:
+    Unit* FindAdd() override;
+
+private:
+    uint32 const _bossEntry;
+};
+
 // Gothik's half of the room is all a bot can fight in until the gate opens.
 class GothikAttackNearestAddAction : public NaxxAttackNearestAddAction
 {

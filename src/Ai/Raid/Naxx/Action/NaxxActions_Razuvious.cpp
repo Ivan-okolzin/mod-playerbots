@@ -48,7 +48,7 @@ bool RazuviousUseObedienceCrystalAction::Execute(Event /*event*/)
         if (!forceObedience)
             return false;
 
-        if (charm->GetDistance(target) <= 0.51f)
+        if (charm->IsWithinMeleeRange(target))
         {
             // taunt
             bool tauntUseful = true;
@@ -65,7 +65,7 @@ bool RazuviousUseObedienceCrystalAction::Execute(Event /*event*/)
             if (forceObedience->GetDuration() >= int32(duration_time - 500))
                 tauntUseful = false;
 
-            if (tauntUseful && !charm->HasSpellCooldown(29060))
+            if (tauntUseful && !charm->HasSpellCooldown(SPELL_UNDERSTUDY_TAUNT))
             {
                 // shield
                 if (!charm->HasSpellCooldown(SPELL_BONE_BARRIER))
@@ -153,7 +153,7 @@ bool RazuviousTargetAction::Execute(Event /*event*/)
     else
         target = razuvious;
 
-    if (AI_VALUE(Unit*, "current target") == target)
+    if (!target || PlayerbotAI::IsHeal(bot) || AI_VALUE(Unit*, "current target") == target)
         return false;
 
     return Attack(target);

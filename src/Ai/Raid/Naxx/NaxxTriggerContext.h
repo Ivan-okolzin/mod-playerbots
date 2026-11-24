@@ -15,6 +15,8 @@ class RaidNaxxTriggerContext : public NamedObjectContext<Trigger>
 public:
     RaidNaxxTriggerContext()
     {
+        creators["faerlina follower present"] = &RaidNaxxTriggerContext::faerlina_adds;
+        creators["maexxna web wrap present"] = &RaidNaxxTriggerContext::maexxna_adds;
         creators["mutating injection melee"] = &RaidNaxxTriggerContext::mutating_injection_melee;
         creators["mutating injection ranged"] = &RaidNaxxTriggerContext::mutating_injection_ranged;
         creators["mutating injection removed"] = &RaidNaxxTriggerContext::mutating_injection_removed;
@@ -71,6 +73,18 @@ public:
     }
 
 private:
+    static Trigger* faerlina_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxAddsSpawnedTrigger(botAI, "faerlina follower present", NaxxHelpers::FAERLINA_ADDS_VALUE,
+            NaxxHelpers::NaxxRole::Dps, NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_FAERLINA));
+    }
+
+    static Trigger* maexxna_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxAddsSpawnedTrigger(botAI, "maexxna web wrap present", NaxxHelpers::MAEXXNA_ADDS_VALUE,
+            NaxxHelpers::NaxxRole::Dps, NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_MAEXXNA));
+    }
+
     static Trigger* mutating_injection_melee(PlayerbotAI* botAI) { return new MutatingInjectionMeleeTrigger(botAI); }
     static Trigger* mutating_injection_ranged(PlayerbotAI* botAI) { return new MutatingInjectionRangedTrigger(botAI); }
     static Trigger* mutating_injection_removed(PlayerbotAI* botAI) { return new MutatingInjectionRemovedTrigger(botAI); }

@@ -5,11 +5,17 @@
  */
 
 #include "NaxxActions.h"
+#include "NaxxSpellIds.h"
 #include "ObjectGuid.h"
+#include "Spell.h"
+#include "SpellMgr.h"
 #include "Playerbots.h"
 
 bool AnubrekhanChooseTargetAction::Execute(Event /*event*/)
 {
+    if (PlayerbotAI::IsHeal(bot) || !AI_VALUE2(Unit*, "find target", "anub'rekhan"))
+        return false;
+
     GuidVector attackers = context->GetValue<GuidVector>("attackers")->Get();
     Unit* target = nullptr;
     Unit* target_boss = nullptr;
@@ -17,7 +23,7 @@ bool AnubrekhanChooseTargetAction::Execute(Event /*event*/)
     for (ObjectGuid const guid : attackers)
     {
         Unit* unit = botAI->GetUnit(guid);
-        if (!unit)
+        if (!unit || !unit->IsAlive())
             continue;
         if (botAI->EqualLowercaseName(unit->GetName(), "crypt guard"))
             target_guards.push_back(unit);
@@ -37,9 +43,15 @@ bool AnubrekhanChooseTargetAction::Execute(Event /*event*/)
             {
                 for (Unit* t : target_guards)
                 {
-                    if (target == nullptr || (target->GetVictim() && target->GetVictim()->ToPlayer() &&
-                                              PlayerbotAI::IsTank(target->GetVictim()->ToPlayer())))
+                    if (!target)
                         target = t;
+
+                    Unit* victim = t->GetVictim();
+                    if (!victim || !victim->ToPlayer() || !PlayerbotAI::IsTank(victim->ToPlayer()))
+                    {
+                        target = t;
+                        break;
+                    }
                 }
             }
             else
@@ -52,7 +64,7 @@ bool AnubrekhanChooseTargetAction::Execute(Event /*event*/)
             }
         }
     }
-    if (context->GetValue<Unit*>("current target")->Get() == target)
+    if (!target || context->GetValue<Unit*>("current target")->Get() == target)
         return false;
 
     return Attack(target);
@@ -64,7 +76,9 @@ bool AnubrekhanPositionAction::Execute(Event /*event*/)
     if (!boss)
         return false;
 
-    bool inPhase = botAI->HasAura("locust swarm", boss) || boss->GetCurrentSpell(CURRENT_GENERIC_SPELL);
+    Spell* cast = boss->GetCurrentSpell(CURRENT_GENERIC_SPELL);
+    uint32 swarm = sSpellMgr->GetSpellIdForDifficulty(NaxxSpellIds::LocustSwarm10, boss);
+    bool inPhase = boss->HasAura(swarm) || (cast && cast->GetSpellInfo()->Id == swarm);
     if (inPhase)
     {
         if (PlayerbotAI::IsMainTank(bot))

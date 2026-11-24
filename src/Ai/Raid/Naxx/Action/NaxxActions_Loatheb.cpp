@@ -26,7 +26,7 @@ bool LoathebPositionAction::Execute(Event /*event*/)
 
 bool LoathebChooseTargetAction::Execute(Event /*event*/)
 {
-    if (!helper.UpdateBossAI())
+    if (!helper.UpdateBossAI() || PlayerbotAI::IsHeal(bot))
         return false;
 
     GuidVector attackers = context->GetValue<GuidVector>("attackers")->Get();
@@ -48,7 +48,7 @@ bool LoathebChooseTargetAction::Execute(Event /*event*/)
         if (botAI->EqualLowercaseName(unit->GetName(), "loatheb"))
             target_boss = unit;
     }
-    if (target_spore && bot->GetDistance2d(target_spore) <= 1.0f)
+    if (!PlayerbotAI::IsTank(bot) && target_spore && bot->GetDistance2d(target_spore) <= 1.0f)
         target = target_spore;
     else
         target = target_boss;

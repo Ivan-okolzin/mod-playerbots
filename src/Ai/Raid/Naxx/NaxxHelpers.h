@@ -34,6 +34,10 @@ constexpr uint32 Id(T value)
 // Harvester", so every lookup here goes by entry.
 enum class NaxxNpcs : uint32
 {
+    NPC_MAEXXNA = 15952,
+    NPC_WEB_WRAP = 16486,
+    NPC_FAERLINA = 15953,
+    NPC_FOLLOWER = 16505,
     NPC_PATCHWERK                = 16028,  // NAX:153
     NPC_NOTH                     = 15954,  // creature_template, ScriptName boss_noth
     NPC_PLAGUED_WARRIOR          = 16984,  // BNO:61, two or three per ground-phase wave (BNO:216)
@@ -61,6 +65,8 @@ inline constexpr float ADD_SEARCH_RADIUS = 100.0f;
 inline constexpr float GATE_SEARCH_RADIUS = 120.0f;
 
 // Cached add, gate and hazard values, registered in NaxxValueContext.h.
+inline constexpr char const* MAEXXNA_ADDS_VALUE = "naxx maexxna web wrap";
+inline constexpr char const* FAERLINA_ADDS_VALUE = "naxx faerlina follower";
 inline constexpr char const* NOTH_SKELETONS_VALUE = "naxx noth skeletons";
 inline constexpr char const* GOTHIK_LIVING_ADDS_VALUE = "naxx gothik unrelenting adds";
 inline constexpr char const* GOTHIK_DEAD_ADDS_VALUE = "naxx gothik spectral adds";

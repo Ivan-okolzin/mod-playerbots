@@ -5,6 +5,7 @@
  */
 
 #include "NaxxActions.h"
+#include "EncounterHelpers.h"
 #include "NaxxHelpers.h"
 
 using namespace NaxxHelpers;
@@ -48,4 +49,13 @@ Unit* NaxxAttackNearestAddAction::FindAdd()
 {
     Unit* add = GetNearestCachedUnit(botAI, _addsValue);
     return add && !IsUnassailable(add) ? add : nullptr;
+}
+
+Unit* NaxxDpsAttackAddAction::FindAdd()
+{
+    if (!HasRole(bot, NaxxRole::Dps) || !EncounterHelpers::IsEncounterInProgress(bot, NAXX_MAP_ID) ||
+        !FindThreatCreature(bot, _bossEntry))
+        return nullptr;
+
+    return NaxxAttackNearestAddAction::FindAdd();
 }

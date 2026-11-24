@@ -29,6 +29,9 @@ bool FourHorsemenAttackInOrderAction::Execute(Event /*event*/)
     if (!helper.UpdateBossAI())
         return false;
 
+    if (PlayerbotAI::IsHeal(bot))
+        return false;
+
     Unit* target = nullptr;
     Unit* thane = AI_VALUE2(Unit*, "find target", "thane korth'azz");
     Unit* lady = AI_VALUE2(Unit*, "find target", "lady blaumeux");

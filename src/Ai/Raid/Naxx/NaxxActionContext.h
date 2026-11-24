@@ -16,6 +16,8 @@ class RaidNaxxActionContext : public NamedObjectContext<Action>
 public:
     RaidNaxxActionContext()
     {
+        creators["faerlina attack follower"] = &RaidNaxxActionContext::faerlina_adds;
+        creators["maexxna free web wrap"] = &RaidNaxxActionContext::maexxna_adds;
         creators["grobbulus go behind the boss"] = &RaidNaxxActionContext::go_behind_the_boss;
         creators["rotate grobbulus"] = &RaidNaxxActionContext::rotate_grobbulus;
         creators["grobbulus move center"] = &RaidNaxxActionContext::grobbulus_move_center;
@@ -66,6 +68,18 @@ public:
     }
 
 private:
+    static Action* faerlina_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxDpsAttackAddAction(botAI, "faerlina attack follower", NaxxHelpers::FAERLINA_ADDS_VALUE,
+            NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_FAERLINA));
+    }
+
+    static Action* maexxna_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxDpsAttackAddAction(botAI, "maexxna free web wrap", NaxxHelpers::MAEXXNA_ADDS_VALUE,
+            NaxxHelpers::Id(NaxxHelpers::NaxxNpcs::NPC_MAEXXNA));
+    }
+
     static Action* go_behind_the_boss(PlayerbotAI* botAI) { return new GrobbulusGoBehindAction(botAI); }
     static Action* rotate_grobbulus(PlayerbotAI* botAI) { return new GrobbulusRotateAction(botAI); }
     static Action* grobbulus_move_center(PlayerbotAI* botAI) { return new GrobbulusMoveCenterAction(botAI); }

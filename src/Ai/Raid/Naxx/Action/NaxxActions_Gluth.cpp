@@ -11,7 +11,7 @@
 
 bool GluthChooseTargetAction::Execute(Event /*event*/)
 {
-    if (!helper.UpdateBossAI())
+    if (!helper.UpdateBossAI() || PlayerbotAI::IsHeal(bot))
         return false;
 
     GuidVector attackers = context->GetValue<GuidVector>("possible targets")->Get();

@@ -49,7 +49,10 @@ void RaidNaxxStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     // Anub'Rekhan
     triggers.push_back(new TriggerNode("anub'rekhan",
-        { NextAction("anub'rekhan position", ACTION_RAID + 1) }
+        {
+            NextAction("anub'rekhan position", ACTION_RAID + 2),
+            NextAction("anub'rekhan choose target", ACTION_RAID + 1)
+        }
     ));
 
      // Grand Widow Faerlina
@@ -65,6 +68,14 @@ void RaidNaxxStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
             NextAction("avoid aoe", ACTION_RAID + 1)
         })
     );
+
+    triggers.push_back(new TriggerNode("maexxna web wrap present",
+        { NextAction("maexxna free web wrap", ACTION_RAID + 2) }
+    ));
+
+    triggers.push_back(new TriggerNode("faerlina follower present",
+        { NextAction("faerlina attack follower", ACTION_RAID + 2) }
+    ));
 
     // Noth the Plaguebringer
     triggers.push_back(new TriggerNode("noth the plaguebringer should be tanked",

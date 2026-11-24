@@ -31,6 +31,18 @@ protected:
     }
 
 private:
+    static UntypedValue* faerlina_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::FAERLINA_ADDS_VALUE,
+            { NaxxHelpers::Id(NaxxNpcs::NPC_FOLLOWER) });
+    }
+
+    static UntypedValue* maexxna_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::MAEXXNA_ADDS_VALUE,
+            { NaxxHelpers::Id(NaxxNpcs::NPC_WEB_WRAP) });
+    }
+
     std::vector<uint32> const _entries;
 };
 
@@ -56,6 +68,8 @@ class RaidNaxxValueContext : public NamedObjectContext<UntypedValue>
 public:
     RaidNaxxValueContext()
     {
+        creators[NaxxHelpers::FAERLINA_ADDS_VALUE] = &RaidNaxxValueContext::faerlina_adds;
+        creators[NaxxHelpers::MAEXXNA_ADDS_VALUE] = &RaidNaxxValueContext::maexxna_adds;
         creators[NaxxHelpers::NOTH_SKELETONS_VALUE] = &RaidNaxxValueContext::noth_skeletons;
         creators[NaxxHelpers::GOTHIK_LIVING_ADDS_VALUE] = &RaidNaxxValueContext::gothik_living_adds;
         creators[NaxxHelpers::GOTHIK_DEAD_ADDS_VALUE] = &RaidNaxxValueContext::gothik_dead_adds;
