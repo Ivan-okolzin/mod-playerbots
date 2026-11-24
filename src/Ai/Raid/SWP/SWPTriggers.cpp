@@ -74,32 +74,14 @@ bool SwpBotNearHazardTrigger::IsActiveInEncounter()
 // Healers keep healing: picking a target for them would only cut a cast short.
 bool KalecgosBotInSpectralRealmTrigger::IsActiveInEncounter()
 {
-    if (PlayerbotAI::IsHeal(bot))
-        return false;
-
-    if (!FindThreatCreature(bot, Id(SwpNpcs::NPC_KALECGOS)) &&
-        !FindThreatCreature(bot, Id(SwpNpcs::NPC_SATHROVARR)))
-    {
-        return false;
-    }
-
-    if (!IsInSpectralRealm(bot))
-        return false;
-
-    Unit* sathrovarr = FindThreatCreature(bot, Id(SwpNpcs::NPC_SATHROVARR));
-    return sathrovarr && AI_VALUE(Unit*, "current target") != sathrovarr;
+    Unit* target = GetKalecgosRealmTarget(bot, true);
+    return target && AI_VALUE(Unit*, "current target") != target;
 }
 
 bool KalecgosBotInDragonRealmTrigger::IsActiveInEncounter()
 {
-    if (PlayerbotAI::IsHeal(bot))
-        return false;
-
-    if (IsInSpectralRealm(bot))
-        return false;
-
-    Unit* kalecgos = FindThreatCreature(bot, Id(SwpNpcs::NPC_KALECGOS));
-    return kalecgos && AI_VALUE(Unit*, "current target") != kalecgos;
+    Unit* target = GetKalecgosRealmTarget(bot, false);
+    return target && AI_VALUE(Unit*, "current target") != target;
 }
 
 // Brutallus

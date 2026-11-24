@@ -79,14 +79,11 @@ public:
 private:
     static Action* kalecgos_attack_boss(PlayerbotAI* botAI)
     {
-        return new SwpAttackCreatureAction(
-            botAI, "kalecgos attack boss", SwpHelpers::Id(SwpHelpers::SwpNpcs::NPC_KALECGOS));
+        return new KalecgosAttackRealmBossAction(botAI, false);
     }
     static Action* kalecgos_attack_sathrovarr(PlayerbotAI* botAI)
     {
-        return new SwpAttackCreatureAction(
-            botAI, "kalecgos attack sathrovarr",
-            SwpHelpers::Id(SwpHelpers::SwpNpcs::NPC_SATHROVARR));
+        return new KalecgosAttackRealmBossAction(botAI, true);
     }
 
     static Action* brutallus_main_tank_attack_boss(PlayerbotAI* botAI)

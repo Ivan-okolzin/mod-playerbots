@@ -6,6 +6,7 @@
 
 #include "SWPHelpers.h"
 #include "Creature.h"
+#include "InstanceScript.h"
 #include "Playerbots.h"
 #include "ThreatManager.h"
 #include <algorithm>
@@ -144,6 +145,22 @@ bool FindPositionAwayFromCachedUnits(
     }
 
     return false;
+}
+
+Unit* GetKalecgosRealmTarget(Player* bot, bool spectral)
+{
+    if (bot->GetMapId() != SWP_MAP_ID || PlayerbotAI::IsHeal(bot) || spectral != IsInSpectralRealm(bot))
+        return nullptr;
+
+    // Instance data keys from sunwell_plateau.h. A newly teleported player can have no threat yet.
+    constexpr uint32 dataKalecgos = 0;
+    constexpr uint32 dataSathrovarr = 10;
+    InstanceScript* instance = bot->GetInstanceScript();
+    if (!instance || instance->GetBossState(dataKalecgos) != IN_PROGRESS)
+        return nullptr;
+
+    Creature* boss = instance->GetCreature(spectral ? dataSathrovarr : dataKalecgos);
+    return boss && bot->IsValidAttackTarget(boss) ? boss : nullptr;
 }
 
 bool IsInSpectralRealm(Player* bot)

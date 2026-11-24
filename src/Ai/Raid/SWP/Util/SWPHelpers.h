@@ -143,6 +143,7 @@ bool FindPositionAwayFromCachedUnits(
 // Swallowed by Spectral Blast, or standing in the Spectral Realm for any other reason: only
 // Sathrovarr can be reached from there, and only Kalecgos from the dragon realm.
 bool IsInSpectralRealm(Player* bot);
+Unit* GetKalecgosRealmTarget(Player* bot, bool spectral);
 
 // Brutallus
 

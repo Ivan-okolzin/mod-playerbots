@@ -25,6 +25,12 @@ bool SwpAttackCreatureAction::Execute(Event /*event*/)
     return AI_VALUE(Unit*, "current target") != target && Attack(target);
 }
 
+bool KalecgosAttackRealmBossAction::Execute(Event /*event*/)
+{
+    Unit* target = GetKalecgosRealmTarget(bot, _spectral);
+    return target && AI_VALUE(Unit*, "current target") != target && Attack(target);
+}
+
 bool SwpAttackNearestAddAction::Execute(Event /*event*/)
 {
     Unit* add = GetNearestCachedUnit(botAI, _addsValue);
