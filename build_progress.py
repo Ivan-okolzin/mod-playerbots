@@ -3,6 +3,7 @@
 import html
 import json
 import os
+from pathlib import Path
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 audit = json.load(open(os.path.join(BASE, "audit.json"), encoding="utf-8"))
@@ -50,6 +51,28 @@ for raid, _ in rows:
         plan_notes[raid["key"]] = (f'{e(raid["name_ru"])} · в плане {remaining} из {len(raid["bosses"])}. '
                                    f'Исключение: {e(", ".join(excluded))}.')
 assert state["excluded_encounters"].keys() <= {raid["key"] for raid, _ in rows}
+
+waves = ["Naxx Kara ICC", "Uld BWL MC", "AQ40 Aq20 ZG", "ToC VoA OS", "TK BT ZA", "SWP RS EoE"]
+raids = {raid["key"]: raid for raid, _ in rows}
+queue = []
+queued = 0
+for number, wave in enumerate(waves, 1):
+    queue.append(f"<h3>Волна {number} · {e(wave)}</h3>")
+    for key in wave.split():
+        bosses = [b for b in raids[key]["bosses"] if b["status"] != "good"]
+        queued += len(bosses)
+        queue.append(f"<h4>{e(key)} · {len(bosses)}</h4><ul>")
+        for boss in bosses:
+            skipped = boss["name"] in state["excluded_encounters"].get(key, [])
+            stage = "пропущено" if skipped else "в очереди"
+            queue.append(f'<li>{e(boss["name"])} · <code>{e(boss["status"])}</code> · {stage}</li>')
+        queue.append("</ul>")
+        report = Path(BASE, "finish", key + ".md")
+        if report.is_file():
+            queue.append("<details><summary>Финальный отчёт · " + e(key)
+                         + "</summary><pre style='white-space:pre-wrap'>"
+                         + e(report.read_text(encoding="utf-8")) + "</pre></details>")
+assert queued == total_bosses - tot.get("good", 0)
 
 stage_styles = {"готово": "done", "в работе": "live", "реализация": "live", "независимое ревью": "live"}
 raid_rows = []
@@ -183,7 +206,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     «заглушка» — только вспомогательные, «нет» — ничего.</p>
   </header>
 
-  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#tasks">Задачи</a> <a href="#questions">Вопросы</a></nav>
+  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Очередь</a> <a href="#tasks">Задачи</a> <a href="#questions">Вопросы</a></nav>
   <section data-view="coverage" id="coverage">
     <h2>Сводка</h2>
     <div class="sum"><span class="big">__GOOD__</span><span class="pill">из __BOSSES__ боссов
@@ -193,6 +216,8 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     <div class="sum">__TOTPILLS__</div>
   </section>
 
+  <section data-view="queue" id="queue"><h2>Очередь · __COUNT__ встреч</h2>
+    <p>Источник покрытия · <code>__SOURCE__</code></p>__QUEUE__</section>
   <section data-view="tasks" id="tasks"><h2>Задачи</h2><ul class="cards">__TASKS__</ul></section>
   <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards">__QUESTIONS__</ul></section>
   <section data-view="agents" id="agents">
@@ -233,6 +258,9 @@ addEventListener('hashchange', selectView);
 
 page = (page
         .replace("__TASKS__", records(state["tasks"], "raid", "priority", "next"))
+        .replace("__COUNT__", str(queued))
+        .replace("__SOURCE__", e(audit["generated_from"]))
+        .replace("__QUEUE__", "".join(queue))
         .replace("__QUESTIONS__", records(state["questions"], "title", "status", "context"))
         .replace("__STAGES__", stages)
         .replace("__EXCLUDED__", " ".join(plan_notes.values()))
