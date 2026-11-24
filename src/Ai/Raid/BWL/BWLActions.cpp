@@ -168,10 +168,6 @@ bool BwlVaelastraszMoveAwayAction::CalculateFleeDirection(Unit const* boss, floa
             if (!p || p == bot || !p->IsAlive() || p->GetMapId() != bot->GetMapId())
                 continue;
 
-            // Boss alive: ignore other Burning Adrenaline bots so they can group together
-            if (!bossDead && p->HasAura(static_cast<uint32>(BlackwingLairSpells::SPELL_BURNING_ADRENALINE)))
-                continue;
-
             // Compute a flee direction via weighted repulsion from other bots.
             // Weighted repulsion: closer = stronger push (linear falloff to 20y)
             float dist = bot->GetDistance2d(p);

@@ -39,6 +39,7 @@ void RaidBwlStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         NextAction("bwl firemaw fire resistance", ACTION_RAID) }));
     triggers.push_back(new TriggerNode("bwl firemaw not victim", {
         NextAction("bwl firemaw avoid breath", ACTION_MOVE + 4) }));
+    triggers.push_back(new TriggerNode("bwl ebonroc tank swap", { NextAction("taunt spell", ACTION_RAID + 3) }));
     triggers.push_back(new TriggerNode("bwl ebonroc not victim", {
         NextAction("bwl ebonroc avoid breath", ACTION_MOVE + 4) }));
     triggers.push_back(new TriggerNode("bwl flamegor fire resistance", {

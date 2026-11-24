@@ -73,7 +73,7 @@ namespace BlackwingLairHelpers
         return PlayerbotAI::IsAssistTankOfIndex(bot, 0, true);
     }
 
-    bool IsNonBABotNearPosition(Player const* bot, Position const& position, float distance)
+    bool IsGroupMemberNearPosition(Player const* bot, Position const& position, float distance)
     {
         Group const* group = bot->GetGroup();
         if (!group)
@@ -83,9 +83,6 @@ namespace BlackwingLairHelpers
         {
             Player const* p = gref->GetSource();
             if (!p || p == bot || !p->IsAlive() || p->GetMapId() != bot->GetMapId())
-                continue;
-
-            if (p->HasAura(static_cast<uint32>(BlackwingLairSpells::SPELL_BURNING_ADRENALINE)))
                 continue;
 
             if (p->GetDistance2d(position.GetPositionX(), position.GetPositionY()) < distance)

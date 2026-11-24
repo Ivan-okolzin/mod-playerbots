@@ -83,6 +83,20 @@ bool BwlBlackDrakeNotVictimTrigger::IsActive()
     return boss->GetVictim() != bot;
 }
 
+bool BwlEbonrocTankSwapTrigger::IsActive()
+{
+    constexpr uint32 shadow = static_cast<uint32>(BlackwingLairSpells::SPELL_SHADOW_OF_EBONROC);
+    if (!PlayerbotAI::IsTank(bot) || bot->HasAura(shadow))
+        return false;
+
+    Unit* boss = AI_VALUE2(Unit*, "find target", "ebonroc");
+    if (!boss || AI_VALUE(Unit*, "current target") != boss)
+        return false;
+
+    Unit* victim = boss->GetVictim();
+    return victim && victim->HasAura(shadow);
+}
+
 // Chromaggus
 
 bool BwlChromaggusBreathTrigger::IsActive()

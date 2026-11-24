@@ -66,6 +66,13 @@ private:
     const std::string bossName;
 };
 
+class BwlEbonrocTankSwapTrigger : public Trigger
+{
+public:
+    BwlEbonrocTankSwapTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bwl ebonroc tank swap", 1) {}
+    bool IsActive() override;
+};
+
 // Chromaggus
 
 class BwlChromaggusBreathTrigger : public Trigger
