@@ -21,6 +21,10 @@
 
 constexpr uint32 ULDUAR_MAP_ID = 603;
 
+constexpr float ULDUAR_TENDRILS_ESCAPE_DISTANCE = 18.0f + 10.0f;
+
+constexpr float ULDUAR_OVERLOAD_ESCAPE_DISTANCE = 20.0f + 5.0f;
+
 enum UlduarIDs
 {
     // Iron Assembly

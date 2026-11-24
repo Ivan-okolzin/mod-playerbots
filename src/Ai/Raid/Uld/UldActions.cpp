@@ -158,6 +158,7 @@ bool FlameLeviathanVehicleAction::DemolisherAction(Unit* target)
 
 bool FlameLeviathanVehicleAction::DemolisherTurretAction(Unit* target)
 {
+    Unit* demolisher = vehicleBase_->GetVehicleBase();
     int32 liquidCount = 0;
     {
         GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
@@ -171,7 +172,7 @@ bool FlameLeviathanVehicleAction::DemolisherTurretAction(Unit* target)
             if (unit->GetDistance(bot) >= 49.0f)
                 continue;
             ++liquidCount;
-            if (vehicleBase_->GetPower(POWER_ENERGY) <= 25) // Liquid Pyrite
+            if (demolisher && demolisher->GetPower(POWER_ENERGY) <= 25)
             {
                 uint32 spellId = 62479;
                 if (botAI->CanCastVehicleSpell(spellId, unit))
@@ -1120,16 +1121,14 @@ bool IronAssemblyLightningTendrilsAction::isUseful()
 
 bool IronAssemblyLightningTendrilsAction::Execute(Event /*event*/)
 {
-    const float radius = 18.0f + 10.0f;  // 18 yards + 10 yards for safety
-
     Unit* boss = AI_VALUE2(Unit*, "find target", "stormcaller brundir");
     if (!boss)
         return false;
 
     float currentDistance = bot->GetDistance2d(boss);
 
-    if (currentDistance < radius)
-        return MoveAway(boss, radius - currentDistance);
+    if (currentDistance < ULDUAR_TENDRILS_ESCAPE_DISTANCE)
+        return MoveAway(boss, ULDUAR_TENDRILS_ESCAPE_DISTANCE - currentDistance);
 
     return false;
 }
@@ -1142,16 +1141,14 @@ bool IronAssemblyOverloadAction::isUseful()
 
 bool IronAssemblyOverloadAction::Execute(Event /*event*/)
 {
-    const float radius = 20.0f + 5.0f;  // 20 yards + 5 yards for safety
-
     Unit* boss = AI_VALUE2(Unit*, "find target", "stormcaller brundir");
     if (!boss)
         return false;
 
     float currentDistance = bot->GetDistance2d(boss);
 
-    if (currentDistance < radius)
-        return MoveAway(boss, radius - currentDistance);
+    if (currentDistance < ULDUAR_OVERLOAD_ESCAPE_DISTANCE)
+        return MoveAway(boss, ULDUAR_OVERLOAD_ESCAPE_DISTANCE - currentDistance);
 
     return false;
 }

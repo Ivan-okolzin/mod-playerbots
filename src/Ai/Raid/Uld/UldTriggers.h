@@ -529,6 +529,7 @@ private:
 enum class UldAddRole : uint8
 {
     Everyone,
+    Dps,
     MeleeAndTanks,
     Tanks,
     RangedDps,

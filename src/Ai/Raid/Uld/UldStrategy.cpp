@@ -210,6 +210,10 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     // Hodir
     //
     triggers.push_back(new TriggerNode(
+        "hodir player ice spawned",
+        { NextAction("hodir attack player ice", ACTION_RAID - 1) }));
+
+    triggers.push_back(new TriggerNode(
         "hodir near snowpacked icicle",
         { NextAction("hodir move snowpacked icicle", ACTION_RAID + 1) }));
 
@@ -224,6 +228,10 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     //
     // Freya
     //
+    triggers.push_back(new TriggerNode(
+        "freya strengthened iron roots spawned",
+        { NextAction("freya attack strengthened iron roots", ACTION_RAID - 1) }));
+
     triggers.push_back(new TriggerNode(
         "freya near nature bomb",
         { NextAction("freya move away nature bomb", ACTION_RAID) }));
@@ -321,6 +329,10 @@ void RaidUlduarStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     //
     // General Vezax
     //
+    triggers.push_back(new TriggerNode(
+        "vezax saronite animus spawned",
+        { NextAction("vezax attack saronite animus", ACTION_RAID - 1) }));
+
     triggers.push_back(new TriggerNode(
         "vezax cheat trigger",
         { NextAction("vezax cheat action", ACTION_RAID) }));
