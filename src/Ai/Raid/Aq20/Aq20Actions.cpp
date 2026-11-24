@@ -20,7 +20,11 @@ using namespace EncounterHelpers;
 bool Aq20TankBossAction::Execute(Event /*event*/)
 {
     Unit* boss = FindThreatCreature(bot, _bossEntry);
-    if (!boss)
+    if (!IsAttackableNow(boss))
+        return false;
+
+    // Ayamiss drops flight flags before finishing the passive landing waypoint.
+    if (_bossEntry == Id(Aq20Npcs::NPC_AYAMISS) && !CanTankAyamiss(boss))
         return false;
 
     if (AI_VALUE(Unit*, "current target") != boss)

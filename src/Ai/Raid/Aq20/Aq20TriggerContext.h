@@ -104,7 +104,7 @@ private:
     {
         return new Aq20AddsSpawnedTrigger(
             botAI, "moam mana fiends spawned", Aq20Helpers::MOAM_MANA_FIENDS_VALUE,
-            Aq20AddRole::Everyone);
+            Aq20AddRole::DamageAndOffTanks);
     }
 
     static Trigger* buru_should_be_tanked(PlayerbotAI* botAI)

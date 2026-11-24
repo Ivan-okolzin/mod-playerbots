@@ -347,6 +347,12 @@ bool IsAyamissInAirPhase(Unit* ayamiss)
     return ayamiss && ayamiss->IsLevitating();
 }
 
+bool CanTankAyamiss(Unit* ayamiss)
+{
+    Creature* boss = ayamiss ? ayamiss->ToCreature() : nullptr;
+    return IsAttackableNow(boss) && !IsAyamissInAirPhase(boss) && boss->HasReactState(REACT_AGGRESSIVE);
+}
+
 GameObject* GetUsableOssirianCrystal(PlayerbotAI* botAI)
 {
     Player* bot = botAI->GetBot();

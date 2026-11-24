@@ -187,6 +187,7 @@ Unit* GetNearestBuruEgg(PlayerbotAI* botAI);
 // switches it back on for the ground phase (AYA:95, :122, :204), so levitation is the phase test.
 // Melee cannot reach her at all while it holds.
 bool IsAyamissInAirPhase(Unit* ayamiss);
+bool CanTankAyamiss(Unit* ayamiss);
 
 // Ossirian the Unscarred
 
