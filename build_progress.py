@@ -68,7 +68,18 @@ for w in state["work"]:
         % (cls, e(w["raid"]), cls, e(w["state"]), e(w["title"]), e(w["note"]),
            e(w["branch"]), (' · ' + e(w["commit"])) if w["commit"] else ""))
 
-page = """<title>Рейдовые тактики ботов</title>
+def records(items, title, label, detail):
+    return "".join(
+        f'<li class="card"><strong>{e(row[title])}</strong> · {e(row[label])}'
+        f'<p>{e(row[detail])}</p></li>' for row in items)
+
+
+scope = {r["key"] for r, _ in rows} - set(state["excluded"])
+assert len(by_key) == len(state["work"]) and by_key.keys() <= scope
+stages = " · ".join(f"{e(stage)} {sum(w['state'] == stage for w in by_key.values())}/{len(scope)}"
+                    for stage in dict.fromkeys(w["state"] for w in by_key.values()))
+stages += f" · без записи {len(scope - by_key.keys())}/{len(scope)}"
+page = """<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Рейдовые тактики ботов</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Слева направо: сводка, затем конвейер агентов, затем таблица всех 23 рейдов. */
@@ -146,6 +157,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; width: 1%; color
 td.stage { width: 30% }
 code { font-family: var(--font-mono); font-size: 0.95em }
 footer { color: var(--muted); font-size: 0.82rem; line-height: 1.6 }
+nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)} nav a[aria-current] {font-weight:bold;border-bottom:2px solid var(--accent)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
 <div class="wrap">
@@ -157,21 +169,25 @@ footer { color: var(--muted); font-size: 0.82rem; line-height: 1.6 }
     «заглушка» — только вспомогательные, «нет» — ничего.</p>
   </header>
 
-  <section>
+  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#tasks">Задачи</a> <a href="#questions">Вопросы</a></nav>
+  <section data-view="coverage" id="coverage">
     <h2>Сводка</h2>
     <div class="sum"><span class="big">__GOOD__</span><span class="pill">из __BOSSES__ боссов
-      закрыты полностью</span><span class="pill">рейдов в работе: __LIVE__</span>
+      имеют ≥ 4 триггеров механик</span><span class="pill">рейдов в работе: __LIVE__</span>
       <span class="pill">закрыто в этом конвейере: __DONE__</span></div>
     <span class="bar wide">__TOTBAR__</span>
     <div class="sum">__TOTPILLS__</div>
   </section>
 
-  <section>
+  <section data-view="tasks" id="tasks"><h2>Задачи</h2><ul class="cards">__TASKS__</ul></section>
+  <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards">__QUESTIONS__</ul></section>
+  <section data-view="agents" id="agents">
+    <p>Этапы по журналу агентов · __STAGES__. Из плана по решению пользователя исключены: __EXCLUDED__.</p>
     <h2>Конвейер: один рейд — один агент</h2>
     <ul class="cards">__CARDS__</ul>
   </section>
 
-  <section>
+  <section data-view="coverage">
     <h2>Покрытие по рейдам</h2>
     <div class="tablewrap"><table>
       <thead><tr><th scope="col">Рейд</th><th scope="col">Боссов</th>
@@ -185,9 +201,27 @@ footer { color: var(--muted); font-size: 0.82rem; line-height: 1.6 }
   <code>codestyle-cpp.py</code> и греп таблиц <code>creators</code>; в игре тактики пока не
   проверялись.</footer>
 </div>
+<script>
+function selectView() {
+  const links = [...document.querySelectorAll('nav a')];
+  const hash = links.some(a => a.hash === location.hash) ? location.hash : '#coverage';
+  for (const section of document.querySelectorAll('[data-view]'))
+    section.hidden = '#' + section.dataset.view !== hash;
+  for (const a of links) {
+    if (a.hash === hash) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  }
+}
+selectView();
+addEventListener('hashchange', selectView);
+</script></html>
 """
 
 page = (page
+        .replace("__TASKS__", records(state["tasks"], "raid", "priority", "next"))
+        .replace("__QUESTIONS__", records(state["questions"], "title", "status", "context"))
+        .replace("__STAGES__", stages)
+        .replace("__EXCLUDED__", e(", ".join(state["excluded"])))
         .replace("__NOTE__", e(state["note"]))
         .replace("__DATE__", e(state["updated"]))
         .replace("__BOSSES__", str(total_bosses))
@@ -201,6 +235,6 @@ page = (page
         .replace("__CARDS__", "".join(cards))
         .replace("__ROWS__", "".join(raid_rows)))
 
-out = os.path.join(BASE, "index.html")
-open(out, "w", encoding="utf-8").write(page)
-print("written", out, len(page), "bytes")
+for name in ("index.html", "progress.html"):
+    with open(os.path.join(BASE, name), "w", encoding="utf-8") as output:
+        output.write(page)
