@@ -1,7 +1,14 @@
 name: Windows runtime ZIP
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      reuse_build_45450573446:
+        description: Repackage the successful build job from run 45450573446
+        type: boolean
+        default: false
 permissions:
   contents: read
+  actions: read
 
 jobs:
   windows-build:
@@ -14,6 +21,7 @@ jobs:
 
     steps:
       - name: Checkout AzerothCore
+        if: ${{ !inputs.reuse_build_45450573446 }}
         uses: actions/checkout@v4
         with:
           repository: 'mod-playerbots/azerothcore-wotlk'
@@ -22,6 +30,7 @@ jobs:
           path: a
 
       - name: Checkout Playerbot Module
+        if: ${{ !inputs.reuse_build_45450573446 }}
         uses: actions/checkout@v4
         with:
           persist-credentials: false
@@ -29,6 +38,7 @@ jobs:
           path: a/modules/mod-playerbots
 
       - name: Move source tree to short path
+        if: ${{ !inputs.reuse_build_45450573446 }}
         shell: powershell
         run: |
           if (Test-Path C:\ac) {
@@ -87,9 +97,11 @@ jobs:
           C:\openssl\bin\openssl.exe version
 
       - name: ccache
+        if: ${{ !inputs.reuse_build_45450573446 }}
         uses: hendrikmuhs/ccache-action@v1.2.13
 
       - name: Create AzerothCore CI config
+        if: ${{ !inputs.reuse_build_45450573446 }}
         shell: bash
         working-directory: C:\ac
         run: |
@@ -115,6 +127,7 @@ jobs:
           arch: x64
 
       - name: Build
+        if: ${{ !inputs.reuse_build_45450573446 }}
         shell: bash
         working-directory: C:\ac
         run: |
@@ -147,6 +160,7 @@ jobs:
           ./acore.sh compiler build
 
       - name: Package runtime
+        if: ${{ !inputs.reuse_build_45450573446 }}
         shell: pwsh
         run: |
           $root = New-Item -Type Directory runtime
@@ -176,6 +190,63 @@ jobs:
             Copy-Item $_.FullName $dest
           }
           @("core=$(git -C C:\ac rev-parse HEAD)", "module=$(git -C C:\ac\modules\mod-playerbots rev-parse HEAD)", "workflow=$env:GITHUB_SHA") | Set-Content runtime/revisions.txt
+
+      - uses: actions/download-artifact@v4
+        if: inputs.reuse_build_45450573446
+        with:
+          name: windows-runtime
+          path: previous
+          run-id: 45450573446
+          github-token: ${{ github.token }}
+
+      - name: Verify and unpack previously compiled runtime
+        if: inputs.reuse_build_45450573446
+        shell: pwsh
+        run: |
+          Expand-Archive previous/windows-runtime.zip runtime
+          Push-Location runtime
+          foreach ($line in Get-Content SHA256SUMS) {
+            $hash,$file = $line -split '  ',2
+            if ((Get-FileHash -LiteralPath $file).Hash -ne $hash) { throw "Checksum mismatch for $file" }
+          }
+          $revisions = Get-Content revisions.txt
+          foreach ($pin in 'module=796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57','core=e7e2e288e7d9ec30e2dfe6f417178a95986fcbb2') {
+            if ($pin -notin $revisions) { throw "Missing revision $pin" }
+          }
+          Remove-Item SHA256SUMS
+          Pop-Location
+
+      - name: Resolve runtime imports and write ZIP
+        shell: pwsh
+        run: |
+          $dirs = @('C:\openssl\bin', "$env:BOOST_ROOT\lib64-msvc-14.3")
+          $dirs += Get-ChildItem "$env:ProgramFiles\MySQL\MySQL Server*\bin","$env:ProgramFiles\MySQL\MySQL Server*\lib" -Directory | Select-Object -ExpandProperty FullName
+          $dirs += Get-ChildItem "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT" -Directory | Select-Object -ExpandProperty FullName
+          $queue = [Collections.Generic.Queue[string]]::new()
+          Get-ChildItem runtime/* -Include *.exe,*.dll -File | ForEach-Object { $queue.Enqueue($_.FullName) }
+          $seen = @{}
+          while ($queue.Count) {
+            $binary = $queue.Dequeue()
+            if ($seen.ContainsKey($binary)) { continue }
+            $seen[$binary] = $true
+            $imports = & dumpbin /nologo /dependents $binary
+            if ($LASTEXITCODE) { throw "dumpbin failed for $binary" }
+            foreach ($line in $imports) {
+              if ($line -notmatch '^\s*([\w.+-]+\.dll)\s*$') { continue }
+              $dll = $Matches[1]
+              if ($dll -match '^(api|ext)-ms-') { continue }
+              if (Test-Path "runtime/$dll") { continue }
+              $source = $dirs | ForEach-Object { Join-Path $_ $dll } | Where-Object { Test-Path $_ -PathType Leaf } | Select-Object -First 1
+              if (!$source) {
+                if (Test-Path "$env:SystemRoot/System32/$dll") { continue }
+                throw "Unresolved import $dll in $binary"
+              }
+              Write-Host "$binary imports $source"
+              Copy-Item $source runtime
+              $queue.Enqueue((Resolve-Path "runtime/$dll").Path)
+            }
+          }
+          "packaging=$env:GITHUB_SHA" | Add-Content runtime/revisions.txt
           Push-Location runtime
           $lines = Get-ChildItem -Recurse -File | Sort-Object FullName | ForEach-Object {
             "$( (Get-FileHash $_.FullName).Hash )  $([IO.Path]::GetRelativePath($pwd.Path,$_.FullName))"
