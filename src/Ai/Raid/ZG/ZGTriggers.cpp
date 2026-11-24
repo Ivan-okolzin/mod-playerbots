@@ -62,7 +62,7 @@ bool ZulGurubAddsSpawnedTrigger::IsActiveInEncounter()
     if (_bossEntry && !FindThreatCreature(bot, _bossEntry))
         return false;
 
-    Unit* add = GetNearestCachedUnit(botAI, _addsValue);
+    Unit* add = SelectCachedTarget(botAI, _addsValue);
     return add && AI_VALUE(Unit*, "current target") != add;
 }
 
@@ -112,7 +112,7 @@ bool ZulGurubShouldPickUpPoisonousBloodTrigger::IsActive()
     if (bot->GetHealthPct() < POISON_PICKUP_MIN_HEALTH_PCT)
         return false;
 
-    Unit* cloud = GetNearestCachedUnit(botAI, POISONOUS_CLOUDS_VALUE);
+    Unit* cloud = SelectCachedTarget(botAI, POISONOUS_CLOUDS_VALUE);
     return cloud && bot->GetExactDist2d(cloud) > POISON_PICKUP_STAND_DISTANCE;
 }
 

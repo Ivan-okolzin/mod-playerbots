@@ -46,7 +46,7 @@ bool ZulGurubTankTauntBossAction::Execute(Event /*event*/)
 
 bool ZulGurubAttackNearestAddAction::Execute(Event /*event*/)
 {
-    Unit* add = GetNearestCachedUnit(botAI, _addsValue);
+    Unit* add = SelectCachedTarget(botAI, _addsValue);
     if (!add || IsUnassailable(add))
         return false;
 
@@ -97,7 +97,7 @@ bool ZulGurubStopAttackingCharmedAllyAction::Execute(Event /*event*/)
 
 bool ZulGurubMoveIntoPoisonousCloudAction::Execute(Event /*event*/)
 {
-    Unit* cloud = GetNearestCachedUnit(botAI, POISONOUS_CLOUDS_VALUE);
+    Unit* cloud = SelectCachedTarget(botAI, POISONOUS_CLOUDS_VALUE);
     if (!cloud)
         return false;
 
