@@ -1,0 +1,1392 @@
+{
+ "_comment": "Канонические списки боссов рейдов 3.3.5 + алиасы для сопоставления с именами триггеров/экшенов mod-playerbots. strategy=null означает, что рейда нет в ApplyInstanceStrategies().",
+ "raids": [
+  {
+   "key": "MC",
+   "dir": "MC",
+   "map": 409,
+   "exp": "Classic",
+   "name": "Molten Core",
+   "name_ru": "Огненные Недра",
+   "strategy": "moltencore",
+   "sizes": "40",
+   "bosses": [
+    {
+     "n": "Lucifron",
+     "aliases": [
+      "lucifron"
+     ]
+    },
+    {
+     "n": "Magmadar",
+     "aliases": [
+      "magmadar"
+     ]
+    },
+    {
+     "n": "Gehennas",
+     "aliases": [
+      "gehennas"
+     ]
+    },
+    {
+     "n": "Garr",
+     "aliases": [
+      "garr"
+     ]
+    },
+    {
+     "n": "Shazzrah",
+     "aliases": [
+      "shazzrah"
+     ]
+    },
+    {
+     "n": "Baron Geddon",
+     "aliases": [
+      "baron geddon",
+      "living bomb"
+     ]
+    },
+    {
+     "n": "Sulfuron Harbinger",
+     "aliases": [
+      "sulfuron"
+     ]
+    },
+    {
+     "n": "Golemagg the Incinerator",
+     "aliases": [
+      "golemagg"
+     ]
+    },
+    {
+     "n": "Majordomo Executus",
+     "aliases": [
+      "majordomo"
+     ]
+    },
+    {
+     "n": "Ragnaros",
+     "aliases": [
+      "ragnaros"
+     ]
+    }
+   ],
+   "trash": [
+    "core hound",
+    "in lava",
+    "move from lava",
+    "move from group"
+   ]
+  },
+  {
+   "key": "BWL",
+   "dir": "BWL",
+   "map": 469,
+   "exp": "Classic",
+   "name": "Blackwing Lair",
+   "name_ru": "Логово Крыла Тьмы",
+   "strategy": "bwl",
+   "sizes": "40",
+   "bosses": [
+    {
+     "n": "Razorgore the Untamed",
+     "aliases": [
+      "razorgore"
+     ]
+    },
+    {
+     "n": "Vaelastrasz the Corrupt",
+     "aliases": [
+      "vaelastrasz"
+     ]
+    },
+    {
+     "n": "Broodlord Lashlayer",
+     "aliases": [
+      "broodlord"
+     ]
+    },
+    {
+     "n": "Firemaw",
+     "aliases": [
+      "firemaw"
+     ]
+    },
+    {
+     "n": "Ebonroc",
+     "aliases": [
+      "ebonroc"
+     ]
+    },
+    {
+     "n": "Flamegor",
+     "aliases": [
+      "flamegor"
+     ]
+    },
+    {
+     "n": "Chromaggus",
+     "aliases": [
+      "chromaggus"
+     ]
+    },
+    {
+     "n": "Nefarian",
+     "aliases": [
+      "nefarian"
+     ]
+    }
+   ],
+   "trash": [
+    "death talon",
+    "suppression device",
+    "affliction bronze",
+    "hourglass sand",
+    "onyxia scale cloak"
+   ]
+  },
+  {
+   "key": "ZG",
+   "dir": "ZG",
+   "map": 309,
+   "exp": "Classic",
+   "name": "Zul'Gurub",
+   "name_ru": "Зул'Гуруб",
+   "strategy": "zulgurub",
+   "sizes": "20",
+   "bosses": [
+    {
+     "n": "High Priest Venoxis",
+     "aliases": [
+      "venoxis"
+     ]
+    },
+    {
+     "n": "High Priestess Jeklik",
+     "aliases": [
+      "jeklik"
+     ]
+    },
+    {
+     "n": "High Priestess Mar'li",
+     "aliases": [
+      "mar'li",
+      "marli"
+     ]
+    },
+    {
+     "n": "Bloodlord Mandokir",
+     "aliases": [
+      "mandokir"
+     ]
+    },
+    {
+     "n": "Edge of Madness (Gri'lek/Hazza'rah/Renataki/Wushoolay)",
+     "aliases": [
+      "gri'lek",
+      "hazza'rah",
+      "renataki",
+      "wushoolay",
+      "edge of madness"
+     ]
+    },
+    {
+     "n": "High Priest Thekal",
+     "aliases": [
+      "thekal"
+     ]
+    },
+    {
+     "n": "Gahz'ranka",
+     "aliases": [
+      "gahz'ranka"
+     ]
+    },
+    {
+     "n": "High Priestess Arlokk",
+     "aliases": [
+      "arlokk"
+     ]
+    },
+    {
+     "n": "Jin'do the Hexxer",
+     "aliases": [
+      "jin'do"
+     ]
+    },
+    {
+     "n": "Hakkar",
+     "aliases": [
+      "hakkar",
+      "poisonous blood"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "Aq20",
+   "dir": "Aq20",
+   "map": 509,
+   "exp": "Classic",
+   "name": "Ruins of Ahn'Qiraj (AQ20)",
+   "name_ru": "Руины Ан'Киража",
+   "strategy": "aq20",
+   "sizes": "20",
+   "bosses": [
+    {
+     "n": "Kurinnaxx",
+     "aliases": [
+      "kurinnaxx"
+     ]
+    },
+    {
+     "n": "General Rajaxx",
+     "aliases": [
+      "rajaxx"
+     ]
+    },
+    {
+     "n": "Moam",
+     "aliases": [
+      "moam"
+     ]
+    },
+    {
+     "n": "Buru the Gorger",
+     "aliases": [
+      "buru"
+     ]
+    },
+    {
+     "n": "Ayamiss the Hunter",
+     "aliases": [
+      "ayamiss"
+     ]
+    },
+    {
+     "n": "Ossirian the Unscarred",
+     "aliases": [
+      "ossirian",
+      "crystal"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "AQ40",
+   "dir": "Aq40",
+   "map": 531,
+   "exp": "Classic",
+   "name": "Temple of Ahn'Qiraj (AQ40)",
+   "name_ru": "Храм Ан'Киража",
+   "strategy": "aq40",
+   "sizes": "40",
+   "bosses": [
+    {
+     "n": "The Prophet Skeram",
+     "aliases": [
+      "skeram"
+     ],
+     "entry": 15263
+    },
+    {
+     "n": "Silithid Royalty (Vem / Lord Kri / Princess Yauj)",
+     "aliases": [
+      "vem",
+      "lord kri",
+      "yauj",
+      "silithid royalty",
+      "bug trio"
+     ],
+     "entry": 15544
+    },
+    {
+     "n": "Battleguard Sartura",
+     "aliases": [
+      "sartura"
+     ],
+     "entry": 15516
+    },
+    {
+     "n": "Fankriss the Unyielding",
+     "aliases": [
+      "fankriss"
+     ],
+     "entry": 15510
+    },
+    {
+     "n": "Viscidus",
+     "aliases": [
+      "viscidus"
+     ],
+     "entry": 15299
+    },
+    {
+     "n": "Princess Huhuran",
+     "aliases": [
+      "huhuran"
+     ],
+     "entry": 15509
+    },
+    {
+     "n": "Twin Emperors (Vek'lor / Vek'nilash)",
+     "aliases": [
+      "vek'lor",
+      "vek'nilash",
+      "twin emperors"
+     ],
+     "entry": 15275
+    },
+    {
+     "n": "Ouro",
+     "aliases": [
+      "ouro"
+     ],
+     "entry": 15517
+    },
+    {
+     "n": "C'Thun",
+     "aliases": [
+      "c'thun",
+      "cthun",
+      "eye of c'thun"
+     ],
+     "entry": 15727
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "Ony",
+   "dir": "Ony",
+   "map": 249,
+   "exp": "Classic",
+   "name": "Onyxia's Lair",
+   "name_ru": "Логово Ониксии",
+   "strategy": "onyxia",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Onyxia",
+     "aliases": [
+      "ony"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "Kara",
+   "dir": "Kara",
+   "map": 532,
+   "exp": "TBC",
+   "name": "Karazhan",
+   "name_ru": "Каражан",
+   "strategy": "karazhan",
+   "sizes": "10",
+   "bosses": [
+    {
+     "n": "Attumen the Huntsman",
+     "aliases": [
+      "attumen"
+     ]
+    },
+    {
+     "n": "Moroes",
+     "aliases": [
+      "moroes"
+     ]
+    },
+    {
+     "n": "Maiden of Virtue",
+     "aliases": [
+      "maiden of virtue"
+     ]
+    },
+    {
+     "n": "Opera: The Wizard of Oz",
+     "aliases": [
+      "wizard of oz",
+      "strawman",
+      "dorothee",
+      "tito",
+      "roar",
+      "tinhead"
+     ]
+    },
+    {
+     "n": "Opera: The Big Bad Wolf",
+     "aliases": [
+      "big bad wolf",
+      "little red riding hood"
+     ]
+    },
+    {
+     "n": "Opera: Romulo and Julianne",
+     "aliases": [
+      "romulo"
+     ]
+    },
+    {
+     "n": "The Curator",
+     "aliases": [
+      "curator"
+     ]
+    },
+    {
+     "n": "Terestian Illhoof",
+     "aliases": [
+      "terestian"
+     ]
+    },
+    {
+     "n": "Shade of Aran",
+     "aliases": [
+      "shade of aran"
+     ]
+    },
+    {
+     "n": "Netherspite",
+     "aliases": [
+      "netherspite"
+     ]
+    },
+    {
+     "n": "Chess Event (Echo of Medivh)",
+     "aliases": [
+      "chess",
+      "medivh"
+     ]
+    },
+    {
+     "n": "Prince Malchezaar",
+     "aliases": [
+      "malchezaar"
+     ]
+    },
+    {
+     "n": "Nightbane",
+     "aliases": [
+      "nightbane"
+     ]
+    }
+   ],
+   "trash": [
+    "mana warp",
+    "karazhan"
+   ]
+  },
+  {
+   "key": "Gruul",
+   "dir": "Gruul",
+   "map": 565,
+   "exp": "TBC",
+   "name": "Gruul's Lair",
+   "name_ru": "Логово Груула",
+   "strategy": "gruulslair",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "High King Maulgar",
+     "aliases": [
+      "maulgar",
+      "kiggler",
+      "krosh",
+      "blindeye",
+      "olm"
+     ]
+    },
+    {
+     "n": "Gruul the Dragonkiller",
+     "aliases": [
+      "gruul the dragonkiller"
+     ]
+    }
+   ],
+   "trash": [
+    "gruul's lair"
+   ]
+  },
+  {
+   "key": "Mag",
+   "dir": "Mag",
+   "map": 544,
+   "exp": "TBC",
+   "name": "Magtheridon's Lair",
+   "name_ru": "Логово Магтеридона",
+   "strategy": "magtheridon",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "Magtheridon",
+     "aliases": [
+      "magtheridon",
+      "mag debris",
+      "burning abyssal"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "SSC",
+   "dir": "SSC",
+   "map": 548,
+   "exp": "TBC",
+   "name": "Serpentshrine Cavern",
+   "name_ru": "Логово Змея",
+   "strategy": "ssc",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "Hydross the Unstable",
+     "aliases": [
+      "hydross"
+     ]
+    },
+    {
+     "n": "The Lurker Below",
+     "aliases": [
+      "lurker below",
+      "lurker guardian"
+     ]
+    },
+    {
+     "n": "Leotheras the Blind",
+     "aliases": [
+      "leotheras"
+     ]
+    },
+    {
+     "n": "Fathom-Lord Karathress",
+     "aliases": [
+      "karathress",
+      "caribdis",
+      "tidalvess",
+      "sharkkis"
+     ]
+    },
+    {
+     "n": "Morogrim Tidewalker",
+     "aliases": [
+      "morogrim"
+     ]
+    },
+    {
+     "n": "Lady Vashj",
+     "aliases": [
+      "vashj",
+      "toxic spores"
+     ]
+    }
+   ],
+   "trash": [
+    "greyheart",
+    "underbog colossus",
+    "ssc"
+   ]
+  },
+  {
+   "key": "TK",
+   "dir": "TK",
+   "map": 550,
+   "exp": "TBC",
+   "name": "Tempest Keep: The Eye",
+   "name_ru": "Крепость Бурь: Око",
+   "strategy": "tempestkeep",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "Al'ar",
+     "aliases": [
+      "al'ar",
+      "tk flame patches"
+     ]
+    },
+    {
+     "n": "Void Reaver",
+     "aliases": [
+      "void reaver"
+     ]
+    },
+    {
+     "n": "High Astromancer Solarian",
+     "aliases": [
+      "solarian"
+     ]
+    },
+    {
+     "n": "Kael'thas Sunstrider",
+     "aliases": [
+      "kael'thas",
+      "thaladred",
+      "capernian",
+      "sanguinar",
+      "telonicus",
+      "legendary weapons"
+     ]
+    }
+   ],
+   "trash": [
+    "crimson hand",
+    "tempest keep"
+   ]
+  },
+  {
+   "key": "Hyjal",
+   "dir": "Hyjal",
+   "map": 534,
+   "exp": "TBC",
+   "name": "Battle for Mount Hyjal",
+   "name_ru": "Битва за Хиджал",
+   "strategy": "hyjal",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "Rage Winterchill",
+     "aliases": [
+      "rage winterchill",
+      "hyjal death and decay"
+     ]
+    },
+    {
+     "n": "Anetheron",
+     "aliases": [
+      "anetheron",
+      "hyjal infernals"
+     ]
+    },
+    {
+     "n": "Kaz'rogal",
+     "aliases": [
+      "kaz'rogal"
+     ]
+    },
+    {
+     "n": "Azgalor",
+     "aliases": [
+      "azgalor",
+      "hyjal rain of fire"
+     ]
+    },
+    {
+     "n": "Archimonde",
+     "aliases": [
+      "archimonde",
+      "hyjal doomfire"
+     ]
+    }
+   ],
+   "trash": [
+    "hyjal"
+   ]
+  },
+  {
+   "key": "BT",
+   "dir": "BT",
+   "map": 564,
+   "exp": "TBC",
+   "name": "Black Temple",
+   "name_ru": "Чёрный храм",
+   "strategy": "blacktemple",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "High Warlord Naj'entus",
+     "aliases": [
+      "naj'entus"
+     ]
+    },
+    {
+     "n": "Supremus",
+     "aliases": [
+      "supremus"
+     ]
+    },
+    {
+     "n": "Shade of Akama",
+     "aliases": [
+      "shade of akama"
+     ]
+    },
+    {
+     "n": "Teron Gorefiend",
+     "aliases": [
+      "teron gorefiend"
+     ]
+    },
+    {
+     "n": "Gurtogg Bloodboil",
+     "aliases": [
+      "gurtogg"
+     ]
+    },
+    {
+     "n": "Reliquary of Souls",
+     "aliases": [
+      "reliquary of souls",
+      "essence of"
+     ]
+    },
+    {
+     "n": "Mother Shahraz",
+     "aliases": [
+      "mother shahraz"
+     ]
+    },
+    {
+     "n": "The Illidari Council",
+     "aliases": [
+      "illidari council",
+      "gathios",
+      "malande",
+      "zerevor",
+      "darkshadow"
+     ]
+    },
+    {
+     "n": "Illidan Stormrage",
+     "aliases": [
+      "illidan stormrage"
+     ]
+    }
+   ],
+   "trash": [
+    "black temple"
+   ]
+  },
+  {
+   "key": "ZA",
+   "dir": "ZA",
+   "map": 568,
+   "exp": "TBC",
+   "name": "Zul'Aman",
+   "name_ru": "Зул'Аман",
+   "strategy": "zulaman",
+   "sizes": "10",
+   "bosses": [
+    {
+     "n": "Nalorakk",
+     "aliases": [
+      "nalorakk"
+     ]
+    },
+    {
+     "n": "Akil'zon",
+     "aliases": [
+      "akil'zon"
+     ]
+    },
+    {
+     "n": "Jan'alai",
+     "aliases": [
+      "jan'alai"
+     ]
+    },
+    {
+     "n": "Halazzi",
+     "aliases": [
+      "halazzi"
+     ]
+    },
+    {
+     "n": "Hex Lord Malacrass",
+     "aliases": [
+      "malacrass"
+     ]
+    },
+    {
+     "n": "Zul'jin",
+     "aliases": [
+      "zul'jin"
+     ]
+    }
+   ],
+   "trash": [
+    "amani'shi",
+    "zul'aman"
+   ]
+  },
+  {
+   "key": "SWP",
+   "dir": "SWP",
+   "map": 580,
+   "exp": "TBC",
+   "name": "Sunwell Plateau",
+   "name_ru": "Плато Солнечного Колодца",
+   "strategy": "sunwell",
+   "sizes": "25",
+   "bosses": [
+    {
+     "n": "Kalecgos / Sathrovarr",
+     "aliases": [
+      "kalecgos",
+      "sathrovarr"
+     ],
+     "entry": 24850
+    },
+    {
+     "n": "Brutallus",
+     "aliases": [
+      "brutallus"
+     ],
+     "entry": 24882
+    },
+    {
+     "n": "Felmyst",
+     "aliases": [
+      "felmyst"
+     ],
+     "entry": 25038
+    },
+    {
+     "n": "Eredar Twins (Alythess / Sacrolash)",
+     "aliases": [
+      "alythess",
+      "sacrolash",
+      "eredar twins"
+     ],
+     "entry": 25165
+    },
+    {
+     "n": "M'uru / Entropius",
+     "aliases": [
+      "m'uru",
+      "entropius"
+     ],
+     "entry": 25741
+    },
+    {
+     "n": "Kil'jaeden",
+     "aliases": [
+      "kil'jaeden"
+     ],
+     "entry": 25315
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "Naxx",
+   "dir": "Naxx",
+   "map": 533,
+   "exp": "WotLK",
+   "name": "Naxxramas",
+   "name_ru": "Наксрамас",
+   "strategy": "naxx",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Anub'Rekhan",
+     "aliases": [
+      "anub'rekhan"
+     ]
+    },
+    {
+     "n": "Grand Widow Faerlina",
+     "aliases": [
+      "faerlina"
+     ]
+    },
+    {
+     "n": "Maexxna",
+     "aliases": [
+      "maexxna"
+     ]
+    },
+    {
+     "n": "Noth the Plaguebringer",
+     "aliases": [
+      "noth"
+     ]
+    },
+    {
+     "n": "Heigan the Unclean",
+     "aliases": [
+      "heigan"
+     ]
+    },
+    {
+     "n": "Loatheb",
+     "aliases": [
+      "loatheb"
+     ]
+    },
+    {
+     "n": "Instructor Razuvious",
+     "aliases": [
+      "razuvious"
+     ]
+    },
+    {
+     "n": "Gothik the Harvester",
+     "aliases": [
+      "gothik"
+     ]
+    },
+    {
+     "n": "The Four Horsemen",
+     "aliases": [
+      "four horsemen"
+     ]
+    },
+    {
+     "n": "Patchwerk",
+     "aliases": [
+      "patchwerk"
+     ]
+    },
+    {
+     "n": "Grobbulus",
+     "aliases": [
+      "grobbulus",
+      "mutating injection"
+     ]
+    },
+    {
+     "n": "Gluth",
+     "aliases": [
+      "gluth"
+     ]
+    },
+    {
+     "n": "Thaddius",
+     "aliases": [
+      "thaddius"
+     ]
+    },
+    {
+     "n": "Sapphiron",
+     "aliases": [
+      "sapphiron"
+     ]
+    },
+    {
+     "n": "Kel'Thuzad",
+     "aliases": [
+      "kel'thuzad"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "OS",
+   "dir": "OS",
+   "map": 615,
+   "exp": "WotLK",
+   "name": "The Obsidian Sanctum",
+   "name_ru": "Обсидиановое святилище",
+   "strategy": "wotlk-os",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Sartharion",
+     "aliases": [
+      "sartharion",
+      "flame tsunami",
+      "twilight fissure"
+     ]
+    },
+    {
+     "n": "Tenebron",
+     "aliases": [
+      "tenebron",
+      "twilight portal",
+      "twilight egg"
+     ]
+    },
+    {
+     "n": "Shadron",
+     "aliases": [
+      "shadron",
+      "acolyte of shadron"
+     ]
+    },
+    {
+     "n": "Vesperon",
+     "aliases": [
+      "vesperon",
+      "acolyte of vesperon"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "EoE",
+   "dir": "EoE",
+   "map": 616,
+   "exp": "WotLK",
+   "name": "The Eye of Eternity",
+   "name_ru": "Око Вечности",
+   "strategy": "wotlk-eoe",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Malygos",
+     "aliases": [
+      "malygos",
+      "power spark",
+      "drake combat",
+      "group flying",
+      "eoe drake",
+      "fly drake"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "Uld",
+   "dir": "Uld",
+   "map": 603,
+   "exp": "WotLK",
+   "name": "Ulduar",
+   "name_ru": "Улдуар",
+   "strategy": "ulduar",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Flame Leviathan",
+     "aliases": [
+      "flame leviathan"
+     ]
+    },
+    {
+     "n": "Ignis the Furnace Master",
+     "aliases": [
+      "ignis"
+     ]
+    },
+    {
+     "n": "Razorscale",
+     "aliases": [
+      "razorscale"
+     ]
+    },
+    {
+     "n": "XT-002 Deconstructor",
+     "aliases": [
+      "xt-002",
+      "xt002",
+      "deconstructor"
+     ]
+    },
+    {
+     "n": "The Assembly of Iron",
+     "aliases": [
+      "iron assembly",
+      "steelbreaker",
+      "runemaster molgeim",
+      "stormcaller brundir"
+     ]
+    },
+    {
+     "n": "Kologarn",
+     "aliases": [
+      "kologarn"
+     ]
+    },
+    {
+     "n": "Auriaya",
+     "aliases": [
+      "auriaya"
+     ]
+    },
+    {
+     "n": "Hodir",
+     "aliases": [
+      "hodir"
+     ]
+    },
+    {
+     "n": "Thorim",
+     "aliases": [
+      "thorim"
+     ]
+    },
+    {
+     "n": "Freya",
+     "aliases": [
+      "freya",
+      "elder "
+     ]
+    },
+    {
+     "n": "Mimiron",
+     "aliases": [
+      "mimiron",
+      "p3wx2"
+     ]
+    },
+    {
+     "n": "General Vezax",
+     "aliases": [
+      "vezax"
+     ]
+    },
+    {
+     "n": "Yogg-Saron",
+     "aliases": [
+      "yogg-saron",
+      "sara"
+     ]
+    },
+    {
+     "n": "Algalon the Observer",
+     "aliases": [
+      "algalon"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "ToC",
+   "dir": "Crusader",
+   "map": 649,
+   "exp": "WotLK",
+   "name": "Trial of the Crusader",
+   "name_ru": "Испытание Крестоносца",
+   "strategy": "trialofthecrusader",
+   "sizes": "10/25 + героик",
+   "bosses": [
+    {
+     "n": "Northrend Beasts: Gormok the Impaler",
+     "aliases": [
+      "gormok"
+     ],
+     "entry": 34796
+    },
+    {
+     "n": "Northrend Beasts: Acidmaw & Dreadscale",
+     "aliases": [
+      "acidmaw",
+      "dreadscale"
+     ],
+     "entry": 35144
+    },
+    {
+     "n": "Northrend Beasts: Icehowl",
+     "aliases": [
+      "icehowl"
+     ],
+     "entry": 34797
+    },
+    {
+     "n": "Lord Jaraxxus",
+     "aliases": [
+      "jaraxxus"
+     ],
+     "entry": 34780
+    },
+    {
+     "n": "Faction Champions",
+     "aliases": [
+      "faction champions"
+     ],
+     "entry": 0
+    },
+    {
+     "n": "Twin Val'kyr (Fjola / Eydis)",
+     "aliases": [
+      "fjola",
+      "eydis",
+      "twin val'kyr"
+     ],
+     "entry": 34497
+    },
+    {
+     "n": "Anub'arak",
+     "aliases": [
+      "anub'arak"
+     ],
+     "entry": 34564
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "VoA",
+   "dir": "VoA",
+   "map": 624,
+   "exp": "WotLK",
+   "name": "Vault of Archavon",
+   "name_ru": "Крепость Аркавона",
+   "strategy": "voa",
+   "sizes": "10/25",
+   "bosses": [
+    {
+     "n": "Archavon the Stone Watcher",
+     "aliases": [
+      "archavon"
+     ]
+    },
+    {
+     "n": "Emalon the Storm Watcher",
+     "aliases": [
+      "emalon"
+     ]
+    },
+    {
+     "n": "Koralon the Flame Watcher",
+     "aliases": [
+      "koralon"
+     ]
+    },
+    {
+     "n": "Toravon the Ice Watcher",
+     "aliases": [
+      "toravon"
+     ]
+    }
+   ],
+   "trash": []
+  },
+  {
+   "key": "ICC",
+   "dir": "ICC",
+   "map": 631,
+   "exp": "WotLK",
+   "name": "Icecrown Citadel",
+   "name_ru": "Цитадель Ледяной Короны",
+   "strategy": "icc",
+   "sizes": "10/25 + героик",
+   "bosses": [
+    {
+     "n": "Lord Marrowgar",
+     "aliases": [
+      "icc lm",
+      "marrowgar",
+      "icc spike"
+     ]
+    },
+    {
+     "n": "Lady Deathwhisper",
+     "aliases": [
+      "lady deathwhisper"
+     ]
+    },
+    {
+     "n": "Gunship Battle",
+     "aliases": [
+      "gunship",
+      "in cannon",
+      "cannon near",
+      "rocket jump",
+      "rocket pack"
+     ]
+    },
+    {
+     "n": "Deathbringer Saurfang",
+     "aliases": [
+      "icc dbs",
+      "saurfang",
+      "adds dbs"
+     ]
+    },
+    {
+     "n": "Festergut",
+     "aliases": [
+      "festergut"
+     ]
+    },
+    {
+     "n": "Rotface",
+     "aliases": [
+      "rotface"
+     ]
+    },
+    {
+     "n": "Professor Putricide",
+     "aliases": [
+      "putricide"
+     ]
+    },
+    {
+     "n": "Blood Prince Council",
+     "aliases": [
+      "icc bpc",
+      "keleseth"
+     ]
+    },
+    {
+     "n": "Blood-Queen Lana'thel",
+     "aliases": [
+      "icc bql",
+      "lana'thel"
+     ]
+    },
+    {
+     "n": "Valithria Dreamwalker",
+     "aliases": [
+      "valithria"
+     ]
+    },
+    {
+     "n": "Sindragosa",
+     "aliases": [
+      "sindragosa"
+     ]
+    },
+    {
+     "n": "The Lich King",
+     "aliases": [
+      "lich king"
+     ]
+    }
+   ],
+   "trash": [
+    "icc dogs",
+    "rotting frost giant",
+    "sister svalna",
+    "valkyre spear",
+    "dark reckoning"
+   ]
+  },
+  {
+   "key": "RS",
+   "dir": "RS",
+   "map": 724,
+   "exp": "WotLK",
+   "name": "The Ruby Sanctum",
+   "name_ru": "Рубиновое святилище",
+   "strategy": "rs",
+   "sizes": "10/25 + героик",
+   "bosses": [
+    {
+     "n": "Baltharus the Warborn",
+     "aliases": [
+      "baltharus"
+     ]
+    },
+    {
+     "n": "General Zarithrian",
+     "aliases": [
+      "zarithrian"
+     ]
+    },
+    {
+     "n": "Saviana Ragefire",
+     "aliases": [
+      "saviana"
+     ]
+    },
+    {
+     "n": "Halion",
+     "aliases": [
+      "halion"
+     ]
+    }
+   ],
+   "trash": [
+    "rs trash"
+   ]
+  }
+ ]
+}
