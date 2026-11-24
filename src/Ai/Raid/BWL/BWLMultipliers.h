@@ -33,6 +33,13 @@ public:
     float GetValue(Action* action) override;
 };
 
+class ChromaggusMultiplier : public Multiplier
+{
+public:
+    ChromaggusMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "chromaggus") {}
+    float GetValue(Action* action) override;
+};
+
 class NefarianCorruptedHealingMultiplier : public Multiplier
 {
 public:

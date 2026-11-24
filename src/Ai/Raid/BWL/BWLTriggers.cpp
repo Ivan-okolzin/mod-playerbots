@@ -84,6 +84,8 @@ bool BwlBlackDrakeNotVictimTrigger::IsActive()
 
 // Chromaggus
 
+bool BwlChromaggusBreathTrigger::IsActive() { return ShouldHideFromBreath(GetEngagedChromaggus(bot), bot); }
+
 bool BwlAfflictionBronzeTrigger::IsActive()
 {
     return bot->HasAura(static_cast<uint32>(BlackwingLairSpells::SPELL_BROOD_AFFLICTION_BRONZE));

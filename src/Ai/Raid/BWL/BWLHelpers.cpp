@@ -5,11 +5,47 @@
  */
 
 #include "BWLHelpers.h"
+
 #include "AiObjectContext.h"
+#include "Creature.h"
 #include "Group.h"
+#include "InstanceScript.h"
+#include "Spell.h"
 
 namespace BlackwingLairHelpers
 {
+    Unit* GetEngagedChromaggus(Player* bot)
+    {
+        constexpr uint32 chromaggusEncounter = 6;  // DATA_CHROMAGGUS in blackwing_lair.h
+        InstanceScript* instance = bot->GetInstanceScript();
+        if (bot->GetMapId() != 469 || !instance || instance->GetBossState(chromaggusEncounter) != IN_PROGRESS)
+            return nullptr;
+
+        return instance->GetCreature(chromaggusEncounter);
+    }
+
+    bool ShouldHideFromBreath(Unit* boss, Player* bot)
+    {
+        if (!boss || !boss->GetVictim() || boss->GetVictim() == bot)
+            return false;
+
+        Spell* cast = boss->GetCurrentSpell(CURRENT_GENERIC_SPELL);
+        if (!cast)
+            return false;
+
+        switch (static_cast<BlackwingLairSpells>(cast->GetSpellInfo()->Id))
+        {
+            case BlackwingLairSpells::SPELL_INCINERATE:
+            case BlackwingLairSpells::SPELL_TIME_LAPSE:
+            case BlackwingLairSpells::SPELL_CORROSIVE_ACID:
+            case BlackwingLairSpells::SPELL_IGNITE_FLESH:
+            case BlackwingLairSpells::SPELL_FROST_BURN:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     bool IsActiveSuppressionDeviceInRange(GameObject const* go, Player const* bot)
     {
         constexpr float suppressionDeviceInteractionDistance = 15.0f;

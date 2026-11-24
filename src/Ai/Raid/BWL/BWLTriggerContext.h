@@ -34,6 +34,7 @@ public:
         creators["bwl flamegor fire resistance"] = &RaidBwlTriggerContext::bwl_flamegor_fire_resistance_trigger;
         creators["bwl flamegor not victim"] = &RaidBwlTriggerContext::bwl_flamegor_not_victim;
 
+        creators["bwl chromaggus avoid breath"] = &RaidBwlTriggerContext::bwl_chromaggus_breath;
         creators["bwl chromaggus fire resistance"] = &RaidBwlTriggerContext::bwl_chromaggus_fire_resistance_trigger;
         creators["bwl affliction bronze"] = &RaidBwlTriggerContext::bwl_affliction_bronze;
 
@@ -59,6 +60,7 @@ private:
     static Trigger* bwl_ebonroc_not_victim(PlayerbotAI* botAI) { return new BwlBlackDrakeNotVictimTrigger(botAI, "ebonroc"); }
     static Trigger* bwl_flamegor_fire_resistance_trigger(PlayerbotAI* botAI) { return new BossFireResistanceTrigger(botAI, "flamegor"); }
     static Trigger* bwl_flamegor_not_victim(PlayerbotAI* botAI) { return new BwlBlackDrakeNotVictimTrigger(botAI, "flamegor"); }
+    static Trigger* bwl_chromaggus_breath(PlayerbotAI* botAI) { return new BwlChromaggusBreathTrigger(botAI); }
     static Trigger* bwl_chromaggus_fire_resistance_trigger(PlayerbotAI* botAI) { return new BossFireResistanceTrigger(botAI, "chromaggus"); }
     static Trigger* bwl_affliction_bronze(PlayerbotAI* botAI) { return new BwlAfflictionBronzeTrigger(botAI); }
     static Trigger* bwl_nefarian_wild_magic(PlayerbotAI* botAI) { return new BwlNefarianWildMagicTrigger(botAI); }

@@ -25,7 +25,11 @@ namespace BlackwingLairHelpers
 
         // Chromaggus
         SPELL_BROOD_AFFLICTION_BRONZE = 23170,
-        SPELL_HOURGLASS_SAND = 23645,
+        SPELL_INCINERATE = 23308,
+        SPELL_TIME_LAPSE = 23310,
+        SPELL_CORROSIVE_ACID = 23313,
+        SPELL_IGNITE_FLESH = 23315,
+        SPELL_FROST_BURN = 23187,
 
         // Nefarian
         SPELL_WILD_MAGIC = 23410,
@@ -70,6 +74,8 @@ namespace BlackwingLairHelpers
 
     constexpr float BROODLORD_SAFE_DISTANCE = 18.0f;
 
+    Unit* GetEngagedChromaggus(Player* bot);
+    bool ShouldHideFromBreath(Unit* boss, Player* bot);
     bool IsActiveSuppressionDeviceInRange(GameObject const* go, Player const* bot);
     bool AreRazorgoreEggsAlive(PlayerbotAI* botAI);
     bool IsRazorgoreOffTank(Player* bot);

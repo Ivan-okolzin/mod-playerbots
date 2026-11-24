@@ -292,9 +292,45 @@ bool BwlBlackDrakeAvoidBreathAction::isUseful()
 
 // Chromaggus
 
+bool BwlChromaggusBreathAction::isUseful()
+{
+    Unit* boss = GetEngagedChromaggus(bot);
+    return ShouldHideFromBreath(boss, bot) && boss->IsWithinLOSInMap(bot);
+}
+
+bool BwlChromaggusBreathAction::Execute(Event /*event*/)
+{
+    Unit* boss = GetEngagedChromaggus(bot);
+    if (!ShouldHideFromBreath(boss, bot) || !boss->IsWithinLOSInMap(bot))
+        return false;
+
+    // Try nearby cover first so a short cast does not send the raid across the room.
+    for (float distance : {4.0f, 8.0f, 12.0f})
+    {
+        for (unsigned direction = 0; direction < 8; ++direction)
+        {
+            Position cover = bot->GetPosition();
+            bot->MovePositionToFirstCollision(cover, distance, direction * M_PI_4);
+            if (boss->IsWithinLOS(cover.GetPositionX(), cover.GetPositionY(),
+                                  cover.GetPositionZ() + bot->GetCollisionHeight() - boss->GetCollisionHeight()))
+                continue;
+
+            bot->CastStop();
+            if (MoveTo(bot->GetMapId(), cover.GetPositionX(), cover.GetPositionY(), cover.GetPositionZ(), false, false,
+                       false, true, MovementPriority::MOVEMENT_FORCED))
+                return true;
+        }
+    }
+    return false;
+}
+
 bool BwlUseHourglassSandAction::Execute(Event /*event*/)
 {
-    return botAI->CastSpell(static_cast<uint32>(BlackwingLairSpells::SPELL_HOURGLASS_SAND), bot);
+    if (!bot->HasAura(static_cast<uint32>(BlackwingLairSpells::SPELL_BROOD_AFFLICTION_BRONZE)))
+        return false;
+
+    Item* sand = bot->GetItemByEntry(19183);
+    return sand && UseItem(sand, ObjectGuid::Empty, nullptr, bot);
 }
 
 // Nefarian

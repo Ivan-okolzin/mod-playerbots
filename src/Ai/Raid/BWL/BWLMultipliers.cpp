@@ -12,11 +12,61 @@
 #include "HunterActions.h"
 #include "Playerbots.h"
 #include "ReachTargetActions.h"
+#include "Strategy.h"
 
 using namespace BlackwingLairHelpers;
 
 static constexpr float VAELASTRASZ_BA_SAFE_DISTANCE = 20.0f;
 static constexpr float VAELASTRASZ_BA_BOSS_DISTANCE = 30.0f;
+
+float ChromaggusMultiplier::GetValue(Action* action)
+{
+    Unit* boss = GetEngagedChromaggus(bot);
+    if (!boss || !boss->GetVictim())
+        return 1.0f;
+
+    // Hold cover until the breath finishes, including when the current DPS target changes.
+    if (dynamic_cast<MovementAction*>(action) && ShouldHideFromBreath(boss, bot) && !boss->IsWithinLOSInMap(bot))
+        return 0.0f;
+
+    auto* cast = dynamic_cast<CastSpellAction*>(action);
+    if (!cast)
+        return 1.0f;
+
+    if (dynamic_cast<CastCureSpellAction*>(cast) || dynamic_cast<CurePartyMemberAction*>(cast))
+    {
+        Unit* target = cast->GetTarget();
+        if (!target)
+            return 1.0f;
+
+        // The fifth distinct affliction causes Chromatic Mutation immediately.
+        constexpr uint32 afflictions[] = {23153, 23154, 23155, 23169, 23170};
+        unsigned count = 0;
+        for (uint32 affliction : afflictions)
+            if (target->HasAura(affliction))
+                ++count;
+
+        return count >= 3 ? (ACTION_RAID + 1) / ACTION_DISPEL : 1.0f;
+    }
+
+    if (AI_VALUE(Unit*, "current target") != boss || cast->GetTarget() != boss)
+        return 1.0f;
+
+    SpellInfo const* info = sSpellMgr->GetSpellInfo(AI_VALUE2(uint32, "spell id", cast->getSpell()));
+    if (!info || !info->HasEffect(SPELL_EFFECT_SCHOOL_DAMAGE))
+        return 1.0f;
+
+    // Prefer a matching damage school without blocking single-school rotations.
+    static constexpr SpellSchoolMask schools[] = {SPELL_SCHOOL_MASK_FIRE, SPELL_SCHOOL_MASK_FROST,
+                                                  SPELL_SCHOOL_MASK_SHADOW, SPELL_SCHOOL_MASK_NATURE,
+                                                  SPELL_SCHOOL_MASK_ARCANE};
+    constexpr uint32 firstShield = 22277;
+    for (uint32 i = 0; i < std::size(schools); ++i)
+        if ((info->GetSchoolMask() & schools[i]) && boss->HasAura(firstShield + i))
+            return 1.1f;
+
+    return 1.0f;
+}
 
 float RazorgoreTankMultiplier::GetValue(Action* action)
 {
