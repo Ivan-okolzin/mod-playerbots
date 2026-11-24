@@ -252,7 +252,8 @@ bool EmalonAttackOverchargedMinionAction::Execute(Event /*event*/)
 bool KoralonMoveBehindBossAction::Execute(Event /*event*/)
 {
     Unit* koralon = FindThreatCreature(bot, Id(VoANpcs::NPC_KORALON));
-    if (!IsBreathingFire(koralon))
+    if (PlayerbotAI::IsMainTank(bot) || !PlayerbotAI::IsMelee(bot) || !IsBreathingFire(koralon) ||
+        !IsInFrontOfBreath(bot, koralon))
         return false;
 
     float const behind = koralon->GetOrientation() + static_cast<float>(M_PI);

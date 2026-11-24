@@ -127,6 +127,8 @@ bool FindPositionOutsideHazards(
 // CrusaderHelpers::CastTankTaunt; the fifth copy, and overdue for a move into EncounterHelpers.
 bool CastTankTaunt(PlayerbotAI* botAI, Unit* target);
 
+Unit* GetArchavonToTaunt(Player* bot);
+
 // Emalon the Storm Watcher
 
 // Overcharge lands on one minion, refills its health (BE:142) and bursts it ten stacks later

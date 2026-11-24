@@ -207,4 +207,15 @@ protected:
     bool IsActiveInEncounter() override;
 };
 
+class ArchavonLostAggroTrigger : public VoAEncounterTrigger
+{
+public:
+    ArchavonLostAggroTrigger(PlayerbotAI* botAI) : VoAEncounterTrigger(botAI, "archavon attacking non tank") {}
+
+    bool IsActiveInEncounter() override
+    {
+        return VoAHelpers::GetArchavonToTaunt(bot) != nullptr;
+    }
+};
+
 #endif

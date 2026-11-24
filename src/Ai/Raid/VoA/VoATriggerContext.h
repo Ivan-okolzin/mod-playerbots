@@ -25,6 +25,7 @@ public:
         creators["koralon fire resistance trigger"] = &RaidVoATriggerContext::koralon_fire_resistance_trigger;
 
         // Archavon the Stone Watcher
+        creators["archavon attacking non tank"] = &RaidVoATriggerContext::archavon_attacking_non_tank;
         creators["archavon should be tanked"] = &RaidVoATriggerContext::archavon_should_be_tanked;
         creators["archavon ranged should spread"] =
             &RaidVoATriggerContext::archavon_ranged_should_spread;
@@ -58,6 +59,11 @@ public:
     }
 
 private:
+    static Trigger* archavon_attacking_non_tank(PlayerbotAI* botAI)
+    {
+        return new ArchavonLostAggroTrigger(botAI);
+    }
+
     static Trigger* emalon_mark_boss_trigger(PlayerbotAI* botAI) { return new EmalonMarkBossTrigger(botAI); }
     static Trigger* emalon_lighting_nova_trigger(PlayerbotAI* botAI) { return new EmalonLightingNovaTrigger(botAI); }
     static Trigger* emalon_overcharge_trigger(PlayerbotAI* botAI) { return new EmalonOverchargeTrigger(botAI); }

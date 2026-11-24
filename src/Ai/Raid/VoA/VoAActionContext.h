@@ -27,6 +27,7 @@ public:
         creators["koralon fire resistance action"] = &RaidVoAActionContext::koralon_fire_resistance_action;
 
         // Archavon the Stone Watcher
+        creators["archavon taunt boss"] = &RaidVoAActionContext::archavon_taunt_boss;
         creators["archavon main tank attack boss"] =
             &RaidVoAActionContext::archavon_main_tank_attack_boss;
         creators["archavon spread ranged"] = &RaidVoAActionContext::archavon_spread_ranged;
@@ -61,6 +62,11 @@ public:
     }
 
 private:
+    static Action* archavon_taunt_boss(PlayerbotAI* botAI)
+    {
+        return new ArchavonTauntAction(botAI);
+    }
+
     static Action* emalon_mark_boss_action(PlayerbotAI* botAI) { return new EmalonMarkBossAction(botAI); }
     static Action* emalon_lighting_nova_action(PlayerbotAI* botAI) { return new EmalonLightingNovaAction(botAI); }
     static Action* emalon_overcharge_action(PlayerbotAI* botAI) { return new EmalonOverchargeAction(botAI); }
