@@ -31,18 +31,6 @@ protected:
     }
 
 private:
-    static UntypedValue* faerlina_adds(PlayerbotAI* botAI)
-    {
-        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::FAERLINA_ADDS_VALUE,
-            { NaxxHelpers::Id(NaxxNpcs::NPC_FOLLOWER) });
-    }
-
-    static UntypedValue* maexxna_adds(PlayerbotAI* botAI)
-    {
-        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::MAEXXNA_ADDS_VALUE,
-            { NaxxHelpers::Id(NaxxNpcs::NPC_WEB_WRAP) });
-    }
-
     std::vector<uint32> const _entries;
 };
 
@@ -78,6 +66,18 @@ public:
 
 private:
     using NaxxNpcs = NaxxHelpers::NaxxNpcs;
+
+    static UntypedValue* faerlina_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::FAERLINA_ADDS_VALUE,
+            { NaxxHelpers::Id(NaxxNpcs::NPC_FOLLOWER) });
+    }
+
+    static UntypedValue* maexxna_adds(PlayerbotAI* botAI)
+    {
+        return new NaxxCreatureGuidsValue(botAI, NaxxHelpers::MAEXXNA_ADDS_VALUE,
+            { NaxxHelpers::Id(NaxxNpcs::NPC_WEB_WRAP) });
+    }
 
     // All three of Noth's wave creatures in one value: the ground phase only ever brings Plagued
     // Warriors, but a balcony wave can be alive while the next ground phase runs, and the raid
