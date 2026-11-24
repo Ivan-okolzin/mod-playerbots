@@ -1,5 +1,5 @@
 {
- "generated_from": "mod-playerbots master",
+ "generated_from": "Ivan-okolzin/mod-playerbots origin/raid/all 7a7ad12369dba9ebdaae652ad2b0bacfa68ce28c",
  "raids": [
   {
    "key": "MC",
@@ -271,6 +271,7 @@
    "dir": "BWL",
    "files": 12,
    "multipliers": [
+    "ChromaggusMultiplier",
     "NefarianCorruptedHealingMultiplier",
     "NefarianCorruptedTotemMultiplier",
     "RazorgoreTankMultiplier",
@@ -389,12 +390,16 @@
     },
     {
      "name": "Chromaggus",
-     "status": "stub",
+     "status": "partial",
      "wired": [
+      "bwl chromaggus avoid breath",
       "bwl chromaggus fire resistance"
      ],
-     "mechanics": [],
+     "mechanics": [
+      "bwl chromaggus avoid breath"
+     ],
      "actions": [
+      "bwl chromaggus avoid breath",
       "bwl chromaggus fire resistance"
      ],
      "registered_not_wired": [],

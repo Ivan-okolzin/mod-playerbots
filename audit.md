@@ -1,14 +1,13 @@
 # Аудит рейдовых тактик mod-playerbots
 
-Сгенерирован `audit_build.py` + `audit_md.py` из `scan.json` (срез клона
-`mod-playerbots/mod-playerbots`, ветка `raid/all`, cb09d355 2026-11-24) и `bosses.json`.
+Источник: `Ivan-okolzin/mod-playerbots origin/raid/all 7a7ad12369dba9ebdaae652ad2b0bacfa68ce28c`. Каталог энкаунтеров: `bosses.json`.
 Дата: 2026-11-24.
 
 Статусы: **есть** — 4+ механик подключено; **частично** — 1–3 механики; **заглушка** —
 подключены только вспомогательные вещи (аура сопротивления, метка, падение с платформы);
 **отключено** — объекты есть в коде, но закомментированы; **нет** — ничего.
 
-Итог по 157 энкаунтерам 23 рейдов: **есть** — 89, **частично** — 64, **нет** — 3, **заглушка** — 1.
+Итог по 157 энкаунтерам 23 рейдов: **есть** — 89, **частично** — 65, **нет** — 3.
 
 
 ## Classic
@@ -40,7 +39,7 @@
 | Firemaw | частично | `bwl firemaw fire resistance`, `bwl firemaw not victim` |
 | Ebonroc | частично | `bwl ebonroc not victim` |
 | Flamegor | частично | `bwl flamegor fire resistance`, `bwl flamegor not victim` |
-| Chromaggus | заглушка | `bwl chromaggus fire resistance` |
+| Chromaggus | частично | `bwl chromaggus avoid breath`, `bwl chromaggus fire resistance` |
 | Nefarian | частично | `bwl nefarian corrupted totem`, `bwl nefarian positioning`, `bwl nefarian wild magic` |
 
 Общее и треш: `bwl affliction bronze`, `bwl check onyxia scale cloak`, `bwl death talon wyrmguard ranged`, `bwl death talon wyrmguard ranged move away`, `bwl death talon wyrmguard tank`, `bwl death talon wyrmguard tank move away`, `bwl suppression device`, `bwl turn off suppression device`, `bwl use hourglass sand`, `often`
