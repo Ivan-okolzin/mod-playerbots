@@ -9,6 +9,13 @@
 
 #include "Trigger.h"
 
+class JulianneEternalAffectionTrigger : public Trigger
+{
+public:
+    explicit JulianneEternalAffectionTrigger(PlayerbotAI* botAI) : Trigger(botAI, "julianne casting eternal affection") {}
+    bool IsActive() override;
+};
+
 class KarazhanBotIsNotInCombatTrigger : public Trigger
 {
 public:

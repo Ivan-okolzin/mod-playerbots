@@ -57,6 +57,8 @@ public:
         creators["big bad wolf little red riding hood run away"] =
             &RaidKarazhanActionContext::big_bad_wolf_little_red_riding_hood_run_away;
 
+        creators["julianne interrupt eternal affection"] = &RaidKarazhanActionContext::julianne_eternal_affection;
+
         // Romulo and Julianne
         creators["romulo and julianne mark target"] =
             &RaidKarazhanActionContext::romulo_and_julianne_mark_target;
@@ -145,6 +147,11 @@ public:
     }
 
 private:
+    static Action* julianne_eternal_affection(PlayerbotAI* botAI)
+    {
+        return new JulianneEternalAffectionAction(botAI);
+    }
+
     // Shared
     static Action* karazhan_reset_encounter_states(PlayerbotAI* botAI)
     {

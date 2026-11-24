@@ -148,6 +148,9 @@ bool ManaWarpStunCreatureBeforeWarpBreachAction::Execute(Event /*event*/)
 // Unmounted Attumen's CombatReach is 1.5 yards
 bool AttumenTheHuntsmanHandlePhaseOneAction::Execute(Event /*event*/)
 {
+    if (GetAttumenMounted(bot))
+        return false;
+
     Unit* midnight = AI_VALUE2(Unit*, "find target", "midnight");
     if (!midnight)
         return false;
@@ -180,7 +183,7 @@ bool AttumenTheHuntsmanHandlePhaseOneAction::AssistTankMoveAttumenFromGroup(
 
 bool AttumenTheHuntsmanHandlePhaseTwoAction::Execute(Event /*event*/)
 {
-    Unit* attumen = AI_VALUE2(Unit*, "find target", "attumen the huntsman");
+    Unit* attumen = GetAttumenMounted(bot);
     if (!attumen)
         return false;
 
@@ -245,6 +248,9 @@ bool AttumenTheHuntsmanHandlePhaseTwoAction::StackBehindAttumen(Unit* attumen)
 
 bool AttumenTheHuntsmanSetDpsTimerAction::Execute(Event /*event*/)
 {
+    if (!GetAttumenMounted(bot) || !AI_VALUE2(Unit*, "find target", "midnight"))
+        return false;
+
     uint32 const instanceId = bot->GetMap()->GetInstanceId();
     time_t const now = std::time(nullptr);
     return attumenDpsWaitTimer.try_emplace(instanceId, now).second;
@@ -254,6 +260,9 @@ bool AttumenTheHuntsmanSetDpsTimerAction::Execute(Event /*event*/)
 
 bool MoroesMarkTargetAction::Execute(Event /*event*/)
 {
+    if (!AI_VALUE2(Unit*, "find target", "moroes"))
+        return false;
+
     static constexpr std::array moroesGuests = {
         "baroness dorothea millstipe",
         "lady catriona von'indi",
@@ -386,6 +395,9 @@ bool MaidenOfVirtuePositionRangedBetweenPillarsAction::Execute(Event /*event*/)
 
 bool MaidenOfVirtueSetGroundingTotemAction::Execute(Event /*event*/)
 {
+    if (!AI_VALUE2(Unit*, "find target", "maiden of virtue") || AI_VALUE2(bool, "has totem", "grounding totem"))
+        return false;
+
     return botAI->CanCastSpell(Id(KaraSpells::SPELL_GROUNDING_TOTEM), bot) &&
         botAI->CastSpell(Id(KaraSpells::SPELL_GROUNDING_TOTEM), bot);
 }
@@ -434,6 +446,9 @@ bool BigBadWolfPositionBossAction::Execute(Event /*event*/)
 // Run away, little girl, run away
 bool BigBadWolfLittleRedRidingHoodRunAwayAction::Execute(Event /*event*/)
 {
+    if (!bot->HasAura(Id(KaraSpells::SPELL_LITTLE_RED_RIDING_HOOD)))
+        return false;
+
     Position const& target = BIG_BAD_WOLF_RUN_POSITIONS[_runIndex];
 
     if (bot->GetExactDist2d(target.GetPositionX(), target.GetPositionY()) < 1.0f)
@@ -448,6 +463,25 @@ bool BigBadWolfLittleRedRidingHoodRunAwayAction::Execute(Event /*event*/)
 }
 
 // Romulo and Julianne
+
+bool JulianneEternalAffectionAction::Execute(Event /*event*/)
+{
+    Unit* julianne = AI_VALUE2(Unit*, "find target", "julianne");
+    if (!julianne || !julianne->FindCurrentSpellBySpellId(Id(KaraSpells::SPELL_ETERNAL_AFFECTION)))
+        return false;
+
+    static constexpr std::array interrupts = {
+        "kick", "pummel", "shield bash", "counterspell", "wind shear", "mind freeze",
+    };
+    for (char const* spell : interrupts)
+    {
+        if (botAI->CanCastSpell(spell, julianne) && botAI->IsInterruptableSpellCasting(julianne, spell) &&
+            botAI->CastSpell(spell, julianne))
+            return true;
+    }
+
+    return false;
+}
 
 bool RomuloAndJulianneMarkTargetAction::Execute(Event /*event*/)
 {
@@ -499,7 +533,7 @@ bool WizardOfOzMarkTargetAction::Execute(Event /*event*/)
 bool WizardOfOzScorchStrawmanAction::Execute(Event /*event*/)
 {
     Unit* strawman = AI_VALUE2(Unit*, "find target", "strawman");
-    return strawman &&
+    return strawman && !strawman->HasAura(Id(KaraSpells::SPELL_BURNING_STRAW)) &&
         botAI->CanCastSpell("scorch", strawman) &&
         botAI->CastSpell("scorch", strawman);
 }
@@ -561,6 +595,9 @@ bool TheCuratorSpreadRangedAction::Execute(Event /*event*/)
 
 bool TerestianIllhoofMarkTargetAction::Execute(Event /*event*/)
 {
+    if (!AI_VALUE2(Unit*, "find target", "terestian illhoof"))
+        return false;
+
     static constexpr std::array illhoofTargets = {
         "demon chains", "kil'rek", "terestian illhoof", };
 
@@ -1016,6 +1053,9 @@ bool NetherspiteManageTimersAndTrackersAction::Execute(Event /*event*/)
 
 bool PrinceMalchezaarEnfeebledBotAvoidHazardAction::Execute(Event /*event*/)
 {
+    if (!bot->HasAura(Id(KaraSpells::SPELL_ENFEEBLE)))
+        return false;
+
     Unit* malchezaar = AI_VALUE2(Unit*, "find target", "prince malchezaar");
     if (!malchezaar)
         return false;

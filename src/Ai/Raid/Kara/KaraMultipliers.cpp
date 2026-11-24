@@ -214,7 +214,7 @@ float TheCuratorDelayBloodlustAndHeroismMultiplier::GetValue(Action* action)
     }
 
     Unit* curator = AI_VALUE2(Unit*, "find target", "the curator");
-    if (curator && !curator->HasAura(Id(KaraSpells::SPELL_CURATOR_EVOCATION)))
+    if (curator && curator->HealthAbovePct(15) && !curator->HasAura(Id(KaraSpells::SPELL_CURATOR_EVOCATION)))
         return 0.0f;
 
     return 1.0f;

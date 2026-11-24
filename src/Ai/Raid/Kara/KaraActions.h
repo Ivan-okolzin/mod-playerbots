@@ -12,6 +12,13 @@
 #include "MovementActions.h"
 #include <vector>
 
+class JulianneEternalAffectionAction : public Action
+{
+public:
+    explicit JulianneEternalAffectionAction(PlayerbotAI* botAI) : Action(botAI, "julianne interrupt eternal affection") {}
+    bool Execute(Event event) override;
+};
+
 class KarazhanResetEncounterStatesAction : public Action
 {
 public:

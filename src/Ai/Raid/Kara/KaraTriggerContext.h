@@ -57,6 +57,8 @@ public:
         creators["big bad wolf boss is chasing little red riding hood"] =
             &RaidKarazhanTriggerContext::big_bad_wolf_boss_is_chasing_little_red_riding_hood;
 
+        creators["julianne casting eternal affection"] = &RaidKarazhanTriggerContext::julianne_eternal_affection;
+
         // Romulo and Julianne
         creators["romulo and julianne both bosses revived"] =
             &RaidKarazhanTriggerContext::romulo_and_julianne_both_bosses_revived;
@@ -145,6 +147,11 @@ public:
     }
 
 private:
+    static Trigger* julianne_eternal_affection(PlayerbotAI* botAI)
+    {
+        return new JulianneEternalAffectionTrigger(botAI);
+    }
+
     // Shared
     static Trigger* karazhan_bot_is_not_in_combat(PlayerbotAI* botAI)
     {
