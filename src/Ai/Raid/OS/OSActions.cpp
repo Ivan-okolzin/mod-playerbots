@@ -157,19 +157,35 @@ bool AvoidFlameTsunamiAction::Execute(Event /*event*/)
     return false;
 }
 
+namespace
+{
+Unit* FindTwilightAdd(Player* bot)
+{
+    for (uint32 entry : {NPC_DISCIPLE_OF_SHADRON, NPC_ACOLYTE_OF_SHADRON, NPC_DISCIPLE_OF_VESPERON,
+                         NPC_ACOLYTE_OF_VESPERON})
+        if (Creature* add = bot->FindNearestCreature(entry, 150.0f, true))
+            return add;
+
+    return nullptr;
+}
+}
+
 bool SartharionAttackPriorityAction::Execute(Event /*event*/)
 {
+    if (bot->HasAura(SPELL_TWILIGHT_SHIFT))
+    {
+        Unit* add = FindTwilightAdd(bot);
+        return add && AI_VALUE(Unit*, "current target") != add && Attack(add);
+    }
+
     Unit* sartharion = AI_VALUE2(Unit*, "find target", "sartharion");
     Unit* shadron = AI_VALUE2(Unit*, "find target", "shadron");
     Unit* tenebron = AI_VALUE2(Unit*, "find target", "tenebron");
     Unit* vesperon = AI_VALUE2(Unit*, "find target", "vesperon");
-    Unit* acolyte = AI_VALUE2(Unit*, "find target", "acolyte of shadron");
 
     Unit* target = nullptr;
 
-    if (acolyte)
-        target = acolyte;
-    else if (vesperon)
+    if (vesperon)
         target = vesperon;
     else if (tenebron)
         target = tenebron;
@@ -186,8 +202,8 @@ bool SartharionAttackPriorityAction::Execute(Event /*event*/)
 
 bool EnterTwilightPortalAction::Execute(Event /*event*/)
 {
-    Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
-    if (!boss || !boss->HasAura(SPELL_GIFT_OF_TWILIGHT_FIRE)) { return false; }
+    if (!ShouldEnterTwilightPortal(botAI))
+        return false;
 
     GameObject* portal = bot->FindNearestGameObject(GO_TWILIGHT_PORTAL, 100.0f);
     if (!portal) { return false; }
@@ -205,6 +221,9 @@ bool EnterTwilightPortalAction::Execute(Event /*event*/)
 
 bool ExitTwilightPortalAction::Execute(Event /*event*/)
 {
+    if (!bot->HasAura(SPELL_TWILIGHT_SHIFT) || FindTwilightAdd(bot))
+        return false;
+
     GameObject* portal = bot->FindNearestGameObject(GO_NORMAL_PORTAL, 100.0f);
     if (!portal)
         return false;

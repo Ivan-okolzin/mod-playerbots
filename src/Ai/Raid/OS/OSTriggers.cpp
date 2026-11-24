@@ -40,9 +40,6 @@ bool FlameTsunamiTrigger::IsActive()
 
 bool TwilightFissureTrigger::IsActive()
 {
-    Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
-    if (!boss) { return false; }
-
     GuidVector npcs = AI_VALUE(GuidVector, "nearest hostile npcs");
     for (auto& npc : npcs)
     {
@@ -61,6 +58,9 @@ bool TwilightFissureTrigger::IsActive()
 
 bool SartharionDpsTrigger::IsActive()
 {
+    if (bot->HasAura(SPELL_TWILIGHT_SHIFT))
+        return PlayerbotAI::IsDps(bot);
+
     Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
     if (!boss) { return false; }
 
@@ -70,6 +70,10 @@ bool SartharionDpsTrigger::IsActive()
 bool SartharionMeleePositioningTrigger::IsActive()
 {
     if (!PlayerbotAI::IsMelee(bot) || !PlayerbotAI::IsDps(bot)) { return false; }
+
+    Unit* target = AI_VALUE(Unit*, "current target");
+    if (target && (target->GetEntry() == NPC_SHADRON || target->GetEntry() == NPC_VESPERON))
+        return true;
 
     Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
     if (!boss) { return false; }
@@ -81,50 +85,30 @@ bool SartharionMeleePositioningTrigger::IsActive()
     return !(shadron || tenebron || vesperon);
 }
 
+bool ShouldEnterTwilightPortal(PlayerbotAI* botAI)
+{
+    Player* bot = botAI->GetBot();
+    if (bot->HasAura(SPELL_TWILIGHT_SHIFT) || PlayerbotAI::IsTank(bot) || PlayerbotAI::IsAssistHealOfIndex(bot, 0))
+        return false;
+
+    AiObjectContext* context = botAI->GetAiObjectContext();
+    Unit* sartharion = AI_VALUE2(Unit*, "find target", "sartharion");
+    if (sartharion)
+        return sartharion->HasAura(SPELL_GIFT_OF_TWILIGHT_FIRE) || bot->HasAura(SPELL_TWILIGHT_TORMENT_SARTHARION);
+
+    Unit* shadron = AI_VALUE2(Unit*, "find target", "shadron");
+    Unit* vesperon = AI_VALUE2(Unit*, "find target", "vesperon");
+    return (shadron && shadron->HasAura(SPELL_GIFT_OF_TWILIGHT_SHADOW)) ||
+           (vesperon && (vesperon->HasAura(SPELL_TWILIGHT_TORMENT_VESPERON) ||
+                         bot->HasAura(SPELL_TWILIGHT_TORMENT_VESPERON)));
+}
+
 bool TwilightPortalEnterTrigger::IsActive()
 {
-    if (PlayerbotAI::IsMainTank(bot) || PlayerbotAI::IsAssistHealOfIndex(bot, 0)) { return false; }
-
-    // In 25-man, take two healers in. Otherwise just take one
-    // if (bot->GetRaidDifficulty() == RAID_DIFFICULTY_25MAN_NORMAL)
-    // {
-    //     if (PlayerbotAI::IsAssistHealOfIndex(bot, 0) || PlayerbotAI::IsAssistHealOfIndex(bot, 1))
-    //     {
-    //         return false;
-    //     }
-    // }
-    // else
-    // {
-    //     if (PlayerbotAI::IsAssistHealOfIndex(bot, 0))
-    //     {
-    //         return false;
-    //     }
-    // }
-
-    // Don't enter portal until drakes are dead
-    if (bot->HasAura(SPELL_POWER_OF_SHADRON) ||
-        bot->HasAura(SPELL_POWER_OF_TENEBRON) ||
-        bot->HasAura(SPELL_POWER_OF_VESPERON))
-    {
-        return false;
-    }
-
-    Unit* boss = AI_VALUE2(Unit*, "find target", "sartharion");
-    if (!boss) { return false; }
-
-    // GuidVector objects = AI_VALUE(GuidVector, "nearest game objects no los");
-    // for (auto& object : objects)
-    // {
-    //     GameObject* go = botAI->GetGameObject(object);
-    //     if (go && go->GetEntry() == GO_TWILIGHT_PORTAL)
-    //     {
-    //         return true;
-    //     }
-    // }
-    return bool(bot->FindNearestGameObject(GO_TWILIGHT_PORTAL, 100.0f));
+    return ShouldEnterTwilightPortal(botAI);
 }
 
 bool TwilightPortalExitTrigger::IsActive()
 {
-    return bot->HasAura(SPELL_TWILIGHT_SHIFT) && !AI_VALUE2(Unit*, "find target", "acolyte of shadron");
+    return bot->HasAura(SPELL_TWILIGHT_SHIFT);
 }

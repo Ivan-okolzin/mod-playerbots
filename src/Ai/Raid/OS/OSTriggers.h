@@ -45,6 +45,8 @@ enum ObsidianSanctumIDs
     SPELL_POWER_OF_SHADRON                      = 58105,
     SPELL_GIFT_OF_TWILIGHT_FIRE                 = 58766,
 
+    SPELL_TWILIGHT_TORMENT_SARTHARION            = 58835,
+
     // Visuals
     SPELL_EGG_MARKER_VISUAL                     = 58547,
     SPELL_FLAME_TSUNAMI_VISUAL                  = 57494,
@@ -69,10 +71,12 @@ enum ObsidianSanctumIDs
     NPC_TWILIGHT_FISSURE                        = 30641,
     GO_TWILIGHT_PORTAL                          = 193988,
     GO_NORMAL_PORTAL                            = 193989,
-    SPELL_TWILIGHT_SHIFT                        = 57874,
+    SPELL_TWILIGHT_SHIFT                        = 57620,
 };
 
 const uint32 OS_MAP_ID = 615;
+
+bool ShouldEnterTwilightPortal(PlayerbotAI* botAI);
 
 class SartharionTankTrigger : public Trigger
 {
