@@ -82,32 +82,8 @@ bool MalygosTargetAction::Execute(Event /*event*/)
     {
         if (PlayerbotAI::IsHeal(bot)) { return false; }
 
-        // Init this as boss by default, if no better target is found just fall back to Malygos
-        Unit* newTarget = boss;
-        // Unit* spark = nullptr;
-
-        // GuidVector targets = AI_VALUE(GuidVector, "possible targets no los");
-        // for (auto& target : targets)
-        // {
-        //     Unit* unit = botAI->GetUnit(target);
-        //     if (unit && unit->GetEntry() == NPC_POWER_SPARK)
-        //     {
-        //         spark = unit;
-        //         break;
-        //     }
-        // }
-
-        // if (spark && PlayerbotAI::IsRangedDps(bot))
-        // {
-        //     newTarget = spark;
-        // }
-
-        Unit* currentTarget = AI_VALUE(Unit*, "current target");
-
-        if (!currentTarget || currentTarget->GetEntry() != newTarget->GetEntry())
-        {
-            return Attack(newTarget);
-        }
+        if (!PowerSparkTrigger::FindTarget(botAI, boss) && AI_VALUE(Unit*, "current target") != boss)
+            return Attack(boss);
     }
     else if (phase == 2)
     {
@@ -157,78 +133,11 @@ bool MalygosTargetAction::Execute(Event /*event*/)
     return false;
 }
 
-// bool PullPowerSparkAction::Execute(Event event)
-// {
-//     Unit* spark = nullptr;
-
-//     GuidVector targets = AI_VALUE(GuidVector, "possible targets no los");
-//     for (auto& target : targets)
-//     {
-//         Unit* unit = botAI->GetUnit(target);
-//         if (unit && unit->GetEntry() == NPC_POWER_SPARK)
-//         {
-//             spark = unit;
-//             break;
-//         }
-//     }
-
-//     if (!spark) { return false; }
-
-//     if (spark->GetDistance2d(MALYGOS_STACK_POSITION.first, MALYGOS_STACK_POSITION.second) > 3.0f)
-//     {
-//         bot->Yell("GRIPPING SPARK", LANG_UNIVERSAL);
-//         return botAI->CastSpell("death grip", spark);
-//     }
-
-//     return false;
-// }
-
-// bool PullPowerSparkAction::isPossible()
-// {
-//     Unit* spark = nullptr;
-
-//     GuidVector targets = AI_VALUE(GuidVector, "possible targets no los");
-//     for (auto& target : targets)
-//     {
-//         Unit* unit = botAI->GetUnit(target);
-//         if (unit && unit->GetEntry() == NPC_POWER_SPARK)
-//         {
-//             spark = unit;
-//             break;
-//         }
-//     }
-
-//     return botAI->CanCastSpell(spell, spark);
-// }
-
-// bool PullPowerSparkAction::isUseful()
-// {
-//     Unit* spark = nullptr;
-
-//     GuidVector targets = AI_VALUE(GuidVector, "possible targets no los");
-//     for (auto& target : targets)
-//     {
-//         Unit* unit = botAI->GetUnit(target);
-//         if (unit && unit->GetEntry() == NPC_POWER_SPARK)
-//         {
-//             spark = unit;
-//             break;
-//         }
-//     }
-
-//     if (!spark)
-//         return false;
-
-//     if (!spark->IsInWorld() || spark->GetMapId() != bot->GetMapId())
-//         return false;
-
-//     return bot->GetDistance2d(MALYGOS_STACK_POSITION.first, MALYGOS_STACK_POSITION.second) < 3.0f;
-// }
-
-// bool KillPowerSparkAction::Execute(Event event)
-// {
-//     return false;
-// }
+bool KillPowerSparkAction::Execute(Event /*event*/)
+{
+    Unit* spark = PowerSparkTrigger::FindTarget(botAI, AI_VALUE2(Unit*, "find target", "malygos"));
+    return spark && spark != AI_VALUE(Unit*, "current target") && Attack(spark);
+}
 
 bool EoEFlyDrakeAction::isPossible()
 {

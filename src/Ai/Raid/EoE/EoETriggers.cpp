@@ -34,25 +34,27 @@ bool MalygosTrigger::IsActive()
     return bool(AI_VALUE2(Unit*, "find target", "malygos"));
 }
 
+Unit* PowerSparkTrigger::FindTarget(PlayerbotAI* botAI, Unit* boss)
+{
+    Player* bot = botAI->GetBot();
+    if (!PlayerbotAI::IsRangedDps(bot) || MalygosTrigger::getPhase(bot, boss) != 1)
+        return nullptr;
+
+    auto* context = botAI->GetAiObjectContext();
+    Unit* closest = nullptr;
+    for (ObjectGuid const& guid : AI_VALUE(GuidVector, "possible targets"))
+    {
+        Unit* unit = botAI->GetUnit(guid);
+        if (unit && unit->GetEntry() == NPC_POWER_SPARK && bot->IsValidAttackTarget(unit) &&
+            (!closest || unit->GetDistance(boss) < closest->GetDistance(boss)))
+            closest = unit;
+    }
+
+    return closest;
+}
+
 bool PowerSparkTrigger::IsActive()
 {
-    Unit* boss = AI_VALUE2(Unit*, "find target", "malygos");
-    if (!boss) { return false; }
-
-    if (bot->getClass() != CLASS_DEATH_KNIGHT)
-    {
-        return false;
-    }
-
-    GuidVector targets = AI_VALUE(GuidVector, "possible targets no los");
-    for (auto& target : targets)
-    {
-        Unit* unit = botAI->GetUnit(target);
-        if (unit && unit->GetEntry() == NPC_POWER_SPARK)
-        {
-            return true;
-        }
-    }
-
-    return false;
+    Unit* spark = FindTarget(botAI, AI_VALUE2(Unit*, "find target", "malygos"));
+    return spark && spark != AI_VALUE(Unit*, "current target");
 }

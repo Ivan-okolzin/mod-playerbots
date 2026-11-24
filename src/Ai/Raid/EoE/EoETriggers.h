@@ -57,6 +57,7 @@ public:
 class PowerSparkTrigger : public Trigger
 {
 public:
+    static Unit* FindTarget(PlayerbotAI* botAI, Unit* boss);
     PowerSparkTrigger(PlayerbotAI* botAI) : Trigger(botAI, "power spark") {}
     bool IsActive() override;
 };
