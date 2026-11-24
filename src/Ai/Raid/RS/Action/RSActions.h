@@ -349,6 +349,7 @@ inline GameObject* RsHalionFindPortal(PlayerbotAI* botAI)
     return bot->FindNearestGameObject(GO_HALION_PORTAL_4, SEARCH_RANGE, true);
 }
 
+inline constexpr uint32 RS_ZARITHRIAN_CLEAVE_ARMOR = 74367;
 inline constexpr uint32 RS_ZARITHRIAN_CLEAVE_SWAP_STACKS = 5;
 inline constexpr float RS_BALTHARUS_TANK_FACING = 0.0f;
 inline constexpr float RS_BALTHARUS_HEALER_REACH = 5.0f;

@@ -123,22 +123,20 @@ float RsZarithrianTankSwapMultiplier::GetValue(Action* action)
     if (!PlayerbotAI::IsTank(bot))
         return 1.0f;
 
-    Unit* boss = AI_VALUE2(Unit*, "find target", "general zarithrian");
-    if (!boss)
+    if (!dynamic_cast<CastTauntAction*>(action) && !dynamic_cast<CastDarkCommandAction*>(action) &&
+        !dynamic_cast<CastHandOfReckoningAction*>(action) && !dynamic_cast<CastGrowlAction*>(action))
         return 1.0f;
 
-    Aura* aura = botAI->GetAura("cleave armor", bot, false, true);
-    if (!aura || aura->GetStackAmount() < RS_ZARITHRIAN_CLEAVE_SWAP_STACKS)
+    Unit* target = AI_VALUE(Unit*, "current target");
+    if (!target || target->GetEntry() != NPC_GENERAL_ZARITHRIAN)
         return 1.0f;
 
-    if (dynamic_cast<CastTauntAction*>(action) || dynamic_cast<CastDarkCommandAction*>(action) ||
-        dynamic_cast<CastHandOfReckoningAction*>(action) || dynamic_cast<CastGrowlAction*>(action))
-        return 0.0f;
-
-    if (dynamic_cast<MovementAction*>(action) || dynamic_cast<RsZarithrianTankAction*>(action))
+    Player* holder = target->GetVictim() ? target->GetVictim()->ToPlayer() : nullptr;
+    if (!holder || holder == bot || !PlayerbotAI::IsTank(holder))
         return 1.0f;
 
-    return 0.0f;
+    Aura* aura = bot->GetAura(RS_ZARITHRIAN_CLEAVE_ARMOR);
+    return aura && aura->GetStackAmount() >= RS_ZARITHRIAN_CLEAVE_SWAP_STACKS ? 0.0f : 1.0f;
 }
 
 float RsHalionCombustionMultiplier::GetValue(Action* action)
