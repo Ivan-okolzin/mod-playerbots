@@ -40,6 +40,17 @@ def counts(cnt):
                     for st in ORDER if cnt.get(st))
 
 
+plan_notes = {}
+for raid, _ in rows:
+    excluded = state["excluded_encounters"].get(raid["key"], [])
+    if excluded:
+        names = {boss["name"] for boss in raid["bosses"]}
+        assert set(excluded) <= names and len(excluded) == len(set(excluded))
+        remaining = len(raid["bosses"]) - len(excluded)
+        plan_notes[raid["key"]] = (f'{e(raid["name_ru"])} · в плане {remaining} из {len(raid["bosses"])}. '
+                                   f'Исключение: {e(", ".join(excluded))}.')
+assert state["excluded_encounters"].keys() <= {raid["key"] for raid, _ in rows}
+
 raid_rows = []
 for r, cnt in rows:
     w = by_key.get(r["key"])
@@ -49,6 +60,8 @@ for r, cnt in rows:
         commit = (' <code>%s</code>' % e(w["commit"])) if w["commit"] else ""
         stage = ('<span class="state %s">%s</span><div class="sub">%s%s<br>%s</div>'
                  % (cls, e(w["state"]), e(w["branch"]), commit, e(w["note"])))
+    if r["key"] in plan_notes:
+        stage += '<div class="sub">%s</div>' % plan_notes[r["key"]]
     raid_rows.append(
         '<tr><th scope="row"><span class="rk">%s</span><div class="sub">%s · карта %s · %s</div></th>'
         '<td class="num">%d</td><td>%s%s</td><td class="stage">%s</td></tr>'
@@ -74,7 +87,7 @@ def records(items, title, label, detail):
         f'<p>{e(row[detail])}</p></li>' for row in items)
 
 
-scope = {r["key"] for r, _ in rows} - set(state["excluded"])
+scope = {r["key"] for r, _ in rows}
 assert len(by_key) == len(state["work"]) and by_key.keys() <= scope
 stages = " · ".join(f"{e(stage)} {sum(w['state'] == stage for w in by_key.values())}/{len(scope)}"
                     for stage in dict.fromkeys(w["state"] for w in by_key.values()))
@@ -182,7 +195,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
   <section data-view="tasks" id="tasks"><h2>Задачи</h2><ul class="cards">__TASKS__</ul></section>
   <section data-view="questions" id="questions"><h2>Вопросы</h2><ul class="cards">__QUESTIONS__</ul></section>
   <section data-view="agents" id="agents">
-    <p>Этапы по журналу агентов · __STAGES__. Из плана по решению пользователя исключены: __EXCLUDED__.</p>
+    <p>Этапы по журналу агентов · __STAGES__. __EXCLUDED__</p>
     <h2>Конвейер: один рейд — один агент</h2>
     <ul class="cards">__CARDS__</ul>
   </section>
@@ -221,7 +234,7 @@ page = (page
         .replace("__TASKS__", records(state["tasks"], "raid", "priority", "next"))
         .replace("__QUESTIONS__", records(state["questions"], "title", "status", "context"))
         .replace("__STAGES__", stages)
-        .replace("__EXCLUDED__", e(", ".join(state["excluded"])))
+        .replace("__EXCLUDED__", " ".join(plan_notes.values()))
         .replace("__NOTE__", e(state["note"]))
         .replace("__DATE__", e(state["updated"]))
         .replace("__BOSSES__", str(total_bosses))
