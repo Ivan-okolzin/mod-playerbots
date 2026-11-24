@@ -52,6 +52,8 @@ enum class ZulGurubSpells : uint32
     SPELL_LIQUID_FIRE       = 23971,  // BJE:63, the bomb's ground fire (BJE:410)
 
     // High Priestess Mar'li
+    SPELL_GROWTH            = 24086,  // BML:255
+    SPELL_FULL_GROWN        = 24088,  // BML:261
     SPELL_SPIDER_FORM       = 24084,  // BML:54, one minute in each form (BML:180, :214)
     SPELL_ENVELOPING_WEB    = 24110,  // BML:43, wipes the threat of everyone hit (BML:308)
 
@@ -181,7 +183,7 @@ Unit* FindThreatCreature(Player* bot, uint32 entry);
 GuidVector FindCreatureGuids(
     Player* bot, std::vector<uint32> const& entries, float radius, bool summonsOnly = false);
 std::vector<Unit*> GetCachedUnits(PlayerbotAI* botAI, char const* value);
-Unit* GetNearestCachedUnit(PlayerbotAI* botAI, char const* value);
+Unit* SelectCachedTarget(PlayerbotAI* botAI, char const* value);
 Unit* GetCachedUnitOfEntry(PlayerbotAI* botAI, char const* value, uint32 entry);
 // Arlokk while she stalks and Thekal while he plays dead are both flagged out of reach, and an
 // order to attack either one only sends the bot running at a target it cannot touch.

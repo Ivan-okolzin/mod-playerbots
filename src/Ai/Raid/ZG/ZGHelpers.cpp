@@ -72,16 +72,39 @@ std::vector<Unit*> GetCachedUnits(PlayerbotAI* botAI, char const* value)
     return units;
 }
 
-Unit* GetNearestCachedUnit(PlayerbotAI* botAI, char const* value)
+static uint32 GetTargetPriority(Unit* unit)
+{
+    if (unit->GetEntry() == Id(ZulGurubNpcs::NPC_SPAWN_OF_MARLI))
+    {
+        if (unit->HasAura(Id(ZulGurubSpells::SPELL_FULL_GROWN)))
+            return std::numeric_limits<uint32>::max();
+
+        return unit->GetAuraCount(Id(ZulGurubSpells::SPELL_GROWTH));
+    }
+
+    if (unit->GetEntry() == Id(ZulGurubNpcs::NPC_ZULIAN_PROWLER))
+    {
+        Unit* victim = unit->GetVictim();
+        if (victim && victim->HasAura(Id(ZulGurubSpells::SPELL_MARK_OF_ARLOKK)))
+            return 1;
+    }
+
+    return 0;
+}
+
+Unit* SelectCachedTarget(PlayerbotAI* botAI, char const* value)
 {
     Player* bot = botAI->GetBot();
+    uint32 bestPriority = 0;
     Unit* nearest = nullptr;
     float nearestDistance = std::numeric_limits<float>::max();
     for (Unit* unit : GetCachedUnits(botAI, value))
     {
         float const distance = bot->GetExactDist(unit);
-        if (distance < nearestDistance)
+        uint32 const priority = GetTargetPriority(unit);
+        if (priority > bestPriority || (priority == bestPriority && distance < nearestDistance))
         {
+            bestPriority = priority;
             nearest = unit;
             nearestDistance = distance;
         }
