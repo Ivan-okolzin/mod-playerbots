@@ -57,7 +57,7 @@ uint32 RsZarithrianTankAction::GetCleaveStacks(Unit* unit)
     if (!unit)
         return 0;
 
-    Aura* aura = botAI->GetAura("cleave armor", unit, false, true);
+    Aura* aura = unit->GetAura(RS_ZARITHRIAN_CLEAVE_ARMOR);
     return aura ? aura->GetStackAmount() : 0;
 }
 
@@ -155,7 +155,7 @@ bool RsZarithrianTankAction::Execute(Event )
         for (GroupReference* itr = group->GetFirstMember(); itr; itr = itr->next())
         {
             Player* member = itr->GetSource();
-            if (!member || !member->IsAlive())
+            if (!member || !member->IsAlive() || !bot->IsInMap(member) || !member->IsInCombat())
                 continue;
 
             if (!mainTankPlayer && PlayerbotAI::IsMainTank(member))
@@ -184,6 +184,9 @@ bool RsZarithrianTankAction::Execute(Event )
 
     if (GetCleaveStacks(bot) >= RS_ZARITHRIAN_CLEAVE_SWAP_STACKS)
     {
+        Player* relief = bot == mainTankPlayer ? assistTankPlayer : mainTankPlayer;
+        if (boss->GetVictim() == bot && GetCleaveStacks(relief) >= RS_ZARITHRIAN_CLEAVE_SWAP_STACKS)
+            return HoldBoss(boss);
 
         if (boss->GetVictim() == bot)
             bot->AttackStop();
