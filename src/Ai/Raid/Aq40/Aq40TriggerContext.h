@@ -57,8 +57,11 @@ public:
             &RaidAq40TriggerContext::fankriss_main_tank_has_mortal_wound_stacks;
         creators["fankriss the unyielding worms spawned"] =
             &RaidAq40TriggerContext::fankriss_worms_spawned;
+        creators["fankriss the unyielding spawns present"] =
+            &RaidAq40TriggerContext::fankriss_spawns_present;
 
         // Viscidus
+        creators["viscidus frozen"] = &RaidAq40TriggerContext::viscidus_frozen;
         creators["viscidus in frost phase"] = &RaidAq40TriggerContext::viscidus_in_frost_phase;
         creators["viscidus globs spawned"] = &RaidAq40TriggerContext::viscidus_globs_spawned;
         creators["viscidus ranged should spread"] =
@@ -199,6 +202,17 @@ private:
             Aq40AddRole::AssistTanks);
     }
 
+    static Trigger* fankriss_spawns_present(PlayerbotAI* botAI)
+    {
+        return new Aq40AddsSpawnedTrigger(
+            botAI, "fankriss the unyielding spawns present", Aq40Helpers::FANKRISS_SPAWNS_VALUE,
+            Aq40AddRole::Dps);
+    }
+
+    static Trigger* viscidus_frozen(PlayerbotAI* botAI)
+    {
+        return new ViscidusFrozenTrigger(botAI);
+    }
     static Trigger* viscidus_in_frost_phase(PlayerbotAI* botAI)
     {
         return new ViscidusInFrostPhaseTrigger(botAI);

@@ -77,6 +77,7 @@ public:
         creators[Aq40Helpers::YAUJ_BROOD_VALUE] = &RaidAq40ValueContext::yauj_brood;
         creators[Aq40Helpers::ROYAL_GUARDS_VALUE] = &RaidAq40ValueContext::royal_guards;
         creators[Aq40Helpers::FANKRISS_WORMS_VALUE] = &RaidAq40ValueContext::fankriss_worms;
+        creators[Aq40Helpers::FANKRISS_SPAWNS_VALUE] = &RaidAq40ValueContext::fankriss_spawns;
         creators[Aq40Helpers::VISCIDUS_GLOBS_VALUE] = &RaidAq40ValueContext::viscidus_globs;
         creators[Aq40Helpers::DIRT_MOUNDS_VALUE] = &RaidAq40ValueContext::dirt_mounds;
         creators[Aq40Helpers::OURO_SCARABS_VALUE] = &RaidAq40ValueContext::ouro_scarabs;
@@ -122,6 +123,12 @@ private:
             botAI, Aq40Helpers::FANKRISS_WORMS_VALUE,
             { Aq40Helpers::Id(Aq40Helpers::Aq40Npcs::NPC_VEKNISS_HATCHLING),
               Aq40Helpers::Id(Aq40Helpers::Aq40Npcs::NPC_SPAWN_OF_FANKRISS) });
+    }
+    static UntypedValue* fankriss_spawns(PlayerbotAI* botAI)
+    {
+        return new Aq40CreatureGuidsValue(
+            botAI, Aq40Helpers::FANKRISS_SPAWNS_VALUE,
+            { Aq40Helpers::Id(Aq40Helpers::Aq40Npcs::NPC_SPAWN_OF_FANKRISS) });
     }
     static UntypedValue* viscidus_globs(PlayerbotAI* botAI)
     {

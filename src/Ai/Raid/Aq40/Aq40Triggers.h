@@ -101,6 +101,7 @@ enum class Aq40AddRole : uint8
     Everyone,
     MeleeAndTanks,
     AssistTanks,
+    Dps,
     Tanks,
     RangedDps,
 };
@@ -239,6 +240,16 @@ class ViscidusInFrostPhaseTrigger : public Aq40EncounterTrigger
 public:
     ViscidusInFrostPhaseTrigger(PlayerbotAI* botAI)
         : Aq40EncounterTrigger(botAI, "viscidus in frost phase") {}
+
+protected:
+    bool IsActiveInEncounter() override;
+};
+
+class ViscidusFrozenTrigger : public Aq40EncounterTrigger
+{
+public:
+    ViscidusFrozenTrigger(PlayerbotAI* botAI)
+        : Aq40EncounterTrigger(botAI, "viscidus frozen") {}
 
 protected:
     bool IsActiveInEncounter() override;

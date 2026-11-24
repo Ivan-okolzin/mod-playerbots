@@ -226,6 +226,13 @@ bool FankrissTankSwapAction::Execute(Event /*event*/)
 
 // Viscidus
 
+bool ViscidusAttackFrozenBossAction::Execute(Event /*event*/)
+{
+    Unit* viscidus = FindThreatTarget(bot, VISCIDUS_NAME);
+    return PlayerbotAI::IsMelee(bot) && !PlayerbotAI::IsHeal(bot) && IsViscidusFrozen(viscidus) &&
+        AI_VALUE(Unit*, "current target") != viscidus && Attack(viscidus);
+}
+
 bool ViscidusCastFrostSpellAction::Execute(Event /*event*/)
 {
     char const* frostSpell = GetCheapestFrostSpell(bot);
@@ -233,7 +240,7 @@ bool ViscidusCastFrostSpellAction::Execute(Event /*event*/)
         return false;
 
     Unit* viscidus = FindThreatTarget(bot, VISCIDUS_NAME);
-    if (!viscidus)
+    if (!viscidus || IsViscidusFrozen(viscidus) || !GetCachedUnits(botAI, VISCIDUS_GLOBS_VALUE).empty())
         return false;
 
     return botAI->CanCastSpell(frostSpell, viscidus) && botAI->CastSpell(frostSpell, viscidus);

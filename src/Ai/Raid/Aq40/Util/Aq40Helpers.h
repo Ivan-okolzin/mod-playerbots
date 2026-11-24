@@ -113,6 +113,7 @@ inline constexpr char const* CTHUN_NAME = "c'thun";
 inline constexpr char const* SKERAM_COPIES_VALUE = "aq40 skeram copies";
 inline constexpr char const* YAUJ_BROOD_VALUE = "aq40 yauj brood";
 inline constexpr char const* ROYAL_GUARDS_VALUE = "aq40 royal guards";
+inline constexpr char const* FANKRISS_SPAWNS_VALUE = "aq40 spawns of fankriss";
 inline constexpr char const* FANKRISS_WORMS_VALUE = "aq40 fankriss worms";
 inline constexpr char const* VISCIDUS_GLOBS_VALUE = "aq40 viscidus globs";
 inline constexpr char const* DIRT_MOUNDS_VALUE = "aq40 dirt mounds";
