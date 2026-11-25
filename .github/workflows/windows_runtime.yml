@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          ref: 796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57
+          ref: 133a2b10a90b8679e3ae7768dfeadfee1a1e0b90
           path: a/modules/mod-playerbots
 
       - name: Move source tree to short path
@@ -212,7 +212,7 @@ jobs:
             if ((Get-FileHash -LiteralPath $file).Hash -ne $hash) { throw "Checksum mismatch for $file" }
           }
           $revisions = Get-Content revisions.txt
-          foreach ($pin in 'module=796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57','core=e7e2e288e7d9ec30e2dfe6f417178a95986fcbb2') {
+          foreach ($pin in 'module=133a2b10a90b8679e3ae7768dfeadfee1a1e0b90','core=e7e2e288e7d9ec30e2dfe6f417178a95986fcbb2') {
             if ($pin -notin $revisions) { throw "Missing revision $pin" }
           }
           Remove-Item SHA256SUMS
