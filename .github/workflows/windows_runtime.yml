@@ -222,6 +222,17 @@ jobs:
           $dirs = @('C:\openssl\bin', "$env:BOOST_ROOT\lib64-msvc-14.3")
           $dirs += Get-ChildItem "$env:ProgramFiles\MySQL\MySQL Server*\bin","$env:ProgramFiles\MySQL\MySQL Server*\lib" -Directory | Select-Object -ExpandProperty FullName
           $dirs += Get-ChildItem "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT" -Directory | Select-Object -ExpandProperty FullName
+          $crypto = @(Get-ChildItem runtime -Filter 'libcrypto-3*.dll')
+          if ($crypto.Count -ne 1) { throw 'Expected exactly one OpenSSL 3 crypto DLL' }
+          $installed = Join-Path 'C:\openssl\bin' $crypto[0].Name
+          if ((Get-FileHash $installed).Hash -ne (Get-FileHash $crypto[0].FullName).Hash) {
+            throw 'Runner OpenSSL differs from packaged libcrypto. Dispatch a fresh build.'
+          }
+          $providers = @(Get-ChildItem C:\openssl -Recurse -File -Filter legacy.dll)
+          if (!$providers -or @($providers | Get-FileHash | Select-Object -ExpandProperty Hash -Unique).Count -ne 1) {
+            throw 'Missing or ambiguous legacy provider in the selected OpenSSL installation'
+          }
+          Copy-Item $providers[0].FullName runtime/legacy.dll -Force
           $queue = [Collections.Generic.Queue[string]]::new()
           Get-ChildItem runtime/* -Include *.exe,*.dll -File | ForEach-Object { $queue.Enqueue($_.FullName) }
           $seen = @{}
@@ -261,6 +272,11 @@ jobs:
           path: windows-runtime.zip
           compression-level: 0
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openssl-smoke-client
+          path: C:\openssl\bin\openssl.exe
+
   smoke:
     needs: windows-build
     runs-on: windows-2022
@@ -268,6 +284,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: windows-runtime
+      - uses: actions/download-artifact@v4
+        with:
+          name: openssl-smoke-client
+          path: smoke-client
       - shell: pwsh
         run: |
           Expand-Archive windows-runtime.zip runtime
@@ -277,6 +297,12 @@ jobs:
             if ((Get-FileHash -LiteralPath $file).Hash -ne $hash) { throw "Checksum mismatch for $file" }
           }
           $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          $env:OPENSSL_MODULES = $pwd.Path
+          $env:OPENSSL_CONF = 'NUL'
+          Copy-Item ../smoke-client/openssl.exe .
+          $digest = 'abc' | .\openssl.exe dgst -provider-path . -provider legacy -propquery 'provider=legacy' -md4
+          if ($LASTEXITCODE -ne 0 -or $digest -notmatch '[0-9a-fA-F]{32}$') { throw 'Packaged legacy provider failed MD4 smoke' }
+          Remove-Item ./openssl.exe
           foreach ($name in 'authserver','worldserver') {
             & ".\$name.exe" --version
             if ($LASTEXITCODE -ne 0) { throw "$name exited with $LASTEXITCODE" }
