@@ -20,9 +20,9 @@
     {
       "name": "Nash",
       "task": "Windows и ASUS",
-      "event": "Подготовлена ревизия Windows CI",
-      "active": true,
-      "time": "2026-11-26T00:27:45+05:00"
+      "event": "GitHub отклонил запуск Windows CI (HTTP 422, Actions отключены). Выкладка на ASUS не выполнялась.",
+      "active": false,
+      "time": "2026-11-26T00:36:33+05:00"
     }
   ]
 }
