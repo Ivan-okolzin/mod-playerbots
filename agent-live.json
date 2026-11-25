@@ -1,0 +1,28 @@
+{
+  "module": "133a2b10a90b8679e3ae7768dfeadfee1a1e0b90",
+  "workflow": "a1662b7e80f3c0d9502763ad067146ff56543270",
+  "installed": "796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57",
+  "agents": [
+    {
+      "name": "Dirac",
+      "task": "Рейдовый треш",
+      "event": "Правки вошли в 133a2b10",
+      "active": false,
+      "time": "2026-11-26T00:27:25+05:00"
+    },
+    {
+      "name": "Popper",
+      "task": "Ал’ар и перехват босса",
+      "event": "Правки вошли в 133a2b10",
+      "active": false,
+      "time": "2026-11-26T00:27:25+05:00"
+    },
+    {
+      "name": "Nash",
+      "task": "Windows и ASUS",
+      "event": "Подготовлена ревизия Windows CI",
+      "active": true,
+      "time": "2026-11-26T00:27:45+05:00"
+    }
+  ]
+}
