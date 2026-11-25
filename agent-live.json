@@ -1,7 +1,7 @@
 {
   "module": "133a2b10a90b8679e3ae7768dfeadfee1a1e0b90",
   "workflow": "2776d8e2d98014774b93f49d6d421ab89724a6d3",
-  "installed": "796ac3a68489aa5a2c5a75e7cfcfea7f10c6ca57",
+  "installed": "133a2b10a90b8679e3ae7768dfeadfee1a1e0b90",
   "agents": [
     {
       "name": "Dirac",
@@ -20,9 +20,9 @@
     {
       "name": "Nash",
       "task": "Windows и ASUS",
-      "event": "После HTTP 504/503 Chocolatey исправлена установка Boost. Сборка Windows 45689909540 запущена.",
-      "active": true,
-      "time": "2026-11-26T00:55:43+05:00"
+      "event": "ASUS AC-stage: worldserver 133a2b10 запущен. Проверены SHA-256 и порт 18085 (PID 6668). Windows CI 45689909540 и smoke успешны.",
+      "active": false,
+      "time": "2026-11-26T02:01:25+05:00"
     }
   ]
 }
