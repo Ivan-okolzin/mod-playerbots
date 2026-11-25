@@ -1,5 +1,7 @@
 name: Windows runtime ZIP
 on:
+  push:
+    branches: [ci/windows-runtime-legacy]
   workflow_dispatch:
     inputs:
       reuse_build_45450573446:
