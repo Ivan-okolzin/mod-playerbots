@@ -27,6 +27,7 @@
 #include "PaladinActions.h"
 #include "PathGenerator.h"
 #include "Pet.h"
+#include "PlayerbotAIConfig.h"
 #include "PlayerbotTextMgr.h"
 #include "Playerbots.h"
 #include "RogueActions.h"
@@ -34,6 +35,8 @@
 #include "ShamanActions.h"
 #include "Spell.h"
 #include "SpellInfo.h"
+#include "SpellMgr.h"
+#include "ThreatManager.h"
 #include "WarlockActions.h"
 #include "WarriorActions.h"
 #include <algorithm>
@@ -570,40 +573,156 @@ Player* GetGroupAssistTank(Player* bot, uint8 index)
     if (!group)
         return nullptr;
 
-    ObjectGuid const mainTankGuid = PlayerbotAI::GetMainTankGuid(group);
-    if (mainTankGuid.IsEmpty())
-        return nullptr;
-
-    uint8 assistantCount = 0;
-    std::vector<Player*> nonAssistantTanks;
-
     for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
     {
         Player* member = ref->GetSource();
-        if (!member || !member->IsAlive() || !PlayerbotAI::IsTank(member) ||
-            member->GetGUID() == mainTankGuid)
-        {
-            continue;
-        }
-
-        if (group->IsAssistant(member->GetGUID()))
-        {
-            if (assistantCount == index)
-                return member;
-
-            assistantCount++;
-        }
-        else
-        {
-            nonAssistantTanks.push_back(member);
-        }
+        if (member && member->GetGroup() == group && PlayerbotAI::IsAssistTankOfIndex(member, index, true))
+            return member;
     }
 
-    uint8 nonAssistantIndex = index - assistantCount;
-    if (nonAssistantIndex < nonAssistantTanks.size())
-        return nonAssistantTanks[nonAssistantIndex];
-
     return nullptr;
+}
+
+namespace
+{
+struct GenericRaidBossTank : DataMap::Base
+{
+    RaidBossTankAssignment assignment;
+    ObjectGuid group;
+};
+
+constexpr char GENERIC_TANK_KEY[] = "playerbots.raidBossTank";
+
+bool IsGroupTank(Player* tank, Player* bot, Unit* boss)
+{
+    return tank && bot->GetGroup() && tank->GetGroup() == bot->GetGroup() && tank->IsAlive() &&
+        tank->IsInWorld() && tank->IsInMap(boss) && tank->InSamePhase(boss) && !tank->IsCharmed() &&
+        (PlayerbotAI::IsMainTank(tank) || PlayerbotAI::IsAssistTank(tank));
+}
+
+bool CanTakeBoss(Player* tank, Unit* boss, uint32 swapAura, uint32 exchangeableAdd)
+{
+    if (!tank || !tank->IsAlive() || !tank->IsInWorld() || !tank->IsInMap(boss) ||
+        !tank->InSamePhase(boss) || !tank->IsInCombat() || tank->IsCharmed() ||
+        !GET_PLAYERBOT_AI(tank) || tank->HasUnitState(UNIT_STATE_LOST_CONTROL) ||
+        tank->GetHealthPct() < sPlayerbotAIConfig.RaidEmergencyTankHealthPct ||
+        (swapAura && tank->HasAura(swapAura)))
+        return false;
+
+    // A scripted debuff rotation can explicitly exchange the boss and an add.
+    for (auto const& [guid, ref] : tank->GetThreatMgr().GetThreatenedByMeList())
+    {
+        Creature* attacker = ref->GetOwner();
+        if (attacker != boss && attacker->GetEntry() != exchangeableAdd && attacker->GetVictim() == tank)
+            return false;
+    }
+
+    uint32 spellId;
+    switch (tank->getClass())
+    {
+        case CLASS_WARRIOR:      spellId = 355;   break; // Taunt
+        case CLASS_DRUID:        spellId = 6795;  break; // Growl
+        case CLASS_PALADIN:      spellId = 62124; break; // Hand of Reckoning
+        case CLASS_DEATH_KNIGHT: spellId = 56222; break; // Dark Command
+        default: return false;
+    }
+
+    SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+    if (!spellInfo || !tank->HasSpell(spellId) || tank->HasSpellCooldown(spellId) ||
+        boss->IsImmunedToSpell(spellInfo, tank) || !tank->IsWithinLOSInMap(boss))
+        return false;
+
+    for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+        if ((spellInfo->Effects[i].Effect == SPELL_EFFECT_ATTACK_ME ||
+             spellInfo->Effects[i].ApplyAuraName == SPELL_AURA_MOD_TAUNT) &&
+            boss->IsImmunedToSpellEffect(spellInfo, i, tank))
+            return false;
+
+    Spell spell(tank, spellInfo, TRIGGERED_NONE);
+    spell.m_targets.SetUnitTarget(boss);
+    return spell.CheckCast(true) == SPELL_CAST_OK;
+}
+}
+
+Player* ResolveRaidBossTank(
+    Player* bot, Unit* boss, RaidBossTankAssignment& assignment, uint32 swapAura, uint32 exchangeableAdd)
+{
+    Player* victim = boss->GetVictim() ? boss->GetVictim()->ToPlayer() : nullptr;
+    if (IsGroupTank(victim, bot, boss) &&
+        (assignment.owner.IsEmpty() || assignment.requested == victim->GetGUID()))
+    {
+        assignment.owner = victim->GetGUID();
+        assignment.requested.Clear();
+    }
+
+    Player* owner = ObjectAccessor::GetPlayer(*boss, assignment.owner);
+    if (!IsGroupTank(owner, bot, boss))
+        owner = nullptr;
+
+    Player* preferred = owner ? owner : GetGroupMainTank(bot);
+    bool const emergency = !preferred || preferred->GetHealthPct() < sPlayerbotAIConfig.RaidEmergencyTankHealthPct;
+    if (!emergency && !(swapAura && preferred->HasAura(swapAura)) &&
+        (owner || CanTakeBoss(preferred, boss, swapAura, 0)))
+    {
+        assignment.requested = preferred->GetGUID();
+        return preferred;
+    }
+
+    uint32 const allowedAdd = emergency ? 0 : exchangeableAdd;
+    Player* replacement = GetGroupMainTank(bot);
+    if (replacement == preferred || !CanTakeBoss(replacement, boss, swapAura, allowedAdd))
+        replacement = nullptr;
+
+    for (uint8 index = 0; emergency || !replacement; ++index)
+    {
+        Player* assist = GetGroupAssistTank(bot, index);
+        if (!assist)
+            break;
+        if (assist != preferred && CanTakeBoss(assist, boss, swapAura, allowedAdd))
+            replacement = assist;
+    }
+
+    assignment.requested = replacement ? replacement->GetGUID() : ObjectGuid::Empty;
+    return replacement ? replacement : owner;
+}
+
+Player* GetGenericRaidBossTank(Player* bot, Unit* boss)
+{
+    Creature* creature = boss ? boss->ToCreature() : nullptr;
+    if (!creature || !bot->GetGroup() || !creature->IsInWorld() || !creature->GetMap()->IsRaid() ||
+        !creature->IsDungeonBoss() ||
+        sPlayerbotAIConfig.RaidEmergencyTankHealthPct <= 0.0f ||
+        creature->GetCreatureTemplate()->HasFlagsExtra(CREATURE_FLAG_EXTRA_NO_TAUNT) ||
+        creature->GetScriptId() || !creature->IsInCombat() ||
+        !bot->IsValidAttackTarget(creature) || creature->HasUnitState(UNIT_STATE_EVADE) ||
+        creature->GetReactState() == REACT_PASSIVE || !creature->GetVictim())
+        return nullptr;
+
+    std::string const& aiName = creature->GetAIName();
+    if (!aiName.empty() && aiName != "AggressorAI" && aiName != "CombatAI")
+        return nullptr;
+
+    auto* state = creature->CustomData.Get<GenericRaidBossTank>(GENERIC_TANK_KEY);
+    if (!state)
+    {
+        Player* victim = creature->GetVictim()->ToPlayer();
+        if (!IsGroupTank(victim, bot, boss))
+            return nullptr;
+        if (victim->GetHealthPct() >= sPlayerbotAIConfig.RaidEmergencyTankHealthPct)
+            return victim;
+        state = creature->CustomData.GetDefault<GenericRaidBossTank>(GENERIC_TANK_KEY);
+        state->group = bot->GetGroup()->GetGUID();
+    }
+    if (state->group != bot->GetGroup()->GetGUID())
+        return nullptr;
+
+    return ResolveRaidBossTank(bot, boss, state->assignment);
+}
+
+void ResetGenericRaidBossTank(Unit* unit)
+{
+    if (unit->IsCreature() && unit->GetMap()->IsRaid())
+        unit->CustomData.Erase(GENERIC_TANK_KEY);
 }
 
 Player* GetNearestPlayerInRadius(Player* bot, float radius)

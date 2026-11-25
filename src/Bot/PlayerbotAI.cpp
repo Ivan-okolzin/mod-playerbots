@@ -5,6 +5,7 @@
  */
 
 #include "PlayerbotAI.h"
+#include "TankOrder.h"
 #include "AiFactory.h"
 #include "BudgetValues.h"
 #include "ChannelMgr.h"
@@ -1889,6 +1890,12 @@ void PlayerbotAI::ApplyInstanceStrategies(uint32 mapId, bool tellMaster)
             break;
     }
 
+    MapEntry const* mapEntry = sMapStore.LookupEntry(mapId);
+    if (mapEntry && mapEntry->IsRaid())
+        engines[BOT_STATE_COMBAT]->addStrategy("raid trash");
+    else
+        engines[BOT_STATE_COMBAT]->removeStrategy("raid trash");
+
     if (strategyName.empty())
         return;
 
@@ -2210,6 +2217,13 @@ bool PlayerbotAI::IsMovementImpaired(Unit* unit)
 
 int32 PlayerbotAI::GetAssistTankIndex(Player* player)
 {
+    auto order = TankOrder::Get(player->GetGroup());
+    if (!order.empty())
+    {
+        auto itr = std::find(order.begin() + 1, order.end(), player->GetGUID());
+        return itr == order.end() ? -1 : static_cast<int32>(itr - order.begin() - 1);
+    }
+
     Group* group = player->GetGroup();
     if (!group)
     {
@@ -2534,6 +2548,10 @@ ObjectGuid PlayerbotAI::GetMainTankGuid(Group* group)
     if (!group)
         return ObjectGuid::Empty;
 
+    auto order = TankOrder::Get(group);
+    if (!order.empty())
+        return order.front();
+
     Group::MemberSlotList const& slots = group->GetMemberSlots();
     for (Group::member_citerator itr = slots.begin(); itr != slots.end(); ++itr)
     {
@@ -2563,6 +2581,10 @@ bool PlayerbotAI::IsMainTank(Player* player)
 
 bool PlayerbotAI::IsExplicitMainTank(Player* player)
 {
+    auto order = TankOrder::Get(player->GetGroup());
+    if (!order.empty())
+        return order.front() == player->GetGUID();
+
     Group* group = player->GetGroup();
     if (!group)
         return false;
@@ -2583,6 +2605,10 @@ bool PlayerbotAI::IsBotMainTank(Player* player)
     WorldSession* session = player->GetSession();
     if (!session || !session->IsHeadless())
         return false;
+
+    auto order = TankOrder::Get(player->GetGroup());
+    if (!order.empty())
+        return order.front() == player->GetGUID();
 
     if (!IsTank(player))
         return false;
@@ -2624,6 +2650,17 @@ uint32 PlayerbotAI::GetGroupTankNum(Player* player)
     if (!group)
         return 0;
 
+    auto order = TankOrder::Get(group);
+    if (!order.empty())
+    {
+        uint32 count = 0;
+        for (ObjectGuid guid : order)
+            if (Player* member = ObjectAccessor::FindConnectedPlayer(guid))
+                if (member->IsAlive())
+                    ++count;
+        return count;
+    }
+
     uint32 result = 0;
     for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
     {
@@ -2641,6 +2678,10 @@ uint32 PlayerbotAI::GetGroupTankNum(Player* player)
 
 bool PlayerbotAI::IsAssistTank(Player* player)
 {
+    auto order = TankOrder::Get(player->GetGroup());
+    if (!order.empty())
+        return std::find(order.begin() + 1, order.end(), player->GetGUID()) != order.end();
+
     if (!IsTank(player))
         return false;
 
@@ -2656,6 +2697,24 @@ bool PlayerbotAI::IsAssistTank(Player* player)
 // By default, it is false, meaning roles remain stable across deaths.
 bool PlayerbotAI::IsAssistTankOfIndex(Player* player, uint8 index, bool indexLivingOnly)
 {
+    auto order = TankOrder::Get(player->GetGroup());
+    if (!order.empty())
+    {
+        for (size_t slot = 1; slot < order.size(); ++slot)
+        {
+            if (indexLivingOnly)
+            {
+                Player* member = ObjectAccessor::FindConnectedPlayer(order[slot]);
+                if (!member || !member->IsAlive())
+                    continue;
+            }
+            if (index == 0)
+                return order[slot] == player->GetGUID();
+            --index;
+        }
+        return false;
+    }
+
     if (!IsTank(player))
         return false;
 

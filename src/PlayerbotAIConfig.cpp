@@ -125,6 +125,8 @@ bool PlayerbotAIConfig::Initialize()
     GrindDistance = sConfigMgr->GetOption<float>("Playerbots.GrindDistance", 75.0f);
     ReactDistance = sConfigMgr->GetOption<float>("Playerbots.ReactDistance", 150.0f);
 
+    RaidEmergencyTankHealthPct = std::clamp(
+        sConfigMgr->GetOption<float>("Playerbots.RaidEmergencyTankHealthPct", 25.0f), 0.0f, 100.0f);
     CriticalHealth = sConfigMgr->GetOption<int32>("Playerbots.CriticalHealth", 25);
     LowHealth = sConfigMgr->GetOption<int32>("Playerbots.LowHealth", 45);
     MediumHealth = sConfigMgr->GetOption<int32>("Playerbots.MediumHealth", 65);

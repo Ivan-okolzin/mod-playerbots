@@ -7,6 +7,7 @@
 #ifndef PLAYERBOTS_TRIGGERCONTEXT_H
 #define PLAYERBOTS_TRIGGERCONTEXT_H
 
+#include "RaidTrash.h"
 #include "BotStateTriggers.h"
 #include "CureTriggers.h"
 #include "FishingTriggers.h"
@@ -34,6 +35,7 @@ class TriggerContext : public NamedObjectContext<Trigger>
 public:
     TriggerContext()
     {
+        creators["manage raid trash"] = [](PlayerbotAI* ai) -> Trigger* { return new RaidTrash::ManageTrigger(ai); };
         creators["return"] = &TriggerContext::_return;
         creators["sit"] = &TriggerContext::sit;
         creators["return to stay position"] = &TriggerContext::return_to_stay_position;

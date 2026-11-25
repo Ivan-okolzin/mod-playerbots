@@ -17,7 +17,9 @@
 #include <mysqld_error.h>
 #include "AllMapScript.h"
 #include "GatherNodeMgr.h"
+#include "EncounterHelpers.h"
 #include "GlobalScript.h"
+#include "UnitScript.h"
 #include "GuildTaskMgr.h"
 #include "PlayerScript.h"
 #include "PlayerbotAIConfig.h"
@@ -31,6 +33,15 @@
 #include "SessionScript.h"
 #include "WorldScript.h"
 #include "cmath"
+
+class PlayerbotsRaidTankResetScript : public UnitScript
+{
+public:
+    PlayerbotsRaidTankResetScript()
+        : UnitScript("PlayerbotsRaidTankResetScript", true, {UNITHOOK_ON_UNIT_EXIT_COMBAT}) {}
+
+    void OnUnitExitCombat(Unit* unit) override { EncounterHelpers::ResetGenericRaidBossTank(unit); }
+};
 
 class PlayerbotsDatabaseScript : public DatabaseScript
 {
@@ -623,6 +634,7 @@ void AddPlayerbotsScripts()
 {
     new PlayerbotsBattlefieldScript();
     new PlayerbotsDatabaseScript();
+    new PlayerbotsRaidTankResetScript();
     new PlayerbotsPlayerScript();
     new PlayerbotsMiscScript();
     new PlayerbotsServerScript();

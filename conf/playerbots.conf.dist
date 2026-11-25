@@ -450,6 +450,10 @@ Playerbots.LowMana = 15
 Playerbots.MediumMana = 40
 Playerbots.HighMana = 65
 
+# Transfer the boss when its assigned tank drops below this health percentage.
+# Applies in supported encounter phases. Set to 0 to disable health-based transfers.
+Playerbots.RaidEmergencyTankHealthPct = 25
+
 #
 #
 ####################################################################################################

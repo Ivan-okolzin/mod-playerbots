@@ -198,7 +198,7 @@ Position const& GetClosestGroundPosition(Position const& botPos);
 bool IsPrimaryEmberTank(Player* bot);
 bool IsFirstAlarTank(Player* bot);
 bool IsSecondAlarTank(Player* bot);
-Player* GetSecondaryEmberTank(Player* bot);
+Player* GetAlarBossTank(Player* bot, Unit* alar);
 GuidVector FindFlamePatchGuids(Player* bot);
 std::vector<Unit*> GetFlamePatches(PlayerbotAI* botAI);
 
@@ -306,6 +306,7 @@ struct TkInstanceState
 {
     std::optional<bool> lastRebirthState;
     std::optional<bool> isAlarInPhase2;
+    EncounterHelpers::RaidBossTankAssignment alarBossTank;
     std::vector<ArcaneOrbData> voidReaverArcaneOrbs;
     std::optional<uint32> advisorDpsHoldTimer;
     EncounterHelpers::ClassRoleAssignment capernianTank;

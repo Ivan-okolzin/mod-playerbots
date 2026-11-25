@@ -64,11 +64,7 @@ bool AlarFliesBetweenPlatformsTrigger::IsActiveInEncounter()
     if (!alar || IsAlarInPhase2(alar->GetInstanceId()))
         return false;
 
-    int8 locationIndex = GetAlarCurrentLocationIndex(alar);
-    if (locationIndex == LOCATION_NONE)
-        locationIndex = GetAlarDestinationLocationIndex(alar);
-
-    return locationIndex != POINT_QUILL_OR_DIVE_IDX && locationIndex != POINT_MIDDLE_IDX;
+    return !alar->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE) && GetAlarPlatformIndex(alar) != LOCATION_NONE;
 }
 
 bool AlarEmbersShouldBeTankedTrigger::IsActiveInEncounter()

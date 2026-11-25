@@ -5,6 +5,8 @@
  */
 
 #include "TKHelpers.h"
+#include "RaidTrash.h"
+#include "SpellAuraEffects.h"
 #include "EncounterHelpers.h"
 #include "Playerbots.h"
 #include "TKKaelthasBossAI.h"
@@ -78,16 +80,27 @@ Player* GetNearestNonTankPlayerInRadius(Player* bot, float radius)
 
 // Trash
 
-// "attackers" already drops polymorphed units so no check for it is necessary.
 Unit* GetCenturionCastingArcaneFlurry(PlayerbotAI* botAI)
 {
-    Unit* target = nullptr;
+    Player* bot = botAI->GetBot();
+    if (bot->GetMapId() != TK_MAP_ID || !RaidTrash::IsActive(bot))
+        return nullptr;
 
     AiObjectContext* context = botAI->GetAiObjectContext();
+    auto const& pack = context->GetValue<RaidTrash::Pack>("raid trash pack")->RefGet();
+    // One sheep per mage. Another mage can handle the next centurion.
+    for (ObjectGuid guid : pack.protectedTargets)
+        if (Unit* unit = botAI->GetUnit(guid); unit && unit->IsPolymorphed())
+            for (AuraEffect const* transform : unit->GetAuraEffectsByType(SPELL_AURA_TRANSFORM))
+                if (transform->GetCasterGUID() == bot->GetGUID())
+                    return nullptr;
+
+    Unit* target = nullptr;
     for (ObjectGuid const attackerGuid : AI_VALUE(GuidVector, "attackers"))
     {
         Unit* attacker = botAI->GetUnit(attackerGuid);
-        if (!attacker || attacker->GetEntry() != Id(TkNpcs::NPC_CRIMSON_HAND_CENTURION) ||
+        if (!attacker || !attacker->IsInCombat() || pack.protectedTargets.count(attackerGuid) ||
+            attacker->GetEntry() != Id(TkNpcs::NPC_CRIMSON_HAND_CENTURION) ||
             !attacker->HasAura(Id(TkSpells::SPELL_ARCANE_FLURRY)))
         {
             continue;
@@ -180,9 +193,9 @@ int8 GetAlarDestinationLocationIndex(Unit* alar)
 
 int8 GetAlarPlatformIndex(Unit* alar)
 {
-    int8 locationIndex = GetAlarCurrentLocationIndex(alar);
+    int8 locationIndex = GetAlarDestinationLocationIndex(alar);
     if (locationIndex == LOCATION_NONE)
-        locationIndex = GetAlarDestinationLocationIndex(alar);
+        locationIndex = GetAlarCurrentLocationIndex(alar);
 
     if (locationIndex < PLATFORM_0_IDX || locationIndex > PLATFORM_3_IDX)
         return LOCATION_NONE;
@@ -230,21 +243,35 @@ bool IsPrimaryEmberTank(Player* bot)
     return PlayerbotAI::IsAssistTankOfIndex(bot, 1, true);
 }
 
-// The secondary Ember Tank is needed only during phase 2, and it is initially the first assist
-// tank (i.e., the SecondAlarTank). When Al'ar melts the armor of the main tank, then the main
-// tank becomes the secondary Ember tank. The two tanks swap from then on.
-Player* GetSecondaryEmberTank(Player* bot)
+Player* GetAlarBossTank(Player* bot, Unit* alar)
 {
-    Player* mainTank = GetGroupMainTank(bot);
-    Player* assistTank = GetGroupAssistTank(bot, 0);
-
-    if (!mainTank || !assistTank)
+    TkInstanceState& state = TkState(alar->GetInstanceId());
+    if (!alar->IsAlive() || !alar->IsInCombat() || alar->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE))
         return nullptr;
 
-    if (mainTank->HasAura(Id(TkSpells::SPELL_MELT_ARMOR)))
-        return mainTank;
+    if (!state.isAlarInPhase2.value_or(false))
+    {
+        switch (GetAlarPlatformIndex(alar))
+        {
+            case PLATFORM_0_IDX:
+            case PLATFORM_2_IDX:
+                return GetGroupMainTank(bot);
+            case PLATFORM_1_IDX:
+            case PLATFORM_3_IDX:
+                return GetGroupAssistTank(bot, 0);
+            default:
+                return nullptr;
+        }
+    }
 
-    return assistTank;
+    if (alar->HasUnitState(UNIT_STATE_CHARGING) || alar->HasAura(Id(TkSpells::SPELL_MODEL_INVISIBILITY)) ||
+        alar->FindCurrentSpellBySpellId(Id(TkSpells::SPELL_REBIRTH_DIVE)) ||
+        GetAlarCurrentLocationIndex(alar) == POINT_QUILL_OR_DIVE_IDX ||
+        GetAlarDestinationLocationIndex(alar) == POINT_QUILL_OR_DIVE_IDX)
+        return nullptr;
+
+    return ResolveRaidBossTank(bot, alar, state.alarBossTank, Id(TkSpells::SPELL_MELT_ARMOR),
+        Id(TkNpcs::NPC_EMBER_OF_ALAR));
 }
 
 GuidVector FindFlamePatchGuids(Player* bot)

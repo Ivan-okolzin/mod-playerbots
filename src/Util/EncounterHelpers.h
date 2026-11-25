@@ -180,6 +180,18 @@ bool GetStepToPosition(
 Player* GetGroupMainTank(Player* bot);
 // Returns the alive assist tank of the specified index (0 = first, 1 = second, etc.)
 Player* GetGroupAssistTank(Player* bot, uint8 index);
+
+struct RaidBossTankAssignment
+{
+    ObjectGuid owner;
+    ObjectGuid requested;
+};
+
+// Returns the tank that should act. Only a confirmed boss victim is recorded as the owner.
+Player* ResolveRaidBossTank(
+    Player* bot, Unit* boss, RaidBossTankAssignment& assignment, uint32 swapAura = 0, uint32 exchangeableAdd = 0);
+Player* GetGenericRaidBossTank(Player* bot, Unit* boss);
+void ResetGenericRaidBossTank(Unit* unit);
 // Return the nearest alive player (human or bot) within the specified radius. Distance is
 // measured by GetExactDist2d(), which does not take into account either player's CombatReach
 // (i.e., their hitboxes), which are 1.5y for all races (or 1.95y with Bloodlust/Heroism active).

@@ -8,6 +8,7 @@
 #define PLAYERBOTS_VALUECONTEXT_H
 
 #include "ActiveSpellValue.h"
+#include "RaidTrash.h"
 #include "AggressiveTargetValue.h"
 #include "AlwaysLootListValue.h"
 #include "AoeHealValues.h"
@@ -139,6 +140,7 @@ public:
         creators["party member to heal"] = &ValueContext::party_member_to_heal;
         creators["healer low mana"] = &ValueContext::healer_low_mana;
         creators["party member to resurrect"] = &ValueContext::party_member_to_resurrect;
+        creators["raid trash pack"] = [](PlayerbotAI* ai) -> UntypedValue* { return new RaidTrash::PackValue(ai); };
         creators["current target"] = &ValueContext::current_target;
         creators["self target"] = &ValueContext::self_target;
         creators["group leader"] = &ValueContext::group_leader;

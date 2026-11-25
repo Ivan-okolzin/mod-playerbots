@@ -18,6 +18,7 @@ public:
 
     std::string const getName() override { return "tank assist"; }
     uint32 GetType() const override { return STRATEGY_TYPE_TANK; }
+    void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
     void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 };
 

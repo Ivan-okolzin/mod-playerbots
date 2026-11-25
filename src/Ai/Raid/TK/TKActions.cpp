@@ -12,8 +12,11 @@
 #include "LootObjectStack.h"
 #include "MotionMaster.h"
 #include "MoveSpline.h"
+#include "ObjectAccessor.h"
 #include "Playerbots.h"
 #include "RtiTargetValue.h"
+#include "RaidTrash.h"
+#include "Spell.h"
 #include "StatsWeightCalculator.h"
 #include "TKHelpers.h"
 #include <algorithm>
@@ -87,12 +90,15 @@ bool TempestKeepTankPositionAction::MoveToTankPosition(
 
 bool CrimsonHandCenturionCastPolymorphAction::Execute(Event /*event*/)
 {
+    if (Spell* cast = bot->GetCurrentSpell(CURRENT_GENERIC_SPELL))
+        if (cast->m_spellInfo->GetSpellSpecific() == SPELL_SPECIFIC_MAGE_POLYMORPH)
+            return false;
+    context->GetValue<RaidTrash::Pack>("raid trash pack")->Reset();
     Unit* target = GetCenturionCastingArcaneFlurry(botAI);
     if (!target)
         return false;
 
     bot->CastStop();
-
     if (!botAI->CanCastSpell("polymorph", target))
         return false;
 
@@ -107,12 +113,12 @@ bool AlarMisdirectBossToMainTankAction::Execute(Event /*event*/)
     if (!alar)
         return false;
 
-    Player* mainTank = GetGroupMainTank(bot);
-    if (!mainTank)
+    Player* tank = GetAlarBossTank(bot, alar);
+    if (!tank)
         return false;
 
-    if (botAI->CanCastSpell(Id(TkSpells::SPELL_MISDIRECTION), mainTank))
-        return botAI->CastSpell(Id(TkSpells::SPELL_MISDIRECTION), mainTank);
+    if (botAI->CanCastSpell(Id(TkSpells::SPELL_MISDIRECTION), tank))
+        return botAI->CastSpell(Id(TkSpells::SPELL_MISDIRECTION), tank);
 
     if (!bot->HasAura(Id(TkSpells::SPELL_MISDIRECTION_AURA)))
         return false;
@@ -127,13 +133,13 @@ bool AlarBossTanksMoveBetweenPlatformsAction::Execute(Event event)
         return false;
 
     Unit* alar = AI_VALUE2(Unit*, "find target", "al'ar");
-    if (!alar)
+    if (!alar || IsAlarInPhase2(alar->GetInstanceId()) || alar->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE))
         return false;
 
-    if (AI_VALUE(Unit*, "current target") != alar)
-        return Attack(alar);
+    int8 const alarPlatformIndex = GetAlarPlatformIndex(alar);
+    if (alarPlatformIndex == LOCATION_NONE)
+        return false;
 
-    int8 alarPlatformIndex = GetAlarPlatformIndex(alar);
     int8 tankPlatformIndex; // Determine which platform the tank goes to based on Al'ar's platform.
     if (isFirstAlarTank)
     {
@@ -149,8 +155,14 @@ bool AlarBossTanksMoveBetweenPlatformsAction::Execute(Event event)
     }
 
     Position const& target = ALAR_TANK_PLATFORM_POSITIONS[tankPlatformIndex];
-    if (bot->GetExactDist2d(target) <= 2.0f)
+    if (bot->GetExactDist(target) <= 2.0f)
     {
+        if (GetAlarCurrentLocationIndex(alar) != tankPlatformIndex)
+            return false;
+
+        if (AI_VALUE(Unit*, "current target") != alar)
+            return Attack(alar);
+
         if (alar->GetVictim() != bot)
             return botAI->DoSpecificAction("taunt spell", event, true);
 
@@ -230,7 +242,7 @@ bool AlarAssistTanksPickUpEmbersAction::Execute(Event event)
     if (!IsAlarInPhase2(alar->GetInstanceId()))
         return HandlePhase1Embers(alar);
 
-    return HandlePhase2Embers(event);
+    return HandlePhase2Embers(event, alar);
 }
 
 // Embers will be tanked by only the second assist tank in Phase 1.
@@ -279,17 +291,32 @@ bool AlarAssistTanksPickUpEmbersAction::HandlePhase1Embers(Unit* alar)
         false, false, MovementPriority::MOVEMENT_COMBAT, true, false);
 }
 
-// One Ember will be tanked by the second assist tank in Phase 2, and the other by
-// the main tank or first assist tank (whichever is not tanking Al'ar; see helpers for more info).
-bool AlarAssistTanksPickUpEmbersAction::HandlePhase2Embers(Event const& event)
+// Keep the boss tank reserved even while Al'ar is unavailable during Dive Bomb.
+bool AlarAssistTanksPickUpEmbersAction::HandlePhase2Embers(Event const& event, Unit* alar)
 {
-    auto const& [firstEmber, secondEmber] = GetTargetUnitPair(botAI, Id(TkNpcs::NPC_EMBER_OF_ALAR));
+    Player* owner = GetAlarBossTank(bot, alar);
+    auto const& assignment = TkState(alar->GetInstanceId()).alarBossTank;
+    if (!owner)
+        owner = ObjectAccessor::GetPlayer(*alar, assignment.owner);
+    if (!owner || owner == bot || assignment.owner == bot->GetGUID())
+        return false;
 
-    Unit* ember = nullptr;
-    if (IsPrimaryEmberTank(bot))
-        ember = firstEmber;
-    else if (GetSecondaryEmberTank(bot) == bot)
-        ember = secondEmber;
+    Player* primary = GetGroupAssistTank(bot, 1);
+    Player* secondary = GetGroupAssistTank(bot, 0);
+    if (secondary == owner)
+        secondary = GetGroupMainTank(bot);
+    if (primary == owner || !primary)
+    {
+        primary = secondary;
+        secondary = GetGroupMainTank(bot);
+    }
+    if (bot != primary && bot != secondary)
+        return false;
+
+    auto const& [firstEmber, secondEmber] = GetTargetUnitPair(botAI, Id(TkNpcs::NPC_EMBER_OF_ALAR));
+    Unit* ember = bot == primary ? firstEmber : secondEmber;
+    if (bot != primary && primary && ember == firstEmber)
+        return false;
 
     if (!ember)
         return false;
@@ -435,14 +462,11 @@ bool AlarMoveAwayFromRebirthAction::Execute(Event /*event*/)
 
 bool AlarSwapTanksOnBossAction::Execute(Event event)
 {
-    if (!IsFirstAlarTank(bot) && !IsSecondAlarTank(bot))
+    if (!PlayerbotAI::IsMainTank(bot) && !PlayerbotAI::IsAssistTank(bot))
         return false;
 
     Unit* alar = AI_VALUE2(Unit*, "find target", "al'ar");
-    if (!alar)
-        return false;
-
-    if (GetSecondaryEmberTank(bot) == bot)
+    if (!alar || !IsAlarInPhase2(alar->GetInstanceId()) || GetAlarBossTank(bot, alar) != bot)
         return false;
 
     if (AI_VALUE(Unit*, "current target") != alar)
@@ -603,8 +627,10 @@ bool AlarManagePhaseTrackerAction::Execute(Event /*event*/)
     TkInstanceState& state = TkState(alar->GetInstanceId());
     bool const rebirthActive = alar->FindCurrentSpellBySpellId(Id(TkSpells::SPELL_REBIRTH_PHASE2));
 
-    if (!state.isAlarInPhase2.value_or(false) && state.lastRebirthState.value_or(false) &&
-        !rebirthActive)
+    // The core starts chasing only after Rebirth, so a late tracker can recover the phase.
+    if (!state.isAlarInPhase2.value_or(false) && !alar->HasUnitFlag(UNIT_FLAG_NOT_SELECTABLE) &&
+        ((state.lastRebirthState.value_or(false) && !rebirthActive) ||
+            alar->GetMotionMaster()->GetCurrentMovementGeneratorType() == CHASE_MOTION_TYPE))
     {
         state.isAlarInPhase2 = true;
         return true;

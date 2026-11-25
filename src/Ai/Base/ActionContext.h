@@ -7,6 +7,7 @@
 #ifndef PLAYERBOTS_ACTIONCONTEXT_H
 #define PLAYERBOTS_ACTIONCONTEXT_H
 
+#include "RaidTrash.h"
 #include "AddLootAction.h"
 #include "AttackAction.h"
 #include "AutoMaintenanceOnLevelupAction.h"
@@ -78,6 +79,7 @@ class ActionContext : public NamedObjectContext<Action>
 public:
     ActionContext()
     {
+        creators["manage raid trash"] = [](PlayerbotAI* ai) -> Action* { return new RaidTrash::ManageAction(ai); };
         creators["mark rti"] = &ActionContext::mark_rti;
         creators["set return position"] = &ActionContext::set_return_position;
         creators["rpg"] = &ActionContext::rpg;
@@ -120,6 +122,7 @@ public:
         creators["mana potion"] = &ActionContext::mana_potion;
         creators["eat"] = &ActionContext::eat;
         creators["drink"] = &ActionContext::drink;
+        creators["take over raid boss"] = &ActionContext::take_over_raid_boss;
         creators["tank assist"] = &ActionContext::tank_assist;
         creators["dps assist"] = &ActionContext::dps_assist;
         creators["dps aoe"] = &ActionContext::dps_aoe;
@@ -362,6 +365,7 @@ private:
     static Action* dps_assist(PlayerbotAI* botAI) { return new DpsAssistAction(botAI); }
     static Action* dps_aoe(PlayerbotAI* botAI) { return new DpsAoeAction(botAI); }
     static Action* attack_rti_target(PlayerbotAI* botAI) { return new AttackRtiTargetAction(botAI); }
+    static Action* take_over_raid_boss(PlayerbotAI* botAI) { return new TakeOverRaidBossAction(botAI); }
     static Action* tank_assist(PlayerbotAI* botAI) { return new TankAssistAction(botAI); }
     static Action* drink(PlayerbotAI* botAI) { return new DrinkAction(botAI); }
     static Action* eat(PlayerbotAI* botAI) { return new EatAction(botAI); }

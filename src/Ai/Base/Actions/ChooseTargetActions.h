@@ -36,6 +36,14 @@ public:
     std::string const GetTargetName() override { return "tank target"; }
 };
 
+class TakeOverRaidBossAction : public AttackAction
+{
+public:
+    TakeOverRaidBossAction(PlayerbotAI* botAI) : AttackAction(botAI, "take over raid boss") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class AggressiveTargetAction : public AttackAction
 {
 public:

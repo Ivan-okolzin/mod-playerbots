@@ -7,6 +7,7 @@
 #ifndef PLAYERBOTS_STRATEGYCONTEXT_H
 #define PLAYERBOTS_STRATEGYCONTEXT_H
 
+#include "RaidTrash.h"
 #include "AggressiveStrategy.h"
 #include "AttackEnemyPlayersStrategy.h"
 #include "BattlegroundStrategy.h"
@@ -62,6 +63,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
 public:
     StrategyContext()
     {
+        creators["raid trash"] = [](PlayerbotAI* ai) -> Strategy* { return new RaidTrashStrategy(ai); };
         creators["racials"] = &StrategyContext::racials;
         creators["loot"] = &StrategyContext::loot;
         creators["gather"] = &StrategyContext::gather;

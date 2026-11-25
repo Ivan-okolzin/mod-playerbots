@@ -127,34 +127,15 @@ float AlarControlTauntingMultiplier::GetValueInEncounter(Action* action)
     if (!IsTauntAction(bot, action))
         return 1.0f;
 
-    bool const isFirstAlarTank = IsFirstAlarTank(bot);
-
-    if (!isFirstAlarTank && !IsSecondAlarTank(bot))
-        return 1.0f;
-
     Unit* alar = AI_VALUE2(Unit*, "find target", "al'ar");
-    if (!alar)
+    if (!alar || AI_VALUE(Unit*, "current target") != alar)
         return 1.0f;
 
-    if (bot->HasAura(Id(TkSpells::SPELL_MELT_ARMOR)) && AI_VALUE(Unit*, "current target") == alar)
+    if (!IsAlarInPhase2(alar->GetInstanceId()) &&
+        GetAlarCurrentLocationIndex(alar) != GetAlarPlatformIndex(alar))
         return 0.0f;
 
-    if (IsAlarInPhase2(alar->GetInstanceId()))
-        return 1.0f;
-
-    int8 platformIndex = GetAlarPlatformIndex(alar);
-    if (isFirstAlarTank)
-    {
-        if (platformIndex != PLATFORM_0_IDX && platformIndex != PLATFORM_2_IDX)
-            return 0.0f;
-    }
-    else // isSecondAlarTank
-    {
-        if (platformIndex != PLATFORM_1_IDX && platformIndex != PLATFORM_3_IDX)
-            return 0.0f;
-    }
-
-    return 1.0f;
+    return GetAlarBossTank(bot, alar) == bot ? 1.0f : 0.0f;
 }
 
 // Void Reaver

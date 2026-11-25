@@ -108,7 +108,7 @@ public:
 
 private:
     bool HandlePhase1Embers(Unit* alar);
-    bool HandlePhase2Embers(Event const& event);
+    bool HandlePhase2Embers(Event const& event, Unit* alar);
 };
 
 class AlarAssignNonTankTargetAction : public AttackAction

@@ -7,6 +7,14 @@
 #include "BattleGroundTactics.h"
 #include "Chat.h"
 #include "ChatCommandTags.h"
+#include "Group.h"
+#include "GroupScript.h"
+#include "ObjectMgr.h"
+#include "TankOrder.h"
+#include <algorithm>
+#include <mutex>
+#include <sstream>
+#include <unordered_map>
 #include "GuildTaskMgr.h"
 #include "PerfMonitor.h"
 #include "PlayerbotAI.h"
@@ -15,6 +23,43 @@
 #include "ScriptMgr.h"
 
 using namespace Acore::ChatCommands;
+
+namespace
+{
+    std::mutex orderMutex;
+    std::unordered_map<Group const*, std::vector<ObjectGuid>> orders;
+
+    class TankOrderGroupScript : public GroupScript
+    {
+    public:
+        TankOrderGroupScript() : GroupScript("TankOrderGroupScript", {GROUPHOOK_ON_REMOVE_MEMBER, GROUPHOOK_ON_DISBAND}) {}
+
+        void OnRemoveMember(Group* group, ObjectGuid guid, RemoveMethod, ObjectGuid, char const*) override
+        {
+            std::lock_guard lock(orderMutex);
+            auto itr = orders.find(group);
+            if (itr == orders.end())
+                return;
+            auto& order = itr->second;
+            order.erase(std::remove(order.begin(), order.end(), guid), order.end());
+            if (order.empty())
+                orders.erase(itr);
+        }
+
+        void OnDisband(Group* group) override
+        {
+            std::lock_guard lock(orderMutex);
+            orders.erase(group);
+        }
+    };
+}
+
+std::vector<ObjectGuid> TankOrder::Get(Group const* group)
+{
+    std::lock_guard lock(orderMutex);
+    auto itr = orders.find(group);
+    return itr == orders.end() ? std::vector<ObjectGuid>{} : itr->second;
+}
 
 class playerbots_commandscript : public CommandScript
 {
@@ -35,6 +80,7 @@ public:
         };
 
         static ChatCommandTable playerbotsCommandTable = {
+            {"tankorder", HandleTankOrder, SEC_PLAYER, Console::No},
             {"bot", HandlePlayerbotCommand, SEC_PLAYER, Console::No},
             {"exec", HandleExecCommand, SEC_GAMEMASTER, Console::Yes},
             {"inspect", HandleInspectCommand, SEC_GAMEMASTER, Console::Yes},
@@ -50,6 +96,81 @@ public:
         };
 
         return commandTable;
+    }
+
+    static bool HandleTankOrder(ChatHandler* handler, char const* args)
+    {
+        Player* player = handler->GetSession()->GetPlayer();
+        Group* group = player->GetGroup();
+        if (!group)
+        {
+            handler->SendErrorMessage("Join a group to use tankorder.");
+            return false;
+        }
+
+        std::string input = args ? args : "";
+        std::replace(input.begin(), input.end(), ',', ' ');
+        std::istringstream stream(input);
+        std::string token;
+        stream >> token;
+        auto const& members = group->GetMemberSlots();
+        if (token.empty() || token == "show")
+        {
+            if (stream >> token)
+                return false;
+            std::string names;
+            for (ObjectGuid guid : TankOrder::Get(group))
+                for (auto const& member : members)
+                    if (member.guid == guid)
+                        names += (names.empty() ? "" : ", ") + member.name;
+            handler->PSendSysMessage("Tank order: {}", names.empty() ? "automatic" : names);
+            return true;
+        }
+        if (group->GetLeaderGUID() != player->GetGUID())
+        {
+            handler->SendErrorMessage("Only the group leader can change the tank order.");
+            return false;
+        }
+        if (token == "clear")
+        {
+            if (stream >> token)
+                return false;
+            {
+                std::lock_guard lock(orderMutex);
+                orders.erase(group);
+            }
+            handler->PSendSysMessage("Tank order cleared.");
+            return true;
+        }
+        if (token == "set" && !(stream >> token))
+        {
+            handler->SendErrorMessage("Specify tank names in order, main tank first.");
+            return false;
+        }
+        std::vector<ObjectGuid> order;
+        do
+        {
+            bool validName = normalizePlayerName(token);
+            auto member = std::find_if(members.begin(), members.end(),
+                [&](auto const& slot) { return slot.name == token; });
+            if (!validName || member == members.end())
+            {
+                handler->SendErrorMessage("Unknown group member: {}", token);
+                return false;
+            }
+            if (std::find(order.begin(), order.end(), member->guid) != order.end())
+            {
+                handler->SendErrorMessage("Duplicate tank: {}", token);
+                return false;
+            }
+            order.push_back(member->guid);
+        } while (stream >> token);
+        {
+            std::lock_guard lock(orderMutex);
+            orders[group] = std::move(order);
+        }
+        handler->PSendSysMessage("Tank order updated.");
+        return true;
     }
 
     static bool HandlePlayerbotCommand(ChatHandler* handler, char const* args)
@@ -256,4 +377,7 @@ public:
     }
 };
 
-void AddPlayerbotsCommandscripts() { new playerbots_commandscript(); }
+void AddPlayerbotsCommandscripts() {
+    new playerbots_commandscript();
+    new TankOrderGroupScript();
+}

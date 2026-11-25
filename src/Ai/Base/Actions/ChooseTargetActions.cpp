@@ -8,6 +8,7 @@
 
 #include "Battleground.h"
 #include "ChooseRpgTargetAction.h"
+#include "EncounterHelpers.h"
 #include "Event.h"
 #include "LootObjectStack.h"
 #include "NewRpgStrategy.h"
@@ -43,6 +44,30 @@ bool AttackEnemyFlagCarrierAction::isUseful()
         return false;
 
     return PlayerHasFlag::IsCapturingFlag(bot);
+}
+
+bool TakeOverRaidBossAction::isUseful()
+{
+    return bot->IsInCombat() && bot->GetGroup() && bot->GetMap()->IsRaid();
+}
+
+bool TakeOverRaidBossAction::Execute(Event event)
+{
+    if (!isUseful())
+        return false;
+
+    for (ObjectGuid guid : AI_VALUE(GuidVector, "attackers"))
+    {
+        Unit* boss = botAI->GetUnit(guid);
+        if (!boss || EncounterHelpers::GetGenericRaidBossTank(bot, boss) != bot || boss->GetVictim() == bot)
+            continue;
+
+        if (AI_VALUE(Unit*, "current target") != boss)
+            return Attack(boss);
+
+        return botAI->DoSpecificAction("taunt spell", event, true);
+    }
+    return false;
 }
 
 bool AggressiveTargetAction::isUseful()
