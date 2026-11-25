@@ -222,10 +222,10 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
   <section data-view="agents" id="agents">
     <h2>Состояние агентов</h2><p id="live-check">Получаем данные…</p>
     <ul class="cards" id="live-agents"></ul><h3>Windows · ASUS</h3>
-    <p id="live-release"></p><p id="live-ci"></p><script defer src="agent-live.js"></script>
-    <p>Этапы по журналу агентов · __STAGES__. __EXCLUDED__</p>
+    <p id="live-release"></p><p id="live-ci"></p><script defer src="agent-live.js?v=2"></script>
+    <details><summary>Архив интеграции рейдовых ветвей · __DATE__</summary>
     <h2>Интегрированные ветви</h2>
-    <ul class="cards">__CARDS__</ul>
+    <ul class="cards">__CARDS__</ul></details>
   </section>
 
   <section data-view="coverage">

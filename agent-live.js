@@ -21,7 +21,7 @@
       el('live-agents').replaceChildren(...state.agents.map(agent => {
         const row = document.createElement('li');
         const age = minutes(agent.time);
-        row.textContent = [agent.name, agent.task, agent.event, age + ' мин назад'].join(' · ');
+        row.textContent = [agent.name, agent.task, agent.event, new Date(agent.time).toLocaleString('ru-RU', {timeZone: 'Asia/Yekaterinburg'}) + ' ЕКБ', age + ' мин назад'].join(' · ');
         if (agent.active && age >= 10) {
           row.append(' · Нет свежего подтверждения');
           row.style.borderLeft = '4px solid #eab308';
