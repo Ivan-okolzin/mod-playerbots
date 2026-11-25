@@ -20,9 +20,9 @@
     {
       "name": "Nash",
       "task": "Windows и ASUS",
-      "event": "SHA веток подтверждены. GitHub принял включение workflow (204), но отклонил запуск (422): Actions has been disabled for this repository. Требуется проверка владельцем аккаунта.",
-      "active": false,
-      "time": "2026-11-26T00:41:58+05:00"
+      "event": "Windows CI запущен, run 45688846331. Ожидаем сборку и проверку артефакта.",
+      "active": true,
+      "time": "2026-11-26T00:48:47+05:00"
     }
   ]
 }
