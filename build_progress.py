@@ -204,7 +204,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     «заглушка» — только вспомогательные, «нет» — ничего.</p>
   </header>
 
-  <nav aria-label="Разделы панели"><a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Исходы</a> <a href="#tasks">Первые игровые тесты</a> <a href="#questions">Вопросы</a></nav>
+  <nav aria-label="Разделы панели"><a href="#bugs">Баги рейдов</a> <a href="#coverage">Покрытие</a> <a href="#agents">Агенты</a> <a href="#queue">Исходы</a> <a href="#tasks">Первые игровые тесты</a> <a href="#questions">Вопросы</a></nav>
   <section data-view="coverage" id="coverage">
     <h2>Сводка</h2>
     <div class="sum"><span class="big">__GOOD__</span><span class="pill">из __BOSSES__ боссов
@@ -214,6 +214,7 @@ nav {display:flex;gap:.5rem;flex-wrap:wrap} nav a {padding:.5rem;color:var(--fg)
     <div class="sum">__TOTPILLS__</div>
   </section>
 
+  <section data-view="bugs" id="bugs"><h2>Исправления по игровым отчётам</h2><ul class="cards">__BUGS__</ul></section>
   <section data-view="queue" id="queue"><h2>Исходы · __COUNT__ встреч</h2>
     <p>Источник покрытия · <code>__SOURCE__</code></p>__QUEUE__</section>
   <section data-view="tasks" id="tasks"><h2>Первые игровые тесты</h2><ul class="cards">__TASKS__</ul></section>
@@ -274,6 +275,14 @@ page = (page
         .replace("__TOTPILLS__", counts(tot))
         .replace("__CARDS__", "".join(cards))
         .replace("__ROWS__", "".join(raid_rows)))
+
+bugs = json.loads(Path(BASE, "raid_bugs.json").read_text(encoding="utf-8"))
+bug_cards = []
+for bug in bugs:
+    fields = ("id", "encounter", "observation", "plan", "agent", "status", "build")
+    details = [html.escape(str(bug[key])) for key in fields if bug.get(key)]
+    bug_cards.append("<li>" + " · ".join(details) + "</li>")
+page = page.replace("__BUGS__", "".join(bug_cards) or "<li>Ожидаем первое сообщение из Ока.</li>")
 
 for name in ("index.html", "progress.html"):
     with open(os.path.join(BASE, name), "w", encoding="utf-8") as output:
