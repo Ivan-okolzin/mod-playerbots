@@ -60,8 +60,15 @@ jobs:
       - name: Install Boost and Ninja
         shell: powershell
         run: |
-          choco install ninja -y --no-progress
-          choco install boost-msvc-14.3 --version=1.87.0 -y --no-progress
+          Get-Command ninja -ErrorAction Stop
+          $installer = Join-Path $env:RUNNER_TEMP 'boost_1_87_0-msvc-14.3-64.exe'
+          curl.exe --fail --location --retry 3 --output $installer "https://archives.boost.io/release/1.87.0/binaries/boost_1_87_0-msvc-14.3-64.exe"
+          if ($LASTEXITCODE) { throw "Boost download failed" }
+          if ((Get-FileHash $installer).Hash -ne '7b204c1cfa1a41f771361d23a99d3b4d5d677d7b52064eb73f37ba47b2d238bb') {
+            throw "Unexpected Boost installer checksum"
+          }
+          $setup = Start-Process $installer -ArgumentList '/VERYSILENT','/NORESTART',"/DIR=$env:BOOST_ROOT" -Wait -PassThru
+          if ($setup.ExitCode) { throw "Boost installer exited with $($setup.ExitCode)" }
 
       - name: Prepare OpenSSL from runner image
         shell: powershell
